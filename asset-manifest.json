@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/NPS-Cisco-2019/Frontend/static/css/main.6435e7a2.chunk.css",
-    "main.js": "/NPS-Cisco-2019/Frontend/static/js/main.f8a6c527.chunk.js",
-    "main.js.map": "/NPS-Cisco-2019/Frontend/static/js/main.f8a6c527.chunk.js.map",
-    "runtime-main.js": "/NPS-Cisco-2019/Frontend/static/js/runtime-main.2cc9d6d5.js",
-    "runtime-main.js.map": "/NPS-Cisco-2019/Frontend/static/js/runtime-main.2cc9d6d5.js.map",
-    "static/js/2.f45a5a8e.chunk.js": "/NPS-Cisco-2019/Frontend/static/js/2.f45a5a8e.chunk.js",
-    "static/js/2.f45a5a8e.chunk.js.map": "/NPS-Cisco-2019/Frontend/static/js/2.f45a5a8e.chunk.js.map",
-    "index.html": "/NPS-Cisco-2019/Frontend/index.html",
-    "precache-manifest.15de1ce12698556b9052a207d85152e7.js": "/NPS-Cisco-2019/Frontend/precache-manifest.15de1ce12698556b9052a207d85152e7.js",
-    "service-worker.js": "/NPS-Cisco-2019/Frontend/service-worker.js",
-    "static/css/main.6435e7a2.chunk.css.map": "/NPS-Cisco-2019/Frontend/static/css/main.6435e7a2.chunk.css.map",
-    "static/media/settings.png": "/NPS-Cisco-2019/Frontend/static/media/settings.371bf301.png"
+    "main.css": "/Frontend/static/css/main.6435e7a2.chunk.css",
+    "main.js": "/Frontend/static/js/main.26ca32b2.chunk.js",
+    "main.js.map": "/Frontend/static/js/main.26ca32b2.chunk.js.map",
+    "runtime-main.js": "/Frontend/static/js/runtime-main.23e4cb3b.js",
+    "runtime-main.js.map": "/Frontend/static/js/runtime-main.23e4cb3b.js.map",
+    "static/js/2.f45a5a8e.chunk.js": "/Frontend/static/js/2.f45a5a8e.chunk.js",
+    "static/js/2.f45a5a8e.chunk.js.map": "/Frontend/static/js/2.f45a5a8e.chunk.js.map",
+    "index.html": "/Frontend/index.html",
+    "precache-manifest.ef2f90b2071db64e421fa1d631e05e3c.js": "/Frontend/precache-manifest.ef2f90b2071db64e421fa1d631e05e3c.js",
+    "service-worker.js": "/Frontend/service-worker.js",
+    "static/css/main.6435e7a2.chunk.css.map": "/Frontend/static/css/main.6435e7a2.chunk.css.map",
+    "static/media/settings.png": "/Frontend/static/media/settings.371bf301.png"
   }
 }
