@@ -1,8 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+Go to https://nps-cisco-2019.github.io/Frontend/ to see running version
 
-In the project directory, you can run:
+## Available Scripts- In the project directory, you can run:
 
 ### `npm start`
 
