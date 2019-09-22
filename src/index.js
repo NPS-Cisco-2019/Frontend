@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+document.body.ontouchmove = (e) => {
+    e.preventDefault();
+    return false; 
+};
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // alert(window.innerHeight + ' x ' + window.innerWidth);
