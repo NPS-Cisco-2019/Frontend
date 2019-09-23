@@ -57,18 +57,21 @@ export class Gallery extends React.Component {
 };
 
 
-export function Firefox() {
+export function Chrome() {
     return (
-        <div style={tutStyle}>
-            <p>TODO Firefox tutorial</p>
+        <div style={tutStyle}className="tut">
+            <p>TODO Chrome tutorial</p>
         </div>
     );
 }
 
-export function Chrome() {
+export function Firefox() {
     return (
         <div style={tutStyle}>
-            <p>TODO Chrome tutorial</p>
+            <img className="img1" src="./pictures/firefox1.jpg" alt="tutorial picture 1" />
+			<p className="p1">Click on the the circled button</p>
+			<img className="img2" src="./pictures/firefox2.jpg" alt="tutorial picture 2" />
+			<p className="p2">Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
         </div>
     );
 }

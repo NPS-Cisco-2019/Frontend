@@ -7,7 +7,7 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.mobile = typeof window.orientation !== "undefined";
-    this.state = {tutorial: <Chrome />}
+    this.state = {tutorial: <Firefox />}
     this.handleClick = this.handleClick.bind(this);
   }
 

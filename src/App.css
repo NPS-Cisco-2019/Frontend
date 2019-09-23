@@ -157,6 +157,32 @@ h3 {
   height: 100%;
 }
 
+.tut {
+	display: grid;
+	grid-template-areas: "img1 text1"
+						 "img2 text2"
+						 "img3 text3";
+	grid-template-columns: 1fr 2fr;
+}
+
+.img1{
+	gird-area: img1;
+	max-height: 100%;
+}
+
+.img2{
+	gird-area: img2;
+	max-height: 100%;
+}
+
+.p1 {
+	grid-area: p1;
+}
+
+.p2 {
+	grid-area: p2;
+}
+
 button {
   border: none;
   background-color: rgb(30, 30, 30);
