@@ -17,14 +17,13 @@ class App extends React.Component {
     this.state = {
       tutorial: this.getJsx(browser),
       browser: browser,
-      highlight: {
-        top: 0,
-        height: 0,
-      },
-      left: 0,
-      width: 0
+      chrome: {top:0, height:0, left:0, width:0},
+      firefox: {top:0, height:0, left:0, width:0},
+      safari: {top:0, height:0, left:0, width:0}
     }
     this.handleClick = this.handleClick.bind(this);
+    this.calcBrowserPos = this.calcBrowserPos.bind(this);
+    this.calcHighlight = this.calcHighlight.bind(this);
   }
 
   getJsx(browser){
@@ -37,16 +36,17 @@ class App extends React.Component {
     }
   }
 
-  moveHighlight(browser){
+  calcHighlight(browser){
     const obj = document.getElementById(browser).getBoundingClientRect();
-    this.setState({
-      highlight: {
-        top: Math.round(obj.top - 100),
-        height: Math.round(obj.height)
-      },
-      left: obj.left,
-      width: Math.round(obj.width)
-    });
+    
+    //WARNING THROWN HERE, BE CAREFUL
+    // eslint-disable-next-line
+    this.state[browser] = {
+          top: Math.round(obj.top - 100),
+          height: Math.round(obj.height),
+          left: obj.left,
+          width: Math.round(obj.width)
+        }
   }
 
   handleClick(e){
@@ -57,16 +57,28 @@ class App extends React.Component {
     if (jsx){
       this.setState({ tutorial: jsx, browser: browser });
     }
-    this.moveHighlight(browser);
+  }
+
+  calcBrowserPos(){
+    let l = ['chrome', 'firefox', 'safari'];
+    for (let i = 0; i<3; i++){
+        this.calcHighlight(l[i]);
+    }
+    this.forceUpdate();
   }
 
   componentDidMount () {
     if (this.mobile){return}  
     window.onscroll =()=>{
       this.setState({currentScrollHeight: window.scrollY})
-   }
-   this.moveHighlight(this.state.browser);
- }
+    }
+    this.calcBrowserPos();
+    window.addEventListener('resize', this.calcBrowserPos);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.calcBrowserPos);
+  }
 
   render(){
     if (this.mobile){
@@ -92,7 +104,7 @@ class App extends React.Component {
             <h1>This app is not supported on Computers</h1>
           </header>
           <div className="body">
-            <div style={{...highlightStyle, ...this.state.highlight,left: this.state.left, width: this.state.width}}></div>
+            <div style={{...highlightStyle, ...this.state[this.state.browser]}}>{console.log(this.state.browser, this.state[''+this.state.browser])}</div>
             <h2>Go to your mobile phone in one of the following browsers.</h2>
             <div className="logos">
               <button className="firefox" onClick={this.handleClick}><img className="desk img" id="Firefox" src={require("./pictures/firefox.png")} alt="firefox" /></button>
