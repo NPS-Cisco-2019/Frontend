@@ -2,6 +2,7 @@ import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import {Flash, Settings, Gallery, Firefox, Chrome, Safari, getBrowser} from './elements';
+let dev = false;
 
 const highlightStyle = {
   position: 'absolute',
@@ -12,18 +13,21 @@ const highlightStyle = {
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.mobile = typeof window.orientation !== "undefined";
+    this.mobile = typeof window.orientation !== "undefined" || dev;
     const browser = getBrowser();
     this.state = {
       tutorial: this.getJsx(browser),
       browser: browser,
       chrome: {top:0, height:0, left:0, width:0},
       firefox: {top:0, height:0, left:0, width:0},
-      safari: {top:0, height:0, left:0, width:0}
+      safari: {top:0, height:0, left:0, width:0},
+      picture: require("./pictures/question.jpg"),
+      selectedFile: null
     }
     this.handleClick = this.handleClick.bind(this);
     this.calcBrowserPos = this.calcBrowserPos.bind(this);
     this.calcHighlight = this.calcHighlight.bind(this);
+    this.selectFileHandle = this.selectFileHandle.bind(this);
   }
 
   getJsx(browser){
@@ -58,8 +62,15 @@ class App extends React.Component {
       this.setState({ tutorial: jsx, browser: browser });
     }
   }
+  
+  selectFileHandle(e){
+    const url = URL.createObjectURL(e.target.files[0]);
+    this.setState({ picture: url });
+    console.log(url);
+}
 
   calcBrowserPos(){
+    if (this.mobile){return}
     let l = ['chrome', 'firefox', 'safari'];
     for (let i = 0; i<3; i++){
         this.calcHighlight(l[i]);
@@ -68,7 +79,7 @@ class App extends React.Component {
   }
 
   componentDidMount () {
-    if (this.mobile){return}  
+    if (this.mobile){return}
     window.onscroll =()=>{
       this.setState({currentScrollHeight: window.scrollY})
     }
@@ -77,19 +88,21 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
+    if (this.mobile){return}
     window.removeEventListener('resize', this.calcBrowserPos);
   }
 
   render(){
     if (this.mobile){
+      document.body.style = {backgroundColor: "rgb(25, 25, 25)"}
       return (
         <div className="App">
           <header className="nav">
               <Flash />
               <Settings />
-              <Gallery />
+              <Gallery selectFileHandle={this.selectFileHandle} />
           </header>
-          <img src="https://i.redd.it/xcmltqxm69n31.jpg" alt="meme" className="center" />
+          <img src={this.state.picture} alt="meme" className="center" />
           <footer>
               <div className="bar"></div>
           </footer>

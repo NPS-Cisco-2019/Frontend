@@ -40,7 +40,7 @@ font-face {
 /* Mobile Styling */
 
 .nav {
-  position: absolute;
+  position: fixed;
   padding: 2%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -71,7 +71,7 @@ font-face {
 }
 
 footer {
-  position: absolute;
+  position: fixed;
   background-color: rgb(40, 40, 40);
   /* border: 2px solid white; */
   border-radius: 30px;

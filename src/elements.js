@@ -8,7 +8,8 @@ const navObj = {
   'padding': '10%',
   'height': maxLength,
   'borderRadius': '50%',
-  'width': maxLength
+  'width': maxLength,
+  cursor: 'pointer'
 }
 
 export class Flash extends React.Component {
@@ -33,20 +34,40 @@ export class Flash extends React.Component {
 };
 
 export class Settings extends React.Component {
+    handleClick(){
+        alert('This path hasnt been programmed yet');
+    }
+
     render(){
         return (
             <div style={navObj}>
-                <img src={require("./pictures/settings.png")} alt="settings" className="nav-img" />
+                <img src={require("./pictures/settings.png")} 
+                alt="settings" 
+                className="nav-img" 
+                onClick={this.handleClick} />
             </div>
         );
     }
 };
 
 export class Gallery extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            selectedFile: null
+        }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(){
+        this.refs.gallery.click();
+    }
+
     render(){
         return (
             <div style={navObj}>
-                <img src={require("./pictures/gallery.png")} alt="Gallery" className="nav-img" />
+                <img src={require("./pictures/gallery.png")} alt="Gallery" className="nav-img" onClick={this.handleClick} />
+                <input type="file" ref="gallery" onChange={this.props.selectFileHandle} style={{display: "none"}} />
             </div>
         );
     }
