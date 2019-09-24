@@ -11,10 +11,6 @@ const navObj = {
   'width': maxLength
 }
 
-const tutStyle = {
-    height: 1000
-}
-
 export class Flash extends React.Component {
     constructor(props){
         super(props);
@@ -58,28 +54,56 @@ export class Gallery extends React.Component {
 
 
 export function Chrome() {
+    let style = {
+        height: window.innerHeight * 3
+    }
     return (
-        <div style={tutStyle}className="tut">
+        <div style={style} className="tut">
             <p>TODO Chrome tutorial</p>
         </div>
     );
 }
 
 export function Firefox() {
+    let style = {
+        height: window.innerHeight * 2
+    }
     return (
-        <div style={tutStyle}>
-            <img className="img1" src="./pictures/firefox1.jpg" alt="tutorial picture 1" />
-			<p className="p1">Click on the the circled button</p>
-			<img className="img2" src="./pictures/firefox2.jpg" alt="tutorial picture 2" />
-			<p className="p2">Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
+        <div style={style} className="tut">
+            <div className="img1">
+                <img className="tutImg" src={require("./pictures/firefox1.jpg")} alt="tutorial 1" />
+            </div>
+			<div className="p1">
+                <p>Click on the the circled button</p>
+            </div>
+			<div className="img2">
+                <img className="tutImg" src={require("./pictures/firefox2.jpg")} alt="tutorial 2" />
+            </div>
+			<div className="p2">
+                <p>Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
+            </div>
         </div>
     );
 }
 
 export function Safari() {
+    let style = {
+        height: window.innerHeight * 3
+    }
     return (
-        <div style={tutStyle}>
+        <div style={style} className="tut">
             <p>TODO Safari tutorial</p>
         </div>
     );
+}
+
+
+export function getBrowser(){
+    if (typeof InstallTrigger !== 'undefined') {
+        return 'firefox';
+    } else if (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'])) {
+        return 'safari';
+    } else {
+        return 'chrome';
+    }
 }

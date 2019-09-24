@@ -30,7 +30,6 @@ font-face {
 * {
   margin: 0;
   padding: 0;
-  overflow: hidden;
   color: white;
 }
 
@@ -100,22 +99,33 @@ footer {
   margin: 20px;
 } */
 
+h1 {
+  font-size: 300%;
+  align-self: center; 
+}
+
 .deskHead {
   box-sizing: border-box;
-  padding: 5%;
-  padding-top: 2%;
+  position: fixed;
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
   width: 100%;
-  background-color: #282828;
+  height: 100px;
+  background-color: rgb(50, 50, 50);
   text-align: center;
   color: white;
-  height: 100px;
+  top: -1%;
+  z-index: 69;
+  padding: 25px;
 }
 
 .body {
-  margin: 20px;
+  position: relative;
+  top: 100px;
   font-family: 'Raleway', sans-serif;
+  font-weight: 200;
+  background-color: rgb(25, 25, 25);
+  padding: 2%;
 }
 
 .logos {
@@ -159,31 +169,53 @@ h3 {
 
 .tut {
 	display: grid;
-	grid-template-areas: "img1 text1"
-						 "img2 text2"
-						 "img3 text3";
-	grid-template-columns: 1fr 2fr;
+	grid-template-areas: "img1 text1" "img2 text2" "img3 text3";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 45%);
+  margin: 30px;
+  padding: 1%;
+  row-gap: 5%;
+  animation: fadein 1s;
 }
 
 .img1{
-	gird-area: img1;
-	max-height: 100%;
+  grid-area: img1;
+  display: block;
 }
 
 .img2{
-	gird-area: img2;
-	max-height: 100%;
+  grid-area: img2;
+  justify-self: center;
 }
 
 .p1 {
-	grid-area: p1;
+  grid-area: text1;
+  font-size: 300%;
+  text-align: center;
+  align-self: center;
 }
 
 .p2 {
-	grid-area: p2;
+  grid-area: text2;
+  font-size: 300%;
+  text-align: center;
+  align-self: center;
+}
+
+.tutImg {
+  object-fit: cover;
+  height: 100%;
+  max-width: 100%;
+  margin-left: 20%;
+  margin-right: auto;
 }
 
 button {
   border: none;
-  background-color: rgb(30, 30, 30);
+  background-color: transparent;
+  cursor: pointer;
+}
+@keyframes fadein {
+  from { opacity: 0;}
+  to { opacity: 1; }
 }
