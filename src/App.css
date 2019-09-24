@@ -171,20 +171,32 @@ h3 {
 	display: grid;
 	grid-template-areas: "img1 text1" "img2 text2" "img3 text3";
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, 45%);
   margin: 30px;
   padding: 1%;
   row-gap: 5%;
   animation: fadein 1s;
 }
 
-.img1{
+.tutFirefox {
+  grid-template-rows: repeat(3, 45%);
+}
+
+.tutOthers {
+  grid-template-rows: repeat(3, 30%);
+}
+
+.img1 {
   grid-area: img1;
   display: block;
 }
 
-.img2{
+.img2 {
   grid-area: img2;
+  justify-self: center;
+}
+
+.img3 {
+  grid-area: img3;
   justify-self: center;
 }
 
@@ -197,6 +209,13 @@ h3 {
 
 .p2 {
   grid-area: text2;
+  font-size: 300%;
+  text-align: center;
+  align-self: center;
+}
+
+.p3 {
+  grid-area: text3;
   font-size: 300%;
   text-align: center;
   align-self: center;
@@ -215,6 +234,7 @@ button {
   background-color: transparent;
   cursor: pointer;
 }
+
 @keyframes fadein {
   from { opacity: 0;}
   to { opacity: 1; }

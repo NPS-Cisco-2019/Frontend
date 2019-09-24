@@ -58,8 +58,25 @@ export function Chrome() {
         height: window.innerHeight * 3
     }
     return (
-        <div style={style} className="tut">
-            <p>TODO Chrome tutorial</p>
+        <div style={style} className="tut tutOthers">
+            <div className="img1">
+                <img className="tutImg" src={require("./pictures/chrome1.jpg")} alt="tutorial 1" />
+            </div>
+			<div className="p1">
+                <p>Click on the the circled button</p>
+            </div>
+			<div className="img2">
+                <img className="tutImg" src={require("./pictures/chrome2.jpg")} alt="tutorial 2" />
+            </div>
+			<div className="p2">
+                <p>Click on "Add to Home screen".</p>
+            </div>
+            <div className="img3">
+                <img className="tutImg" src={require("./pictures/chrome3.jpg")} alt="tutorial 3" />
+            </div>
+			<div className="p3">
+                <p>Click on "Add" to install to your home screen.</p>
+            </div>
         </div>
     );
 }
@@ -69,7 +86,7 @@ export function Firefox() {
         height: window.innerHeight * 2
     }
     return (
-        <div style={style} className="tut">
+        <div style={style} className="tut tutFirefox">
             <div className="img1">
                 <img className="tutImg" src={require("./pictures/firefox1.jpg")} alt="tutorial 1" />
             </div>
@@ -91,7 +108,7 @@ export function Safari() {
         height: window.innerHeight * 3
     }
     return (
-        <div style={style} className="tut">
+        <div style={style} className="tut tutOthers">
             <p>TODO Safari tutorial</p>
         </div>
     );
