@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "964cc1803ecf6fcbee57b6a4b7a507a4",
+    "revision": "424f1be3ba910ef0a73d6c117e96eb54",
     "url": "/Frontend/index.html"
   },
   {
-    "revision": "2d3cdc78b9edfd3f502c",
-    "url": "/Frontend/static/css/main.59b60576.chunk.css"
+    "revision": "d2f397784b2c52804c2c",
+    "url": "/Frontend/static/css/main.2f9d31a0.chunk.css"
   },
   {
     "revision": "5806291b6eaae4f2c549",
     "url": "/Frontend/static/js/2.0ff2cce5.chunk.js"
   },
   {
-    "revision": "2d3cdc78b9edfd3f502c",
-    "url": "/Frontend/static/js/main.50db1e10.chunk.js"
+    "revision": "d2f397784b2c52804c2c",
+    "url": "/Frontend/static/js/main.e64b013b.chunk.js"
   },
   {
     "revision": "6a15c30a87823d87f419",
@@ -42,6 +42,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "649f926ec6bfcdd1efd007b04fefb2b9",
     "url": "/Frontend/static/media/firefox2.649f926e.jpg"
+  },
+  {
+    "revision": "2baaafd9a61c3ea1224f163c577e9456",
+    "url": "/Frontend/static/media/question.2baaafd9.jpg"
   },
   {
     "revision": "a64f5d7fa3930da5f70703eb258247a6",
