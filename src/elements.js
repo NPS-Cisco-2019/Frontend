@@ -1,17 +1,18 @@
 import React from 'react';
 import './App.css';
 
-let maxLength = (10/100) * (50/100) * window.innerHeight;
+let maxLength = (10/100) * (80/100) * window.innerHeight;
 
 const navObj = {
-  alignItems: 'center',
-  justifyItems: 'center',
-  padding: '10%',
-  height: maxLength,
-  borderRadius: '50%',
-  width: maxLength,
-  cursor: 'pointer',
-  objectFit: 'cover'
+    boxSizing: 'border-box',
+    alignItems: 'center',
+    justifyItems: 'center',
+    padding: maxLength/5,
+    height: maxLength,
+    borderRadius: '50%',
+    width: maxLength,
+    cursor: 'pointer',
+    objectFit: 'cover'
 }
 
 export class Flash extends React.Component {

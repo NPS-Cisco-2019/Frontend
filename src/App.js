@@ -4,7 +4,7 @@ import './App.css';
 import Webcam from 'react-webcam';
 // eslint-disable-next-line
 import {Flash, Settings, Gallery, Firefox, Chrome, Safari, getBrowser, ErrorBoundary} from './elements';
-let dev = false;
+let dev = true;
 
 const highlightStyle = {
   position: 'absolute',
