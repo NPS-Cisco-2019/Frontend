@@ -41,29 +41,18 @@ font-face {
 
 .nav {
   position: fixed;
-  padding: 2%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-items: center;
-  background-color: rgb(40, 40, 40);
+  background-color: rgb(50, 50, 50);
   z-index: 69;
   width: 100%;
-  height: 10%;
 }
 .nav-img {
   max-height: 100%;
   max-width: 100%;
   z-index: 420;
-}
-
-.center {
-  position: absolute;
-  top: 58%;
-  left: 50%;
-  width: 150%;
-  margin-top: -100%;
-  margin-left: -75%;
 }
 
 .selected {
@@ -72,7 +61,7 @@ font-face {
 
 footer {
   position: fixed;
-  background-color: rgb(40, 40, 40);
+  background-color: rgb(50, 50, 50);
   /* border: 2px solid white; */
   border-radius: 30px;
   height: 12%;
@@ -80,6 +69,7 @@ footer {
   bottom: -6%;
   display: inline-block;
   margin: 0 1%;
+  z-index: 69;
 }
 
 .bar {
@@ -90,7 +80,7 @@ footer {
   right: 35%;
   border-radius: 20%;
   top: 13%;
-  z-index: 50;
+  z-index: 100;
 }
 
 /* Desktop Stying */

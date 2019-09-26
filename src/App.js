@@ -1,7 +1,9 @@
 import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import {Flash, Settings, Gallery, Firefox, Chrome, Safari, getBrowser} from './elements';
+import Webcam from 'react-webcam';
+// eslint-disable-next-line
+import {Flash, Settings, Gallery, Firefox, Chrome, Safari, getBrowser, ErrorBoundary} from './elements';
 let dev = false;
 
 const highlightStyle = {
@@ -9,6 +11,38 @@ const highlightStyle = {
   borderBottom: '2px solid rgb(18, 218, 0)',
   transition: 'all 1s cubic-bezier(0.075, 0.82, 0.165, 1)'
 }
+
+const imgStyle = {
+  height: window.innerHeight,
+  zIndex: '0',
+  margin: 'auto'
+}
+
+const imgContainerStyle = {
+  height: Math.round(9 * window.innerHeight / 10),
+  backgroundColor: 'rgb(25,25,25)',
+  display: 'flex',
+  position: 'relative',
+  top: Math.round(window.innerHeight/10)
+}
+
+const captureButtonStyle = {
+  position: 'fixed',
+  top: 17 * window.innerHeight / 20,
+  borderRadius: '50%',
+  width: window.innerWidth / 6,
+  height: window.innerWidth / 6,
+  zIndex: 42,
+  backgroundColor: 'rgb(35, 35, 35)',
+  left: 5 * window.innerWidth / 12
+}
+
+const videoConstraints = {
+  // facingMode: 'user',
+  facingMode:  { exact: "environment" },
+  height: window.innerWidth,
+  width: window.innerHeight
+};
 
 class App extends React.Component {
   constructor(props){
@@ -21,13 +55,18 @@ class App extends React.Component {
       chrome: {top:0, height:0, left:0, width:0},
       firefox: {top:0, height:0, left:0, width:0},
       safari: {top:0, height:0, left:0, width:0},
+      output: 'vid',
       picture: require("./pictures/question.jpg"),
       selectedFile: null
     }
+    this.capture = this.capture.bind(this);
+    this.showDefault = this.showDefault.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.calcBrowserPos = this.calcBrowserPos.bind(this);
+    this.flipOutMode = this.flipOutMode.bind(this);
     this.calcHighlight = this.calcHighlight.bind(this);
+    this.calcBrowserPos = this.calcBrowserPos.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
+    this.cameraErrorHandler = this.cameraErrorHandler.bind(this);
   }
 
   getJsx(browser){
@@ -38,6 +77,15 @@ class App extends React.Component {
     } else if (browser === 'safari'){
       return <Safari />;
     }
+  }
+
+  capture(){
+    // const webcam = document.getElementById('camera');
+    // console.log(webcam);
+    const imageSrc = this.refs.webcam.getScreenshot();
+    // const imageURL = URL.createObjectURL(imageSrc);
+    // console.log(imageURL);
+    this.setState({picture: imageSrc, output: 'img'});
   }
 
   calcHighlight(browser){
@@ -65,9 +113,16 @@ class App extends React.Component {
   
   selectFileHandle(e){
     const url = URL.createObjectURL(e.target.files[0]);
-    this.setState({ picture: url });
-    console.log(url);
-}
+    this.setState({ picture: url, output: 'img'});
+  }
+
+  flipOutMode(mode){
+    this.setState({output: mode});
+  }
+
+  showDefault(){
+    this.setState({output: 'img', picture: require('./pictures/question.jpg')});
+  }
 
   calcBrowserPos(){
     if (this.mobile){return}
@@ -78,8 +133,15 @@ class App extends React.Component {
     this.forceUpdate();
   }
 
-  componentDidMount () {
-    if (this.mobile){return}
+  cameraErrorHandler(error){
+    console.log(error);
+    this.setState({ picture: require('./pictures/error.jpg'), output: 'img' });
+  }
+
+  componentDidMount() {
+    if (this.mobile){
+      return
+    }
     window.onscroll =()=>{
       this.setState({currentScrollHeight: window.scrollY})
     }
@@ -94,15 +156,29 @@ class App extends React.Component {
 
   render(){
     if (this.mobile){
-      document.body.style = {backgroundColor: "rgb(25, 25, 25)"}
+      document.body.style = {backgroundColor: "rgb(25, 25, 25)", overflow: 'hidden'};
       return (
         <div className="App">
-          <header className="nav">
-              <Flash />
-              <Settings />
+          <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
+              <Flash flipOutMode={this.flipOutMode} />
+              <Settings showDefault={this.showDefault} />
               <Gallery selectFileHandle={this.selectFileHandle} />
           </header>
-          <img src={this.state.picture} alt="meme" className="center" />
+          <div style={imgContainerStyle}>{
+            this.state.output === 'img' ?
+            <img src={this.state.picture} alt="pic" style={imgStyle} id="image" /> :
+            // <Camera errorHandler={this.cameraErrorHandler} style={imgStyle} />
+            <Webcam 
+              audio={false}
+              videoConstraints={videoConstraints}
+              onUserMediaError={this.cameraErrorHandlerndler}
+              style={imgStyle}
+              screenshotFormat="image/jpeg"
+              id="camera"
+              ref='webcam'
+            />
+          }</div>
+          <button style={captureButtonStyle} onClick={this.capture}></button>
           <footer>
               <div className="bar"></div>
           </footer>

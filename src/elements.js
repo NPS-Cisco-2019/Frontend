@@ -1,27 +1,34 @@
 import React from 'react';
+import './App.css';
 
 let maxLength = (10/100) * (50/100) * window.innerHeight;
 
 const navObj = {
-  'alignItems': 'center',
-  'justifyItems': 'center',
-  'padding': '10%',
-  'height': maxLength,
-  'borderRadius': '50%',
-  'width': maxLength,
-  cursor: 'pointer'
+  alignItems: 'center',
+  justifyItems: 'center',
+  padding: '10%',
+  height: maxLength,
+  borderRadius: '50%',
+  width: maxLength,
+  cursor: 'pointer',
+  objectFit: 'cover'
 }
 
 export class Flash extends React.Component {
     constructor(props){
         super(props);
-        this.state = {selected: false};
+        this.state = {selected: true};
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(){
         let selected = this.state.selected;
         this.setState({ selected: !selected });
+        if (!selected){
+            this.props.flipOutMode('vid');
+        } else {
+            this.props.flipOutMode('img');
+        }
     }
 
     render(){
@@ -34,8 +41,14 @@ export class Flash extends React.Component {
 };
 
 export class Settings extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
     handleClick(){
-        alert('This path hasnt been programmed yet');
+        this.props.showDefault();
+        // alert('This path hasnt been programmed yet');
     }
 
     render(){
@@ -83,19 +96,19 @@ export function Chrome() {
             <div className="img1">
                 <img className="tutImg" src={require("./pictures/chrome1.jpg")} alt="tutorial 1" />
             </div>
-			<div className="p1">
+            <div className="p1">
                 <p>Click on the the circled button</p>
             </div>
-			<div className="img2">
+            <div className="img2">
                 <img className="tutImg" src={require("./pictures/chrome2.jpg")} alt="tutorial 2" />
             </div>
-			<div className="p2">
+            <div className="p2">
                 <p>Click on "Add to Home screen".</p>
             </div>
             <div className="img3">
                 <img className="tutImg" src={require("./pictures/chrome3.jpg")} alt="tutorial 3" />
             </div>
-			<div className="p3">
+            <div className="p3">
                 <p>Click on "Add" to install to your home screen.</p>
             </div>
         </div>
@@ -111,13 +124,13 @@ export function Firefox() {
             <div className="img1">
                 <img className="tutImg" src={require("./pictures/firefox1.jpg")} alt="tutorial 1" />
             </div>
-			<div className="p1">
+            <div className="p1">
                 <p>Click on the the circled button</p>
             </div>
-			<div className="img2">
+            <div className="img2">
                 <img className="tutImg" src={require("./pictures/firefox2.jpg")} alt="tutorial 2" />
             </div>
-			<div className="p2">
+            <div className="p2">
                 <p>Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
             </div>
         </div>
@@ -141,7 +154,35 @@ export function getBrowser(){
         return 'firefox';
     } else if (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'])) {
         return 'safari';
-    } else {
+    } else if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) {
         return 'chrome';
+    } else {
+        console.log('unknown');
+    }
+}
+
+export class ErrorBoundary extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { hasError: false };
+    }
+  
+    static getDerivedStateFromError(error) {
+      // Update state so the next render will show the fallback UI.
+      return { hasError: true };
+    }
+  
+    componentDidCatch(error, errorInfo) {
+      // You can also log the error to an error reporting service
+      console.log(error, errorInfo);
+    }
+  
+    render() {
+      if (this.state.hasError) {
+        // You can render any custom fallback UI
+        return <h1>Something went wrong.</h1>;
+      }
+  
+      return this.props.children; 
     }
 }
