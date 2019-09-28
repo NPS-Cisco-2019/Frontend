@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Frontend/static/css/main.4965ef33.chunk.css",
-    "main.js": "/Frontend/static/js/main.a33fe926.chunk.js",
-    "main.js.map": "/Frontend/static/js/main.a33fe926.chunk.js.map",
+    "main.css": "/Frontend/static/css/main.888e6f10.chunk.css",
+    "main.js": "/Frontend/static/js/main.e3a791ad.chunk.js",
+    "main.js.map": "/Frontend/static/js/main.e3a791ad.chunk.js.map",
     "runtime-main.js": "/Frontend/static/js/runtime-main.23e4cb3b.js",
     "runtime-main.js.map": "/Frontend/static/js/runtime-main.23e4cb3b.js.map",
-    "static/js/2.98776d5c.chunk.js": "/Frontend/static/js/2.98776d5c.chunk.js",
-    "static/js/2.98776d5c.chunk.js.map": "/Frontend/static/js/2.98776d5c.chunk.js.map",
+    "static/js/2.b574e032.chunk.js": "/Frontend/static/js/2.b574e032.chunk.js",
+    "static/js/2.b574e032.chunk.js.map": "/Frontend/static/js/2.b574e032.chunk.js.map",
     "index.html": "/Frontend/index.html",
-    "precache-manifest.79506e83c7cfbcdd5ca4517bb6915859.js": "/Frontend/precache-manifest.79506e83c7cfbcdd5ca4517bb6915859.js",
+    "precache-manifest.6d729faba3c7652cb1fe817819a64586.js": "/Frontend/precache-manifest.6d729faba3c7652cb1fe817819a64586.js",
     "service-worker.js": "/Frontend/service-worker.js",
-    "static/css/main.4965ef33.chunk.css.map": "/Frontend/static/css/main.4965ef33.chunk.css.map",
+    "static/css/main.888e6f10.chunk.css.map": "/Frontend/static/css/main.888e6f10.chunk.css.map",
     "static/media/chrome.png": "/Frontend/static/media/chrome.6a341ef5.png",
     "static/media/chrome1.jpg": "/Frontend/static/media/chrome1.5aefd453.jpg",
     "static/media/chrome2.jpg": "/Frontend/static/media/chrome2.37e41271.jpg",
@@ -20,6 +20,9 @@
     "static/media/firefox2.jpg": "/Frontend/static/media/firefox2.649f926e.jpg",
     "static/media/question.jpg": "/Frontend/static/media/question.2baaafd9.jpg",
     "static/media/safari.png": "/Frontend/static/media/safari.a64f5d7f.png",
+    "static/media/safari1.jpg": "/Frontend/static/media/safari1.2a3eaaa6.jpg",
+    "static/media/safari2.jpg": "/Frontend/static/media/safari2.2d039f67.jpg",
+    "static/media/safari3.jpg": "/Frontend/static/media/safari3.88a2743b.jpg",
     "static/media/settings.png": "/Frontend/static/media/settings.371bf301.png"
   }
 }
