@@ -85,9 +85,9 @@ footer {
 
 /* Desktop Stying */
 
-/* .deskApp {
-  margin: 20px;
-} */
+.deskApp {
+  font-family: 'Raleway', sans-serif;
+}
 
 h1 {
   font-size: 300%;
@@ -100,7 +100,6 @@ h1 {
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
   width: 100%;
-  height: 100px;
   background-color: rgb(50, 50, 50);
   text-align: center;
   color: white;
@@ -111,7 +110,6 @@ h1 {
 
 .body {
   position: relative;
-  top: 100px;
   font-family: 'Raleway', sans-serif;
   font-weight: 200;
   background-color: rgb(25, 25, 25);
@@ -158,13 +156,16 @@ h3 {
 }
 
 .tut {
+  position: relative;
 	display: grid;
 	grid-template-areas: "img1 text1" "img2 text2" "img3 text3";
   grid-template-columns: 1fr 1fr;
   margin: 30px;
+  margin-top: 0px;
   padding: 1%;
   row-gap: 5%;
-  animation: fadein 1s;
+  z-index: 0;
+  animation: dropin 1500ms cubic-bezier(0.075, 0.82, 0.165, 1), fade 1500ms;
 }
 
 .tutFirefox {
@@ -177,17 +178,20 @@ h3 {
 
 .img1 {
   grid-area: img1;
-  display: block;
+  display: flex;
+  justify-content: center;
 }
 
 .img2 {
   grid-area: img2;
-  justify-self: center;
+  display: flex;
+  justify-content: center;
 }
 
 .img3 {
   grid-area: img3;
-  justify-self: center;
+  display: flex;
+  justify-content: center;
 }
 
 .p1 {
@@ -215,8 +219,10 @@ h3 {
   object-fit: cover;
   height: 100%;
   max-width: 100%;
-  margin-left: 20%;
-  margin-right: auto;
+}
+
+.description {
+  z-index: 20;
 }
 
 button {
@@ -225,7 +231,22 @@ button {
   cursor: pointer;
 }
 
-@keyframes fadein {
-  from { opacity: 0;}
-  to { opacity: 1; }
+@keyframes dropin {
+  0% {
+    bottom: 4000px;
+  }
+
+  100% {
+    bottom: 0px;
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
