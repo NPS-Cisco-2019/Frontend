@@ -1,14 +1,8 @@
 import React from 'react';
 import Webcam from 'react-webcam';
-import {Flash, Settings, Gallery} from './elements';
+import {Flash, Settings, Gallery, Back} from './elements';
 
-function orientButton(){
-  captureButtonStyle.left = 5*window.innerWidth/12;
-  captureButtonStyle.width = window.innerWidth / 6;
-  captureButtonStyle = window.innerWidth / 6;
-
-  console.log(captureButtonStyle);
-}
+const maxLength = (10/100) * (69/100) * window.innerHeight;
 
 const imgStyle = {
   height: window.innerHeight,
@@ -17,24 +11,20 @@ const imgStyle = {
 };
 
 const imgContainerStyle = {
-  height: Math.round(9 * window.innerHeight / 10),
   backgroundColor: 'rgb(25,25,25)',
   display: 'flex',
-  position: 'relative',
-  top: Math.round(window.innerHeight/10)
+  position: 'relative'
 };
 
-let captureButtonStyle = {
+const captureButtonStyle = {
   position: 'fixed',
   bottom: window.innerHeight / 10,
   borderRadius: '50%',
-  width: window.innerWidth / 6,
-  height: window.innerWidth / 6,
+  width: maxLength,
+  height: maxLength,
   zIndex: 42,
   backgroundColor: 'rgb(224, 0, 0)',
-  border: '0.2em solid white',
-  // jusifySelf: 'center'
-  left: 5*window.innerWidth/12
+  border: '0.15em solid white'
 };
 
 const videoConstraints = {
@@ -48,11 +38,12 @@ export default class MobileApp extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      output: 'vid',
+      output: 'img',
       picture: require("./pictures/question.jpg"),
       selectedFile: null
     }
     this.capture = this.capture.bind(this);
+    this.backClick = this.backClick.bind(this);
     this.showDefault = this.showDefault.bind(this);
     this.flipOutMode = this.flipOutMode.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
@@ -65,7 +56,8 @@ export default class MobileApp extends React.Component {
   }
 
   showDefault(){
-    this.setState({output: 'img', picture: require('./pictures/default.jpg')});
+    let img = require('./pictures/default.jpg');
+    this.setState({output: 'img', picture: img});
   }
 
   flipOutMode(mode){
@@ -87,11 +79,15 @@ export default class MobileApp extends React.Component {
   }
 
   componentDidMount(){
-    window.addEventListener('orientationchange', orientButton);
+    window.addEventListener('orientationchange', () => {this.forceUpdate();});
   }
 
   componentWillUnmount(){
-    window.removeEventListener('orientationchange', orientButton)
+    window.removeEventListener('orientationchange', () => {this.forceUpdate();})
+  }
+
+  backClick(){
+    this.setState(() => {return { output: 'vid' }});
   }
 
   render(){
@@ -99,11 +95,13 @@ export default class MobileApp extends React.Component {
     return (
       <div className="App">
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
-          <Flash flipOutMode={this.flipOutMode} on={this.state.output === 'vid'} />
+          {this.state.output === 'vid' ?
+          <Flash flipOutMode={this.flipOutMode} on={this.state.output === 'vid'} />:
+          <Back handleClick={this.backClick} />}
           <Settings showDefault={this.showDefault} />
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
-        <div style={imgContainerStyle}>{
+        <div style={{...imgContainerStyle, height: Math.round(9 * window.innerHeight / 10), top: Math.round(window.innerHeight/10)}}>{
           this.state.output === 'img' ?
           <img src={this.state.picture} alt="pic" style={imgStyle} id="image" /> :
           <Webcam 
@@ -116,7 +114,7 @@ export default class MobileApp extends React.Component {
           ref='webcam'
           />
         }</div>
-        <button style={{...captureButtonStyle, display: display}} onClick={this.capture}></button>
+        <button style={{...captureButtonStyle, display: display, left: ((window.innerWidth - maxLength) / 2)}} onClick={this.capture}></button>
         <footer>
             <div className="bar"></div>
         </footer>

@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
 
-let maxLength = (10/100) * (80/100) * window.innerHeight;
+let maxLength = (10/100) * (69/100) * window.innerHeight;
 
 const navObj = {
     boxSizing: 'border-box',
-    alignItems: 'center',
-    justifyItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'center',
     padding: maxLength/5,
     height: maxLength,
     borderRadius: '50%',
@@ -87,6 +87,15 @@ export class Gallery extends React.Component {
     }
 };
 
+export function Back(props){
+    return (
+        <div style={{...navObj, textAlign: 'center'}} onClick={props.handleClick}>
+            <img src={require("./pictures/back.png")} alt="back" className="nav-img" />
+        </div>
+    )
+};
+
+
 
 export function Chrome() {
     let style = {
@@ -165,6 +174,7 @@ export function Safari() {
         </div>
     );
 }
+
 
 
 export function getBrowser(){
