@@ -23,8 +23,8 @@ export class Flash extends React.Component {
     }
 
     handleClick(){
-        let selected = this.state.selected;
-        this.setState({ selected: !selected });
+        let selected = this.props.on;
+        this.setState({ selected: !this.props.on });
         if (!selected){
             this.props.flipOutMode('vid');
         } else {

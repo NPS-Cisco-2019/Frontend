@@ -86,10 +86,11 @@ export default class CompApp extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.calcBrowserPos);
+    window.addEventListener('resize', this.changeHeadHeight);
   }
 
   render(){
-    let opacity = Math.max(Math.min(100 / this.state.currentScrollHeight  , 1), 0.7);
+    let opacity = Math.max(Math.min(50 / this.state.currentScrollHeight  , 1), 0.7);
     return(
       <div className="App deskApp">
         <header className="deskHead" style={{opacity: opacity}} id="head">

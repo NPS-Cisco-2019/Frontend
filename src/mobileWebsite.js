@@ -2,6 +2,14 @@ import React from 'react';
 import Webcam from 'react-webcam';
 import {Flash, Settings, Gallery} from './elements';
 
+function orientButton(){
+  captureButtonStyle.left = 5*window.innerWidth/12;
+  captureButtonStyle.width = window.innerWidth / 6;
+  captureButtonStyle = window.innerWidth / 6;
+
+  console.log(captureButtonStyle);
+}
+
 const imgStyle = {
   height: window.innerHeight,
   zIndex: '0',
@@ -16,15 +24,17 @@ const imgContainerStyle = {
   top: Math.round(window.innerHeight/10)
 };
 
-const captureButtonStyle = {
+let captureButtonStyle = {
   position: 'fixed',
-  top: 17 * window.innerHeight / 20,
+  bottom: window.innerHeight / 10,
   borderRadius: '50%',
   width: window.innerWidth / 6,
   height: window.innerWidth / 6,
   zIndex: 42,
-  backgroundColor: 'rgb(35, 35, 35)',
-  left: 5 * window.innerWidth / 12
+  backgroundColor: 'rgb(224, 0, 0)',
+  border: '0.2em solid white',
+  // jusifySelf: 'center'
+  left: 5*window.innerWidth/12
 };
 
 const videoConstraints = {
@@ -75,13 +85,21 @@ export default class MobileApp extends React.Component {
     // console.log(imageURL);
     this.setState({picture: imageSrc, output: 'img'});
   }
-  
+
+  componentDidMount(){
+    window.addEventListener('orientationchange', orientButton);
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('orientationchange', orientButton)
+  }
 
   render(){
+    const display = this.state.output === 'vid' ? 'inherit' : 'none';
     return (
       <div className="App">
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
-          <Flash flipOutMode={this.flipOutMode} />
+          <Flash flipOutMode={this.flipOutMode} on={this.state.output === 'vid'} />
           <Settings showDefault={this.showDefault} />
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
@@ -98,7 +116,7 @@ export default class MobileApp extends React.Component {
           ref='webcam'
           />
         }</div>
-        <button style={captureButtonStyle} onClick={this.capture}></button>
+        <button style={{...captureButtonStyle, display: display}} onClick={this.capture}></button>
         <footer>
             <div className="bar"></div>
         </footer>
