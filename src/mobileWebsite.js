@@ -65,7 +65,7 @@ export default class MobileApp extends React.Component {
   }
 
   showDefault(){
-    this.setState({output: 'img', picture: require('./pictures/question.jpg')});
+    this.setState({output: 'img', picture: require('./pictures/default.jpg')});
   }
 
   flipOutMode(mode){
