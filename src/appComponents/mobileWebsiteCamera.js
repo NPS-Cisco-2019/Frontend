@@ -2,6 +2,7 @@ import React from 'react';
 import Webcam from 'react-webcam';
 import {Flash, Settings, Gallery, Back} from './elements';
 import './mobileApp.css'
+import { OCR } from '../backendHandling';
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 
@@ -19,13 +20,16 @@ const imgContainerStyle = {
 
 const captureButtonStyle = {
   position: 'fixed',
-  bottom: window.innerHeight / 10,
+  bottom: 3 * window.innerHeight / 20,
   borderRadius: '50%',
   width: maxLength,
   height: maxLength,
   zIndex: 42,
   backgroundColor: 'rgb(224, 0, 0)',
-  border: '0.15em solid white'
+  border: '0.15em solid white',
+  // display: 'flex',
+  // justifyItems: 'center',
+  // alignItems: 'center'
 };
 
 const videoConstraints = {
@@ -95,7 +99,7 @@ export default class MobileAppPicture extends React.Component {
   }
 
   render(){
-    const display = this.state.output === 'vid' ? 'inherit' : 'none';
+    const func = this.state.output === 'vid' ? this.capture : OCR;
     const question = this.state.output === 'img' ? true : false;
     const footerBottom = -(question ? 3 : window.innerHeight / 25);
     return (
@@ -121,7 +125,9 @@ export default class MobileAppPicture extends React.Component {
             ref='webcam'
             />
           }</div>
-          <button style={{...captureButtonStyle, display: display, left: ((window.innerWidth - maxLength) / 2)}} onClick={this.capture}></button>
+          <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2)}} onClick={func}>
+            {this.state.output === 'img' ? <img className="searchImg" src={require('./pictures/search.png')} alt="search icon" /> : null}
+          </button>
           <footer style={{minHeight: Math.round(window.innerHeight/10), bottom: footerBottom, boxSizing: 'border-box' }}>
               <div className="bar"></div>
               {/*this.state.gotQuestion*/ question ?
