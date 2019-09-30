@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 
 let maxLength = (10/100) * (69/100) * window.innerHeight;
 
@@ -102,7 +101,7 @@ export function Chrome() {
         height: window.innerHeight * 3
     }
     return (
-        <div style={style} className="tut tutOthers">
+        <div style={{...style, borderTop: '2px solid rgb(18, 218, 0)'}} className="tut tutOthers" id="chromeTut">
             <div className="img1">
                 <img className="tutImg" src={require("./pictures/chrome1.jpg")} alt="tutorial 1" />
             </div>
@@ -130,7 +129,7 @@ export function Firefox() {
         height: window.innerHeight * 2
     }
     return (
-        <div style={style} className="tut tutFirefox">
+        <div style={{...style, borderTop: '2px solid rgb(200, 0 ,0)'}} className="tut tutFirefox" id="firefoxTut">
             <div className="img1">
                 <img className="tutImg" src={require("./pictures/firefox1.jpg")} alt="tutorial 1" />
             </div>
@@ -152,7 +151,7 @@ export function Safari() {
         height: window.innerHeight * 3
     }
     return (
-        <div style={style} className="tut tutOthers">
+        <div style={{...style, borderTop: '2px solid rgb(0, 0, 255)'}} className="tut tutOthers" id="safariTut">
             <div className="img1">
                 <img className="tutImg" src={require("./pictures/safari1.jpg")} alt="tutorial 1" />
             </div>

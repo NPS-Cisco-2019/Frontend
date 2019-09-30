@@ -1,6 +1,7 @@
 import React from 'react';
 import Webcam from 'react-webcam';
 import {Flash, Settings, Gallery, Back} from './elements';
+import './mobileApp.css'
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 
@@ -34,16 +35,19 @@ const videoConstraints = {
   width: window.innerHeight
 };
 
-export default class MobileApp extends React.Component {
+export default class MobileAppPicture extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       output: 'img',
       picture: require("./pictures/question.jpg"),
-      selectedFile: null
+      selectedFile: null,
+      gotQuestion: false,
+      question: 'QUESTION IS HERE: kuyfgquy ahf bq  UBQJB  QIUHJU igwfuief efuwqfw'
     }
     this.capture = this.capture.bind(this);
     this.backClick = this.backClick.bind(this);
+    this.showAnswer = this.showAnswer.bind(this);
     this.showDefault = this.showDefault.bind(this);
     this.flipOutMode = this.flipOutMode.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
@@ -70,11 +74,7 @@ export default class MobileApp extends React.Component {
   }
 
   capture(){
-    // const webcam = document.getElementById('camera');
-    // console.log(webcam);
     const imageSrc = this.refs.webcam.getScreenshot();
-    // const imageURL = URL.createObjectURL(imageSrc);
-    // console.log(imageURL);
     this.setState({picture: imageSrc, output: 'img'});
   }
 
@@ -87,11 +87,17 @@ export default class MobileApp extends React.Component {
   }
 
   backClick(){
-    this.setState(() => {return { output: 'vid' }});
+    this.setState(() => ({ output: 'vid' }));
+  }
+
+  showAnswer(){
+    this.props.changeState(this.question, 'TODO, add answer calling', 'some website');
   }
 
   render(){
     const display = this.state.output === 'vid' ? 'inherit' : 'none';
+    const question = this.state.output === 'img' ? true : false;
+    const footerBottom = -(question ? 3 : window.innerHeight / 25);
     return (
       <div className="App">
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
@@ -101,23 +107,30 @@ export default class MobileApp extends React.Component {
           <Settings showDefault={this.showDefault} />
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
-        <div style={{...imgContainerStyle, height: Math.round(9 * window.innerHeight / 10), top: Math.round(window.innerHeight/10)}}>{
-          this.state.output === 'img' ?
-          <img src={this.state.picture} alt="pic" style={imgStyle} id="image" /> :
-          <Webcam 
-          audio={false}
-          videoConstraints={videoConstraints}
-          onUserMediaError={this.cameraErrorHandlerndler}
-          style={imgStyle}
-          screenshotFormat="image/jpeg"
-          id="camera"
-          ref='webcam'
-          />
-        }</div>
-        <button style={{...captureButtonStyle, display: display, left: ((window.innerWidth - maxLength) / 2)}} onClick={this.capture}></button>
-        <footer>
-            <div className="bar"></div>
-        </footer>
+        <div>
+          <div style={{...imgContainerStyle, height: Math.round(9 * window.innerHeight / 10), top: Math.round(window.innerHeight/10)}}>{
+            this.state.output === 'img' ?
+            <img src={this.state.picture} alt="pic" style={imgStyle} id="image" /> :
+            <Webcam 
+            audio={false}
+            videoConstraints={videoConstraints}
+            onUserMediaError={this.cameraErrorHandlerndler}
+            style={imgStyle}
+            screenshotFormat="image/jpeg"
+            id="camera"
+            ref='webcam'
+            />
+          }</div>
+          <button style={{...captureButtonStyle, display: display, left: ((window.innerWidth - maxLength) / 2)}} onClick={this.capture}></button>
+          <footer style={{minHeight: Math.round(window.innerHeight/10), bottom: footerBottom, boxSizing: 'border-box' }}>
+              <div className="bar"></div>
+              {/*this.state.gotQuestion*/ question ?
+                (<div className="question" style={{borderRadius: window.innerWidth/50}} onClick={this.showAnswer}>
+                  <p>{this.state.question}</p>
+                </div>) : null
+              }
+          </footer>
+        </div>
       </div>
     )
   }

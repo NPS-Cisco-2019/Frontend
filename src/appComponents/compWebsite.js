@@ -1,10 +1,12 @@
 import React from 'react';
 import {Firefox, Chrome, Safari, getBrowser} from './elements';
+import './desktopApp.css';
 
 const highlightStyle = {
   position: 'absolute',
-  borderBottom: '2px solid rgb(18, 218, 0)',
-  transition: 'all 1s cubic-bezier(0.075, 0.82, 0.165, 1)'
+  borderBottomStyle: 'solid',
+  borderBottomWidth: 2,
+  transition:  'all 1500ms cubic-bezier(0.075, 0.82, 0.165, 1), border-bottom-color 1500ms cubic-bezier(0.645, 0.045, 0.355, 1), width 1500ms linear'
 }
   
 export default class CompApp extends React.Component {
@@ -14,9 +16,9 @@ export default class CompApp extends React.Component {
     this.state = {
       tutorial: this.getJsx(browser),
       browser: browser,
-      chrome: {top:0, height:0, left:0, width:0},
-      firefox: {top:0, height:0, left:0, width:0},
-      safari: {top:0, height:0, left:0, width:0},
+      firefox: { top:0, height:0, left:0, width:0, borderBottomColor: 'rgb(200, 0, 0)' },
+      chrome: { top:0, height:0, left:0, width:0, borderBottomColor: 'rgb(18, 218, 0)' },
+      safari: { top:0, height:0, left:0, width:0, borderBottomColor: 'rgb(0, 0, 255)' },
       headHeight: 0,
       currentScrollHeight: 0
     }
@@ -26,7 +28,6 @@ export default class CompApp extends React.Component {
     this.calcBrowserPos = this.calcBrowserPos.bind(this);
     this.changeHeadHeight = this.changeHeadHeight.bind(this);
   }
-
 
   getJsx(browser){
     if (browser === 'firefox'){
@@ -47,7 +48,8 @@ export default class CompApp extends React.Component {
           top: Math.round(obj.top - this.state.headHeight),
           height: Math.round(obj.height),
           left: obj.left,
-          width: Math.round(obj.width)
+          width: Math.round(obj.width),
+          borderBottomColor: this.state[browser].borderBottomColor
         }
   }
 
@@ -58,9 +60,10 @@ export default class CompApp extends React.Component {
 
   handleClick(e){
     const browser = e.currentTarget.className;
-
+    
     //Change tutorial
     let jsx = this.getJsx(browser);
+    
     if (jsx){
       this.setState({ tutorial: jsx, browser: browser });
     }

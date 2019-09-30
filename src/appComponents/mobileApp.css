@@ -1,0 +1,119 @@
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: local('Raleway Thin'), local('Raleway-Thin'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptsg8zYS_SKggPNwE44TYFq.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: local('Raleway ExtraLight'), local('Raleway-ExtraLight'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwOIpWqZPAA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Raleway'), local('Raleway-Regular'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptug8zYS_SKggPNyC0ITw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.App {
+  background-color: rgb(30, 30, 30);
+}
+
+.nav {
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  background-color: rgb(50, 50, 50);
+  z-index: 69;
+  width: 100%;
+}
+
+.nav-img {
+  max-height: 100%;
+  max-width: 100%;
+  z-index: 420;
+}
+
+.selected {
+  background-color: rgb(48, 48, 255);
+}
+
+footer {
+  position: fixed;
+  background-color: rgb(50, 50, 50);
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  width: 97%;
+  display: flex;
+  margin: 0 1%;
+  z-index: 69;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.bar {
+  position: absolute;
+  background-color: white;
+  width: 30%;
+  height: 3%;
+  right: 35%;
+  border-radius: 15%;
+  top: 10%;
+  z-index: 100;
+}
+
+.question {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin-top: 10%;
+  margin-bottom: 20px;
+  padding: 2%;
+  background-color: rgb(75, 75, 75)
+}
+
+.top {
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+p {
+  max-width: 90%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: Raleway;
+}
