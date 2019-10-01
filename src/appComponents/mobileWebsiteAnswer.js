@@ -2,8 +2,6 @@ import React from 'react';
 import { Back } from './elements';
 import './mobileApp.css';
 
-console.log(9 * window.innerWidth/10);
-
 const container = {
     position: 'relative',
     margin: 0,
@@ -12,7 +10,10 @@ const container = {
     // display: 'flex',
     padding: '5%',
     justifyItems: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    paddingTop: 0,
+    paddingBottom: 7 * window.innerHeight / 100
 }
 
 const questionStyle = {
@@ -23,21 +24,52 @@ const questionStyle = {
     margin: '3% 0'
 }
 
-export default function(props){
-    return (
-        <div>
-            <header className="top" style={{height: Math.round(window.innerHeight/11)}}>
-                <Back handleClick={props.backClick} />
-                <p style={{fontSize: '1.2em'}}>{props.website}</p>
-            </header>
-            <div style={container}>
-                <div className="question" style={questionStyle}>
-                    <p>{props.question}</p>
+const botNavStyle = {
+    width: window.innerWidth/3,
+}
+
+export default class MobileAppAnswer extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            num: 0,
+            lastNum: (this.props.answers).length
+        }
+        this.backClick = this.backClick.bind(this);
+        this.nextClick = this.nextClick.bind(this);
+    }
+
+    backClick(){
+        this.setState({num: this.state.num - 1});
+    }
+
+    nextClick(){
+        this.setState({num: this.state.num + 1});
+    }
+
+    render(){
+        const back = this.state.num > 0;
+        const next = this.state.num < this.state.lastNum - 1;
+        return (
+            <div style={{minHeight: window.innerHeight}}>
+                <header className="top" style={{height: Math.round(window.innerHeight/11)}}>
+                    <Back handleClick={this.props.backClick} />
+                    <p style={{fontSize: '1.2em'}}>{this.props.website[this.state.num]}</p>
+                </header>
+                <div style={container}>
+                    <div className="question" style={questionStyle}>
+                        <p>{this.props.question}</p>
+                    </div>
+                    <div className="question" style={questionStyle}>
+                        <p>{this.props.answers[this.state.num]}</p>
+                    </div>
                 </div>
-                <div className="question" style={questionStyle}>
-                    <p>{props.answers}</p>
+                <div className="bot">
+                    <p className="botItem" style={{...botNavStyle, opacity: back ? 1 : 0.5}} onClick={back ? this.backClick : null}>{'< Back'}</p>
+                    <p className="botItem" style={botNavStyle}>Answer {this.state.num + 1}</p>
+                    <p className="botItem" style={{...botNavStyle, opacity: next ? 1 : 0.5}} onClick={next ? this.nextClick : null}>{'Next >'}</p>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }

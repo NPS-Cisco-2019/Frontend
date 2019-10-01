@@ -92,7 +92,7 @@ footer {
   margin-top: 10%;
   margin-bottom: 20px;
   padding: 2%;
-  background-color: rgb(75, 75, 75)
+  background-color: rgb(75, 75, 75);
 }
 
 .top {
@@ -102,6 +102,9 @@ footer {
   width: 100%;
   align-items: center;
   justify-items: center;
+  background-color: rgb(25, 25, 25);
+  z-index: 69;
+  top: 0;
 }
 
 .searchImg {
@@ -110,6 +113,24 @@ footer {
   max-width: 60%;
   max-height: 60%;
   margin: auto;
+}
+
+.bot {
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  bottom: 0px;
+  height: 7%; 
+  background-color: rgb(25, 25, 25);
+}
+
+.botItem {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  font-size: 1.25rem;
 }
 
 button {

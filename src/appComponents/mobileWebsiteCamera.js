@@ -2,7 +2,7 @@ import React from 'react';
 import Webcam from 'react-webcam';
 import {Flash, Settings, Gallery, Back} from './elements';
 import './mobileApp.css'
-import { OCR } from '../backendHandling';
+import { OCR, scrape } from '../backendHandling';
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 
@@ -43,12 +43,12 @@ export default class MobileAppPicture extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      output: 'img',
+      output: 'vid',
       picture: require("./pictures/question.jpg"),
       selectedFile: null,
-      gotQuestion: false,
-      question: 'QUESTION IS HERE: kuyfgquy ahf bq  UBQJB  QIUHJU igwfuief efuwqfw'
+      gotQuestion: false
     }
+    this.OCR = this.OCR.bind(this);
     this.capture = this.capture.bind(this);
     this.backClick = this.backClick.bind(this);
     this.showAnswer = this.showAnswer.bind(this);
@@ -91,17 +91,25 @@ export default class MobileAppPicture extends React.Component {
   }
 
   backClick(){
-    this.setState(() => ({ output: 'vid' }));
+    this.setState(() => ({ output: 'vid', gotQuestion: false }));
   }
 
   showAnswer(){
-    this.props.changeState(this.question, 'TODO, add answer calling', 'some website');
+    this.props.changeState(this.state.question, this.state.answers, this.state.websites);
   }
 
+  async OCR(){
+    let question = await OCR(this.state.picture);
+    this.setState({ question: question, gotQuestion: true })
+    let obj = await scrape(question);
+    this.setState({ answers: obj.answers, websites: obj.websites})
+  }
+
+
+
   render(){
-    const func = this.state.output === 'vid' ? this.capture : OCR;
-    const question = this.state.output === 'img' ? true : false;
-    const footerBottom = -(question ? 3 : window.innerHeight / 25);
+    const func = this.state.output === 'vid' ? this.capture : this.OCR;
+    const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
     return (
       <div className="App">
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
@@ -130,7 +138,7 @@ export default class MobileAppPicture extends React.Component {
           </button>
           <footer style={{minHeight: Math.round(window.innerHeight/10), bottom: footerBottom, boxSizing: 'border-box' }}>
               <div className="bar"></div>
-              {/*this.state.gotQuestion*/ question ?
+              {this.state.gotQuestion ?
                 (<div className="question" style={{borderRadius: window.innerWidth/50}} onClick={this.showAnswer}>
                   <p>{this.state.question}</p>
                 </div>) : null

@@ -1,0 +1,13 @@
+export default {
+    question: "What is the meaning of life?",
+    
+    answers: [
+        'The meaning of life, or the answer to the question: "What is the meaning of life?", pertains to the significance of living or existence in general. Many other related questions include: "Why are we here?", "What is life all about?", or "What is the purpose of existence?" There have been a large number of proposed answers to these questions from many different cultural and ideological backgrounds. The search for life\'s meaning has produced much philosophical, scientific, theological, and metaphysical speculation throughout history. Different people and cultures believe different things for the answer to this question. The meaning of life as we perceive it is derived from philosophical and religious contemplation of, and scientific inquiries about existence, social ties, consciousness, and happiness. Many other issues are also involved, such as symbolic meaning, ontology, value, purpose, ethics, good and evil, free will, the existence of one or multiple gods, conceptions of God, the soul, and the afterlife. Scientific contributions focus primarily on describing related empirical facts about the universe, exploring the context and parameters concerning the "how" of life. Science also studies and can provide recommendations for the pursuit of well-being and a related conception of morality. An alternative, humanistic approach poses the question, "What is the meaning of my life?"',
+        'Two reasons are often cited for this. The first has to do with religion. Once upon a time, so the story goes, life had a clear meaning given to us by God: it was about worshiping Him and living according to His dictates. But as religious belief has declined, not only has god supposedly died, but along with him, the meaning he once guaranteed.\nModern science is the second cause of the current crisis of meaning. Scientists tell us that existence, which emerged from a random interplay of chemicals and gases, does have meaning, but it’s of a rather bleak, relentless and narrow sort: for humans – as for all other living things (like amoeba) – the meaning of life is survival and the propagation of one’s genetic material. It sounds very true and at the same time, distinctly futile and melancholy.\nHere we want to argue as follows: to wonder about the meaning of life is an extremely important activity, life does have substantial meaning – and there are, in fact, a range of practical steps we can take to ensure we end up leading lives of maximal meaningfulness.'
+    ],
+
+    websites: [
+        'wikipedia',
+        'theschooloflife'
+    ]
+}

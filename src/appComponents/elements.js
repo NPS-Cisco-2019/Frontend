@@ -33,9 +33,9 @@ export class Flash extends React.Component {
 
     render(){
         return (
-        <div className={this.state.selected ? 'selected' : '' } style={navObj} onClick={this.handleClick}>
-            <img src={require("./pictures/flash.png")} alt="flash" className="nav-img" />
-        </div>
+            <div className={this.state.selected ? 'selected' : '' } style={navObj} onClick={this.handleClick}>
+                <img src={require("./pictures/flash.png")} alt="flash" className="nav-img" />
+            </div>
         );
     }
 };
