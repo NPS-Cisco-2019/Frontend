@@ -61,13 +61,13 @@ export default class MobileAppAnswer extends React.Component{
                         <p>{this.props.question}</p>
                     </div>
                     <div className="question" style={questionStyle}>
-                        <p>{this.props.answers[this.state.num]}</p>
+                        <p className="notCenter">{this.props.answers[this.state.num]}</p>
                     </div>
                 </div>
                 <div className="bot">
-                    <p className="botItem" style={{...botNavStyle, opacity: back ? 1 : 0.5}} onClick={back ? this.backClick : null}>{'< Back'}</p>
+                    <p className="botItem button" style={{...botNavStyle, opacity: back ? 1 : 0.5}} onClick={back ? this.backClick : null}>{'< Back'}</p>
                     <p className="botItem" style={botNavStyle}>Answer {this.state.num + 1}</p>
-                    <p className="botItem" style={{...botNavStyle, opacity: next ? 1 : 0.5}} onClick={next ? this.nextClick : null}>{'Next >'}</p>
+                    <p className="botItem button" style={{...botNavStyle, opacity: next ? 1 : 0.5}} onClick={next ? this.nextClick : null}>{'Next >'}</p>
                 </div>
             </div>
         )

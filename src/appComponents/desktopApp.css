@@ -43,7 +43,8 @@
 
 .deskApp h1 {
   font-size: 300%;
-  align-self: center; 
+  align-self: center;
+  font-weight: 200;
 }
 
 .deskHead {
@@ -75,10 +76,6 @@
   justify-items: center;
   align-items: center;
   height: 70px;
-}
-
-h3 {
-  margin: 5px;
 }
 
 .img {
@@ -147,25 +144,26 @@ h3 {
   justify-content: center;
 }
 
-.p1 {
-  grid-area: text1;
+.p1, .p2, .p3 {
   font-size: 300%;
   text-align: center;
   align-self: center;
+}
+
+#font100 {
+  font-weight: 100;
+}
+
+.p1 {
+  grid-area: text1;
 }
 
 .p2 {
   grid-area: text2;
-  font-size: 300%;
-  text-align: center;
-  align-self: center;
 }
 
 .p3 {
   grid-area: text3;
-  font-size: 300%;
-  text-align: center;
-  align-self: center;
 }
 
 .tutImg {
@@ -176,6 +174,11 @@ h3 {
 
 .description {
   z-index: 20;
+}
+
+h2, p {
+  font-weight: 300;
+  margin-bottom: 10px;
 }
 
 button {

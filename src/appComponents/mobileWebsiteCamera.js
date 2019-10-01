@@ -114,7 +114,7 @@ export default class MobileAppPicture extends React.Component {
       <div className="App">
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
           {this.state.output === 'vid' ?
-          <Flash flipOutMode={this.flipOutMode} on={this.state.output === 'vid'} />:
+          <Flash />:
           <Back handleClick={this.backClick} />}
           <Settings showDefault={this.showDefault} />
           <Gallery selectFileHandle={this.selectFileHandle} />

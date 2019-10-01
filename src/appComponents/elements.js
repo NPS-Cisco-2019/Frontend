@@ -22,18 +22,12 @@ export class Flash extends React.Component {
     }
 
     handleClick(){
-        let selected = this.props.on;
-        this.setState({ selected: !this.props.on });
-        if (!selected){
-            this.props.flipOutMode('vid');
-        } else {
-            this.props.flipOutMode('img');
-        }
+        this.setState({ selected: !this.state.selected });
     }
 
     render(){
         return (
-            <div className={this.state.selected ? 'selected' : '' } style={navObj} onClick={this.handleClick}>
+            <div id={this.state.selected ? 'selected' : '' } className="selectable" style={navObj} onClick={this.handleClick}>
                 <img src={require("./pictures/flash.png")} alt="flash" className="nav-img" />
             </div>
         );
@@ -101,24 +95,24 @@ export function Chrome() {
         height: window.innerHeight * 3
     }
     return (
-        <div style={{...style, borderTop: '2px solid rgb(18, 218, 0)'}} className="tut tutOthers" id="chromeTut">
+        <div style={{...style, borderTop: '2px solid rgb(18, 218, 0)'}} className="tut tutOthers" id="chromeTuts">
             <div className="img1">
                 <img className="tutImg" src={require("./pictures/chrome1.jpg")} alt="tutorial 1" />
             </div>
             <div className="p1">
-                <p>Click on the the circled button</p>
+                <p id="font100">Click on the the circled button</p>
             </div>
             <div className="img2">
                 <img className="tutImg" src={require("./pictures/chrome2.jpg")} alt="tutorial 2" />
             </div>
             <div className="p2">
-                <p>Click on "Add to Home screen".</p>
+                <p id="font100">Click on "Add to Home screen".</p>
             </div>
             <div className="img3">
                 <img className="tutImg" src={require("./pictures/chrome3.jpg")} alt="tutorial 3" />
             </div>
             <div className="p3">
-                <p>Click on "Add" to install to your home screen.</p>
+                <p id="font100">Click on "Add" to install to your home screen.</p>
             </div>
         </div>
     );
@@ -134,13 +128,13 @@ export function Firefox() {
                 <img className="tutImg" src={require("./pictures/firefox1.jpg")} alt="tutorial 1" />
             </div>
             <div className="p1">
-                <p>Click on the the circled button</p>
+                <p id="font100">Click on the the circled button</p>
             </div>
             <div className="img2">
                 <img className="tutImg" src={require("./pictures/firefox2.jpg")} alt="tutorial 2" />
             </div>
             <div className="p2">
-                <p>Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
+                <p id="font100">Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
             </div>
         </div>
     );
@@ -156,19 +150,19 @@ export function Safari() {
                 <img className="tutImg" src={require("./pictures/safari1.jpg")} alt="tutorial 1" />
             </div>
             <div className="p1">
-                <p>Click on the the circled button</p>
+                <p id="font100">Click on the the circled button</p>
             </div>
             <div className="img2">
                 <img className="tutImg" src={require("./pictures/safari2.jpg")} alt="tutorial 2" />
             </div>
             <div className="p2">
-                <p>After scrolling down, click on "Add to Home Screen".</p>
+                <p id="font100">After scrolling down, click on "Add to Home Screen".</p>
             </div>
             <div className="img3">
                 <img className="tutImg" src={require("./pictures/safari3.jpg")} alt="tutorial 3" />
             </div>
             <div className="p3">
-                <p>Click on "Add" to install to your home screen.</p>
+                <p id="font100">Click on "Add" to install to your home screen.</p>
             </div>
         </div>
     );
