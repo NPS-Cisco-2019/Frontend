@@ -4,7 +4,7 @@ import MobileAppAnswer from './appComponents/mobileWebsiteAnswer';
 import CompApp from './appComponents/compWebsite';
 import testDetails from './test';
 
-let dev = true;
+let dev = false;
 
 class App extends React.Component {
   constructor(props){
@@ -13,7 +13,7 @@ class App extends React.Component {
       question: testDetails.question,
       answers: testDetails.answers,
       website: testDetails.websites,
-      displayAnswer: true
+      displayAnswer: false
     }
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
