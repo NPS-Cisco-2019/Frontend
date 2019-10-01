@@ -102,7 +102,7 @@ export default class CompApp extends React.Component {
         <div className="body" style={{top: this.state.headHeight}}>
           <div className="description">
             <div style={{...highlightStyle, ...this.state[this.state.browser]}}></div>
-            <p style={{fontSize: "1.3em", marginBottom: 30, textAlign: "center"}}><i>Insert name here </i>is a problem solving app, just take a picture and the app automatically scans the web to find the best answers for you.(this is temporary and not complete)</p>
+            <p style={{fontSize: "1.3em", marginBottom: 30, textAlign: "center"}}>Insert name here is a problem solving app, just take a picture and the app automatically scans the web to find the best answers for you.(this is temporary and not complete). Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
             <h2>Go to your mobile phone in one of the following browsers and follow these tutorials to install it.</h2>
             <div className="logos">
               <button className="firefox" onClick={this.handleClick}><img className="desk img" id="Firefox" src={require("./pictures/firefox.png")} alt="firefox" /></button>
