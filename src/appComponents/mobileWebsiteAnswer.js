@@ -74,6 +74,7 @@ export default class MobileAppAnswer extends React.Component{
                 <Swipe
                     onSwipeLeft={this.swipeNext}
                     onSwipeRight={this.swipeBack}
+                    tolerance={100}
                 >
                 <div style={container}>
                     <div className="question" style={questionStyle}>

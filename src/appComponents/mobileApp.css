@@ -117,6 +117,7 @@ footer {
   max-width: 60%;
   max-height: 60%;
   margin: auto;
+  animation: fadein 500ms;
 }
 
 /* .notCenter {
@@ -161,4 +162,5 @@ input {
   text-align: center;
   font-family: Raleway;
   border: none;
+  width: 94%;
 }

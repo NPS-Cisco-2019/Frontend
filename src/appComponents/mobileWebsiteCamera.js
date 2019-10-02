@@ -54,9 +54,11 @@ export default class MobileAppPicture extends React.Component {
     this.submit = this.submit.bind(this);
     this.capture = this.capture.bind(this);
     this.swipeUp = this.swipeUp.bind(this);
+    this.touchEnd = this.touchEnd.bind(this);
     this.swipeDown = this.swipeDown.bind(this);
     this.backClick = this.backClick.bind(this);
     this.inputText = this.inputText.bind(this);
+    this.touchStart = this.touchStart.bind(this);
     this.showAnswer = this.showAnswer.bind(this);
     this.showDefault = this.showDefault.bind(this);
     this.flipOutMode = this.flipOutMode.bind(this);
@@ -132,13 +134,31 @@ export default class MobileAppPicture extends React.Component {
       this.setState({isTextBox: false})
       let obj = await scrape(this.state.question);
       this.setState({ answers: obj.answers, websites: obj.websites})
-      this.showAnswer()
+      this.showAnswer();
     }
   }
 
   changeTextBox(){
     console.log('double-click');
     this.setState({isTextBox: !this.state.isTextBox});
+  }
+
+  touchStart(){
+    setTimeout(() => {
+      if (this.state.prevent){
+        console.log('REEEEEE')
+        this.setState({longpress: true});
+      }
+    }, 300);
+  }
+
+  touchEnd(){
+    if (!!this.state.longpress){
+      this.changeTextBox();
+    } else if (!this.state.isTextBox){
+      this.submit({key: 'Enter'});
+    }
+    this.setState({longpress: false, prevent: true});
   }
 
   render(){
@@ -177,10 +197,10 @@ export default class MobileAppPicture extends React.Component {
             <footer style={{minHeight: Math.round(window.innerHeight/10), bottom: footerBottom, boxSizing: 'border-box' }}>
                 <div className="bar"></div>
                 {this.state.gotQuestion ?
-                  (<div className="question" style={{borderRadius: window.innerWidth/50}} onClick={this.state.isTextBox ? null : this.showAnswer}>
+                  (<div className="question" style={{borderRadius: window.innerWidth/50}} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
                     {this.state.isTextBox ?
-                    <input value={this.state.question} type="text" onChange={this.inputText} onKeyDown={this.submit} onDoubleClick={this.changeTextBox} />:
-                    <p onDoubleClick={this.changeTextBox}>{this.state.question}</p>}
+                    <input value={this.state.question} type="text" onChange={this.inputText} onKeyDown={this.submit} /> :
+                    <p>{this.state.question}</p>}
                   </div>)
                   : null
                 }
