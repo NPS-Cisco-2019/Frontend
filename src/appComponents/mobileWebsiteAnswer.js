@@ -1,6 +1,7 @@
 import React from 'react';
 import { Back } from './elements';
 import './mobileApp.css';
+import Swipe from 'react-easy-swipe';
 
 const container = {
     position: 'relative',
@@ -37,6 +38,8 @@ export default class MobileAppAnswer extends React.Component{
         }
         this.backClick = this.backClick.bind(this);
         this.nextClick = this.nextClick.bind(this);
+        this.swipeNext = this.swipeNext.bind(this);
+        this.swipeBack = this.swipeBack.bind(this);
     }
 
     backClick(){
@@ -45,6 +48,18 @@ export default class MobileAppAnswer extends React.Component{
 
     nextClick(){
         this.setState({num: this.state.num + 1});
+    }
+
+    swipeNext(){
+        if (this.state.num < this.state.lastNum - 1){
+            this.nextClick();
+        }
+    }
+
+    swipeBack(){
+        if (this.state.num > 0){
+            this.backClick();
+        }
     }
 
     render(){
@@ -56,6 +71,10 @@ export default class MobileAppAnswer extends React.Component{
                     <Back handleClick={this.props.backClick} />
                     <p style={{fontSize: '1.2em'}}>{this.props.website[this.state.num]}</p>
                 </header>
+                <Swipe
+                    onSwipeLeft={this.swipeNext}
+                    onSwipeRight={this.swipeBack}
+                >
                 <div style={container}>
                     <div className="question" style={questionStyle}>
                         <p>{this.props.question}</p>
@@ -64,6 +83,7 @@ export default class MobileAppAnswer extends React.Component{
                         <p className="notCenter">{this.props.answers[this.state.num]}</p>
                     </div>
                 </div>
+                </Swipe>
                 <div className="bot">
                     <p className="botItem button" style={{...botNavStyle, opacity: back ? 1 : 0.5}} onClick={back ? this.backClick : null}>{'< Back'}</p>
                     <p className="botItem" style={botNavStyle}>Answer {this.state.num + 1}</p>

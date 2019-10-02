@@ -155,3 +155,10 @@ p {
   align-items: center;
   font-family: Raleway;
 }
+
+input {
+  background-color: transparent;
+  text-align: center;
+  font-family: Raleway;
+  border: none;
+}

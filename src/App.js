@@ -4,7 +4,7 @@ import MobileAppAnswer from './appComponents/mobileWebsiteAnswer';
 import CompApp from './appComponents/compWebsite';
 import testDetails from './test';
 
-let dev = false;
+let dev = true;
 
 class App extends React.Component {
   constructor(props){
