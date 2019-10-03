@@ -125,11 +125,6 @@ footer {
   animation: fadein 500ms;
 }
 
-/* .notCenter {
-  text-align: justify;
-  text-justify: inter-character;
-} */
-
 .bot {
   position: fixed;
   display: grid;

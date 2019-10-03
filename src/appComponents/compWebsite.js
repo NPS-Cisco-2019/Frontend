@@ -1,6 +1,7 @@
 import React from 'react';
 import {Firefox, Chrome, Safari, getBrowser} from './elements';
 import './desktopApp.css';
+import './animations.css';
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -140,8 +141,8 @@ export default class CompApp extends React.Component {
             <Route render={({location}) => {return (
               <TransitionGroup style={{overflow: 'hidden', marginTop: 30}}>
                 <CSSTransition
-                  timeout={15000}
-                  classNames="trans"
+                  timeout={1500}
+                  classNames="dipReplace"
                   key={location.key}
                 >
                   <Switch location={location}>

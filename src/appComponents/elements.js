@@ -14,6 +14,28 @@ const navObj = {
     objectFit: 'cover'
 }
 
+const container = {
+    position: 'absolute',
+    margin: 0,
+    top: window.innerHeight / 10,
+    width: window.innerWidth,
+    padding: '5%',
+    justifyItems: 'center',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    paddingTop: 0,
+    paddingBottom: 7 * window.innerHeight / 100,
+    overflow: 'hidden'
+}
+
+const infoStyle = {
+    boxSizing: 'border-box',
+    borderRadius: window.innerWidth/50,
+    width: 9 * window.innerWidth/10,
+    padding: 10,
+    margin: '3% 0'
+}
+
 export class Flash extends React.Component {
     constructor(props){
         super(props);
@@ -87,6 +109,19 @@ export function Back(props){
         </div>
     )
 };
+
+export function Answer(props){
+    return (
+        <div style={container}>
+            <div className="info" style={infoStyle} id="question">
+                <p style={{margin: 0}}>{props.question}</p>
+            </div>
+            <div className="info" style={infoStyle}>
+                <p className="notCenter">{props.answer}</p>
+            </div>
+        </div>
+    )
+}
 
 
 

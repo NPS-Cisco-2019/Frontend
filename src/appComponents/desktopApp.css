@@ -213,31 +213,3 @@ label {
     opacity: 1;
   }
 }
-
-
-
-
-
-
-
-.trans-enter, .trans-appear {
-  opacity: 0;
-  transform: translateY(40%);
-}
-
-.trans-enter-active {
-  opacity: 1;
-  transform: translateY(0%);
-  transition: opacity 700ms linear 700ms, transform 700ms ease-in 700ms;
-}
-
-.trans-exit {
-  opacity: 1;
-  transform: translateY(0%);
-}
-
-.trans-exit-active{
-  opacity: 0;
-  transform: translateY(40%);
-  transition: opacity 700ms linear, transform 700ms ease-out;
-}
