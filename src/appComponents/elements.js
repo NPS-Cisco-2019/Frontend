@@ -92,7 +92,8 @@ export function Back(props){
 
 export function Chrome() {
     let style = {
-        height: window.innerHeight * 3
+        height: window.innerHeight * 3,
+        position: 'absolute'
     }
     return (
         <div style={{...style, borderTop: '2px solid rgb(18, 218, 0)'}} className="tut tutOthers" id="chromeTuts">
@@ -120,7 +121,8 @@ export function Chrome() {
 
 export function Firefox() {
     let style = {
-        height: window.innerHeight * 2
+        height: window.innerHeight * 2,
+        position: 'absolute'
     }
     return (
         <div style={{...style, borderTop: '2px solid rgb(200, 0 ,0)'}} className="tut tutFirefox" id="firefoxTut">
@@ -142,7 +144,8 @@ export function Firefox() {
 
 export function Safari() {
     let style = {
-        height: window.innerHeight * 3
+        height: window.innerHeight * 3,
+        position: 'absolute'
     }
     return (
         <div style={{...style, borderTop: '2px solid rgb(0, 0, 255)'}} className="tut tutOthers" id="safariTut">

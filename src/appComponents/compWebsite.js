@@ -2,6 +2,7 @@ import React from 'react';
 import {Firefox, Chrome, Safari, getBrowser} from './elements';
 import './desktopApp.css';
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const highlightStyle = {
   position: 'absolute',
@@ -15,7 +16,6 @@ export default class CompApp extends React.Component {
     super(props);
     const browser = getBrowser();
     this.defaultTutorial = this.getJsx(browser);
-    console.log({br: browser, tut: this.defaultTutorial})
     this.state = {
       tutorial: this.getJsx(browser),
       browser: browser,
@@ -111,7 +111,7 @@ export default class CompApp extends React.Component {
           <header className="deskHead" style={{opacity: opacity}} id="head">
             <h1>This app is not supported on Computers</h1>
           </header>
-          <div className="body" style={{top: this.state.headHeight}}>
+          <div className="body" style={{top: this.state.headHeight}} id="main">
             <div className="description">
               <div style={{...highlightStyle, ...this.state[this.state.browser]}}></div>
               <p style={{fontSize: "1.3em", marginBottom: 30, textAlign: "center"}}>Insert name here is a problem solving app, just take a picture and the app automatically scans the web to find the best answers for you.(this is temporary and not complete). Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -137,15 +137,22 @@ export default class CompApp extends React.Component {
                 </Link>
               </div>
             </div>
-            <div style={{overflow: 'hidden', marginTop: 30}}>
-                <Switch>
-                  <Route path="/Firefox" component={Firefox} />
-                  <Route path="/Chrome" component={Chrome} />
-                  <Route path="/Safari" component={Safari} />
-                  <Route path="/" component={this.defaultTutorial} />
-                </Switch>
-              {/* {this.state.tutorial} */}
-            </div>
+            <Route render={({location}) => {return (
+              <TransitionGroup style={{overflow: 'hidden', marginTop: 30}}>
+                <CSSTransition
+                  timeout={15000}
+                  classNames="trans"
+                  key={location.key}
+                >
+                  <Switch location={location}>
+                    <Route path="/Firefox" component={Firefox} />
+                    <Route path="/Chrome" component={Chrome} />
+                    <Route path="/Safari" component={Safari} />
+                    <Route path="/" component={this.defaultTutorial} />
+                  </Switch>
+                </CSSTransition>
+              </TransitionGroup>
+            )}} />
           </div>
         </div>
       </BrowserRouter>
