@@ -197,7 +197,7 @@ export default class MobileAppPicture extends React.Component {
             <footer style={{minHeight: Math.round(window.innerHeight/10), bottom: footerBottom, boxSizing: 'border-box' }}>
                 <div className="bar"></div>
                 {this.state.gotQuestion ?
-                  (<div className="question" style={{borderRadius: window.innerWidth/50}} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
+                  (<div className="info" style={{borderRadius: window.innerWidth/50}} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
                     {this.state.isTextBox ?
                     <input value={this.state.question} type="text" onChange={this.inputText} onKeyDown={this.submit} /> :
                     <p>{this.state.question}</p>}

@@ -17,7 +17,7 @@ const container = {
     paddingBottom: 7 * window.innerHeight / 100
 }
 
-const questionStyle = {
+const infoStyle = {
     boxSizing: 'border-box',
     borderRadius: window.innerWidth/50,
     width: 9 * window.innerWidth/10,
@@ -27,6 +27,7 @@ const questionStyle = {
 
 const botNavStyle = {
     width: window.innerWidth/3,
+    margin: 0
 }
 
 export default class MobileAppAnswer extends React.Component{
@@ -69,7 +70,7 @@ export default class MobileAppAnswer extends React.Component{
             <div style={{minHeight: window.innerHeight}}>
                 <header className="top" style={{height: Math.round(window.innerHeight/11)}}>
                     <Back handleClick={this.props.backClick} />
-                    <p style={{fontSize: '1.2em'}}>{this.props.website[this.state.num]}</p>
+                    <p style={{fontSize: '1.2em', margin: 0}}>{this.props.website[this.state.num]}</p>
                 </header>
                 <Swipe
                     onSwipeLeft={this.swipeNext}
@@ -77,10 +78,10 @@ export default class MobileAppAnswer extends React.Component{
                     tolerance={100}
                 >
                 <div style={container}>
-                    <div className="question" style={questionStyle}>
-                        <p>{this.props.question}</p>
+                    <div className="info" style={infoStyle} id="question">
+                        <p style={{margin: 0}}>{this.props.question}</p>
                     </div>
-                    <div className="question" style={questionStyle}>
+                    <div className="info" style={infoStyle}>
                         <p className="notCenter">{this.props.answers[this.state.num]}</p>
                     </div>
                 </div>

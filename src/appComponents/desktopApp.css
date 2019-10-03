@@ -84,24 +84,27 @@
   margin: auto;
 }
 
+.firefox, .safari, .chrome {
+  object-fit: contain;
+  max-width: 50px;
+  height: 100%;
+}
+
 .firefox {
   grid-area: firefox;
-  object-fit: contain;
-  max-height: 50px;
 }
 
 .chrome {
   grid-area: chrome;
-  object-fit: contain;
-  max-width: 100%;
-  height: 100%;
+}
+
+.chrome label {
+  position: relative;
+  left: -2px;
 }
 
 .safari {
   grid-area: safari;
-  object-fit: contain;
-  max-width: 100%;
-  height: 100%;
 }
 
 .tut {
@@ -185,6 +188,11 @@ button {
   border: none;
   background-color: transparent;
   cursor: pointer;
+}
+
+label {
+  font-family: Raleway;
+  font-weight: 300;
 }
 
 @keyframes dropin {
