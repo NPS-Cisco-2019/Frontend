@@ -11,7 +11,7 @@ export default class MobileApp extends React.Component {
       question: testDetails.question,
       answers: testDetails.answers,
       website: testDetails.websites,
-      displayAnswer: true
+      displayAnswer: false
     }
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);

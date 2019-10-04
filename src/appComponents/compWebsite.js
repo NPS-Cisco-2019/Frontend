@@ -2,7 +2,7 @@ import React from 'react';
 import {Firefox, Chrome, Safari, getBrowser} from './elements';
 import './desktopApp.css';
 import './animations.css';
-import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const highlightStyle = {
@@ -17,6 +17,7 @@ export default class CompApp extends React.Component {
     super(props);
     const browser = getBrowser();
     this.defaultTutorial = this.getJsx(browser);
+    this.defaultLink = `/${browser[0].toUpperCase()}${browser.slice(1)}`;
     this.state = {
       tutorial: this.getJsx(browser),
       browser: browser,
@@ -110,7 +111,7 @@ export default class CompApp extends React.Component {
       <BrowserRouter>
         <div className="App deskApp">
           <header className="deskHead" style={{opacity: opacity}} id="head">
-            <h1>This app is not supported on Computers</h1>
+            <h1>This app is not supported on Computers.</h1>
           </header>
           <div className="body" style={{top: this.state.headHeight}} id="main">
             <div className="description">
@@ -118,19 +119,19 @@ export default class CompApp extends React.Component {
               <p style={{fontSize: "1.3em", marginBottom: 30, textAlign: "center"}}>Insert name here is a problem solving app, just take a picture and the app automatically scans the web to find the best answers for you.(this is temporary and not complete). Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
               <h2>Go to your mobile phone in one of the following browsers and follow these tutorials to install it.</h2>
               <div className="logos">
-                <Link to="./Firefox">
+                <Link to="/Firefox">
                   <button className="firefox" onClick={this.handleClick}>
                     <img className="desk img" id="Firefox" src={require("./pictures/firefox.png")} alt="firefox" />
                     <label htmlFor="Firefox" id="firefox">Firefox</label>
                   </button>
                 </Link>
-                <Link to="./Chrome">
+                <Link to="/Chrome">
                   <button className="chrome" onClick={this.handleClick}>
                     <img className="desk img" id="Chrome" src={require("./pictures/chrome.png")} alt="chrome"/>
                     <label htmlFor="Chrome" id="chrome">Chrome</label>
                   </button>
                 </Link>
-                <Link to="./Safari">
+                <Link to="/Safari">
                   <button className="safari" onClick={this.handleClick}>
                     <img className="desk img" id="Safari" src={require("./pictures/safari.png")} alt="safari"/>
                     <label htmlFor="Safari" id="safari">Safari</label>
@@ -146,10 +147,12 @@ export default class CompApp extends React.Component {
                   key={location.key}
                 >
                   <Switch location={location}>
-                    <Route path="/Firefox" component={Firefox} />
-                    <Route path="/Chrome" component={Chrome} />
-                    <Route path="/Safari" component={Safari} />
-                    <Route path="/" component={this.defaultTutorial} />
+                    <Route exact path="/Firefox" component={Firefox} />
+                    <Route exact path="/Chrome" component={Chrome} />
+                    <Route exact path="/Safari" component={Safari} />
+                    <Route path="/" render={() => {return (
+                      <Redirect to={this.defaultLink} />
+                    )}} />
                   </Switch>
                 </CSSTransition>
               </TransitionGroup>
