@@ -1,20 +1,22 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import MobileAppPicture from './mobileWebsiteCamera';
 import MobileAppAnswer from './mobileWebsiteAnswer';
 import testDetails from '../test';
 
-export default class MobileApp extends React.Component {
+class MobileApp extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       question: testDetails.question,
       answers: testDetails.answers,
-      website: testDetails.websites,
-      displayAnswer: false
+      websites: testDetails.websites,
+      displayAnswer: true
     }
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
+
+    this.props.history.push(this.state.displayAnswer ? 'Answer' : 'Picture' );
   }
 
   changeState(question, answers, website){
@@ -26,14 +28,20 @@ export default class MobileApp extends React.Component {
   }
 
   render(){
-    
-
     return (
-        <BrowserRouter>
-            {this.state.displayAnswer ? 
-            <MobileAppAnswer question={this.state.question} answers={this.state.answers} website={this.state.website} backClick={this.changeDisplayAnswer} /> :
-            <MobileAppPicture changeState={this.changeState} />}
-        </BrowserRouter>
+      
+        <Switch>
+          <Route path="/Answer" render={() => (
+            <MobileAppAnswer question={this.state.question} answers={this.state.answers} websites={this.state.websites} backClick={this.changeDisplayAnswer} />
+          )} />
+          
+          <Route path="/Picture" render={() => (
+            <MobileAppPicture changeState={this.changeState} />
+          )} />
+        </Switch>
     );
   }
 }
+
+
+export default withRouter(MobileApp);

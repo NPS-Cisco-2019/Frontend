@@ -4,6 +4,7 @@ import {Flash, Settings, Gallery, Back} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
+import { withRouter } from "react-router-dom";
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 
@@ -40,7 +41,7 @@ const videoConstraints = {
   width: window.innerHeight
 };
 
-export default class MobileAppPicture extends React.Component {
+class MobileAppPicture extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -104,6 +105,7 @@ export default class MobileAppPicture extends React.Component {
   }
 
   showAnswer(){
+    this.props.history.push('./Answer')
     this.props.changeState(this.state.question, this.state.answers, this.state.websites);
   }
 
@@ -146,7 +148,6 @@ export default class MobileAppPicture extends React.Component {
   touchStart(){
     setTimeout(() => {
       if (this.state.prevent){
-        console.log('REEEEEE')
         this.setState({longpress: true});
       }
     }, 300);
@@ -211,3 +212,6 @@ export default class MobileAppPicture extends React.Component {
     )
   }
 };
+
+
+export default withRouter(MobileAppPicture);

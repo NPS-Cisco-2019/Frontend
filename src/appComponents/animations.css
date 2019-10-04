@@ -28,7 +28,7 @@
 
 .fade-enter-active {
     opacity: 1;
-    transition: opacity 300ms linear 200ms;
+    transition: opacity 600ms linear 400ms;
 }
 
 .fade-exit {
@@ -37,7 +37,7 @@
 
 .fade-exit-active {
     opacity: 0;
-    transition: opacity 200ms linear;
+    transition: opacity 400ms linear;
 }
 
 
@@ -57,4 +57,23 @@
 .crunch-exit-active {
     height: 0%;
     transition: all 400ms ease-in
+}
+
+
+.backleft-enter, .backleft-appear {
+    transform: translateX(-100%);
+}
+
+.backleft-enter-active {
+    transform: translateX(0);
+    transition: all 10s;
+}
+
+.backleft-exit {
+    transform: translateX(0);
+}
+
+.backleft-exit-active {
+    transform: translateX(100%);
+    transition: all 10s;
 }
