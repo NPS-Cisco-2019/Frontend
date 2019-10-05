@@ -4,9 +4,13 @@ import MobileAppPicture from './mobileWebsiteCamera';
 import MobileAppAnswer from './mobileWebsiteAnswer';
 import testDetails from '../test';
 
+// ANCHOR Main Mobile App that renders various mobile pages
+// NOTE gets called by <App />, does not render by itself
+
 class MobileApp extends React.Component {
   constructor(props){
     super(props);
+    // TODO change question, answer and website to inlclude integration
     this.state = {
       question: testDetails.question,
       answers: testDetails.answers,
@@ -19,10 +23,12 @@ class MobileApp extends React.Component {
     this.props.history.push(this.state.displayAnswer ? 'Answer' : 'Picture' );
   }
 
+  // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
   changeState(question, answers, website){
     this.setState({question: question, answers: answers, website: website, displayAnswer: true});
   }
 
+  // Passed to child <MobileAnswerApp /> to allow it to change the Parent state to show picture mode
   changeDisplayAnswer(){
     this.setState({displayAnswer: false});
   }

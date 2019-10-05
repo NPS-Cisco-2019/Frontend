@@ -1,3 +1,4 @@
+// SECTION imports
 import React from 'react';
 import { Back, Answer } from './elements';
 import './mobileApp.css';
@@ -5,7 +6,9 @@ import './animations.css'
 import Swipe from 'react-easy-swipe';
 import { Route, Link, Switch, withRouter } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+// !SECTION
 
+// SECTION Inline Styles
 const botNavStyle = {
     width: window.innerWidth/3,
     margin: 0
@@ -17,6 +20,7 @@ const webStyle = {
     position: 'fixed',
     zIndex: 69
 }
+// !SECTION
 
 class MobileAppAnswer extends React.Component{
     constructor(props){
@@ -25,20 +29,28 @@ class MobileAppAnswer extends React.Component{
             num: 0,
             lastNum: (this.props.answers).length
         }
+
+        // SECTION function bindings
         this.backClick = this.backClick.bind(this);
         this.nextClick = this.nextClick.bind(this);
         this.swipeNext = this.swipeNext.bind(this);
         this.swipeBack = this.swipeBack.bind(this);
+        // !SECTION
     }
 
+    /* SECTION FUNCTIONS */
+
+    // goes to previous answer
     backClick(){
         this.setState({num: this.state.num - 1, swipe: 'Right'});
     }
 
+    // goes to next answer
     nextClick(){
         this.setState({num: this.state.num + 1, swipe: 'Left'});
     }
 
+    // SECTION swipe functions
     swipeNext(){
         if (this.state.num < this.state.lastNum - 1){
             this.nextClick();
@@ -52,23 +64,29 @@ class MobileAppAnswer extends React.Component{
             this.props.history.push(`/Answer/answer${this.state.num - 1}`)
         }
     }
+    // !SECTION
 
     componentDidMount(){
         let websitePosition = document.getElementById('websitePosition').getBoundingClientRect();
         this.pos = {top: websitePosition.top, left: websitePosition.left};
     }
+    /* !SECTION */
 
     render(){
         const back = this.state.num > 0;
         const next = this.state.num < this.state.lastNum - 1;
         return (
             <div style={{minHeight: window.innerHeight}}>
+                {/* SECTION Back Button */}
                 <header className="top" style={{height: Math.round(window.innerHeight/11)}}>
                     <Link to="/Picture">
                         <Back handleClick={this.props.backClick} />
                     </Link>
                     <p style={{fontSize: '1.2em', margin: 0, visibility: 'hidden'}} id="websitePosition">Placeholder</p>
                 </header>
+                {/* !SECTION */}
+                {/* SECTION Website displayer */}
+                {/* NOTE Its in a seperate Route because of different */}
                 <Route render={({location}) => (
                     <TransitionGroup>
                         <CSSTransition
@@ -104,6 +122,8 @@ class MobileAppAnswer extends React.Component{
                         </CSSTransition>
                     </TransitionGroup>
                 )} />
+                {/* !SECTION */}
+                {/* SECTION Answer displayer */}
                 <Swipe
                     onSwipeLeft={this.swipeNext}
                     onSwipeRight={this.swipeBack}
@@ -145,6 +165,8 @@ class MobileAppAnswer extends React.Component{
                         </TransitionGroup>
                     )} />
                 </Swipe>
+                {/* !SECTION */}
+                {/* SECTION Bottom Navigation */}
                 <div className="bot">
                     {back ?
                     <Link to={`/Answer/answer${this.state.num-1}`}>
@@ -160,6 +182,7 @@ class MobileAppAnswer extends React.Component{
                     </Link> :
                     <p className="botItem button" style={{...botNavStyle, opacity: 0.5}}>{'Next >'}</p>}
                 </div>
+                {/* !SECTION */}
             </div>
         )
     }

@@ -1,5 +1,8 @@
 import testDetails from './test';
 
+// NOTE functions which will handle all backend calls
+// TODO integration
+
 export function OCR(img){
     console.log({img});
     console.log('TODO add OCR implementation.');

@@ -1,5 +1,7 @@
 import React from 'react';
 
+
+// SECTION inline styles
 let maxLength = (10/100) * (69/100) * window.innerHeight;
 
 const navObj = {
@@ -35,6 +37,10 @@ const infoStyle = {
     padding: 10,
     margin: '3% 0'
 }
+// !SECTION
+
+
+// SECTION Mobile Components
 
 export class Flash extends React.Component {
     constructor(props){
@@ -43,6 +49,8 @@ export class Flash extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
+    // changes whether flashlight is enabled or disabled
+    // TODO add flashlight fucntionality
     handleClick(){
         this.setState({ selected: !this.state.selected });
     }
@@ -64,9 +72,9 @@ export class Settings extends React.Component {
 
     handleClick(){
         this.props.showDefault();
-        // alert('This path hasnt been programmed yet');
     }
 
+    // TODO make settings menu
     render(){
         return (
             <div style={navObj}>
@@ -89,6 +97,7 @@ export class Gallery extends React.Component {
     }
 
     handleClick(){
+        // if image is clicked triggers input component
         this.refs.gallery.click();
     }
 
@@ -96,7 +105,7 @@ export class Gallery extends React.Component {
         return (
             <div style={navObj}>
                 <img src={require("./pictures/gallery.png")} alt="Gallery" className="nav-img" onClick={this.handleClick} />
-                <input type="file" ref="gallery" onChange={this.props.selectFileHandle} style={{display: "none"}} />
+                <input type="file" accept="image/*" ref="gallery" onChange={this.props.selectFileHandle} style={{display: "none"}} />
             </div>
         );
     }
@@ -123,8 +132,36 @@ export function Answer(props){
     )
 }
 
+// !SECTION
 
 
+// SECTION Desktop Components
+
+// Firefox tutroial
+export function Firefox() {
+    let style = {
+        height: window.innerHeight * 2,
+        position: 'absolute'
+    }
+    return (
+        <div style={{...style, borderTop: '2px solid rgb(200, 0 ,0)'}} className="tut tutFirefox" id="firefoxTut">
+            <div className="img1">
+                <img className="tutImg" src={require("./pictures/firefox1.jpg")} alt="tutorial 1" />
+            </div>
+            <div className="p1">
+                <p id="font100">Click on the the circled button</p>
+            </div>
+            <div className="img2">
+                <img className="tutImg" src={require("./pictures/firefox2.jpg")} alt="tutorial 2" />
+            </div>
+            <div className="p2">
+                <p id="font100">Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
+            </div>
+        </div>
+    );
+}
+
+// Chrome tutroial
 export function Chrome() {
     let style = {
         height: window.innerHeight * 3,
@@ -154,29 +191,7 @@ export function Chrome() {
     );
 }
 
-export function Firefox() {
-    let style = {
-        height: window.innerHeight * 2,
-        position: 'absolute'
-    }
-    return (
-        <div style={{...style, borderTop: '2px solid rgb(200, 0 ,0)'}} className="tut tutFirefox" id="firefoxTut">
-            <div className="img1">
-                <img className="tutImg" src={require("./pictures/firefox1.jpg")} alt="tutorial 1" />
-            </div>
-            <div className="p1">
-                <p id="font100">Click on the the circled button</p>
-            </div>
-            <div className="img2">
-                <img className="tutImg" src={require("./pictures/firefox2.jpg")} alt="tutorial 2" />
-            </div>
-            <div className="p2">
-                <p id="font100">Click on "+ADD TO HOME SCREEN" to install to your home screen.</p>
-            </div>
-        </div>
-    );
-}
-
+// Safari tutroial
 export function Safari() {
     let style = {
         height: window.innerHeight * 3,
@@ -206,8 +221,7 @@ export function Safari() {
     );
 }
 
-
-
+// detects which browser is being used
 export function getBrowser(){
     if (typeof InstallTrigger !== 'undefined') {
         return 'firefox';
@@ -220,6 +234,11 @@ export function getBrowser(){
     }
 }
 
+// !SECTION
+
+
+// NOTE Currently unused
+// TODO Add Error boundries and make Error page
 export class ErrorBoundary extends React.Component {
     constructor(props) {
       super(props);
@@ -238,7 +257,6 @@ export class ErrorBoundary extends React.Component {
   
     render() {
       if (this.state.hasError) {
-        // You can render any custom fallback UI
         return <h1>Something went wrong.</h1>;
       }
   

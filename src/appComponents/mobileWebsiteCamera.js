@@ -1,3 +1,4 @@
+// SECTION imports
 import React from 'react';
 import Webcam from 'react-webcam';
 import {Flash, Settings, Gallery, Back} from './elements';
@@ -5,6 +6,9 @@ import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
 import { withRouter } from "react-router-dom";
+// !SECTION
+
+// SECTION Inline styles  
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 
@@ -41,6 +45,8 @@ const videoConstraints = {
   width: window.innerHeight
 };
 
+// !SECTION 
+
 class MobileAppPicture extends React.Component {
   constructor(props){
     super(props);
@@ -51,6 +57,8 @@ class MobileAppPicture extends React.Component {
       gotQuestion: false,
       question: ''
     }
+
+    // SECTION function binding 
     this.OCR = this.OCR.bind(this);
     this.submit = this.submit.bind(this);
     this.capture = this.capture.bind(this);
@@ -66,32 +74,41 @@ class MobileAppPicture extends React.Component {
     this.changeTextBox = this.changeTextBox.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
     this.cameraErrorHandler = this.cameraErrorHandler.bind(this);
+    // !SECTION 
   }
   
+  /* SECTION FUNCTIONS */
+
+  // handles error recieved by Webcam component
   cameraErrorHandler(error){
     console.log(error);
     this.setState({ picture: require('./pictures/error.jpg'), output: 'img' });
   }
 
+  // TODO remove this, temporary until settings path programmed/removed
   showDefault(){
     let img = require('./pictures/default.jpg');
     this.setState({output: 'img', picture: img});
   }
 
+  // changes whether picture or video is displayed
   flipOutMode(mode){
     this.setState({output: mode});
   }
 
+  // sets state to include img seleced from gallery
   selectFileHandle(e){
     const url = URL.createObjectURL(e.target.files[0]);
     this.setState({ picture: url, output: 'img'});
   }
 
+  // takes a picure and sets output mode
   capture(){
     const imageSrc = this.refs.webcam.getScreenshot();
     this.setState({picture: imageSrc, output: 'img'});
   }
 
+  // SECTION Handles orientation change
   componentDidMount(){
     window.addEventListener('orientationchange', () => {this.forceUpdate();});
   }
@@ -99,16 +116,22 @@ class MobileAppPicture extends React.Component {
   componentWillUnmount(){
     window.removeEventListener('orientationchange', () => {this.forceUpdate();})
   }
+  // !SECTION
 
+  // handles change from image mode back to video
   backClick(){
     this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false }));
   }
 
+  // Utilizes parent function to change Parent state
   showAnswer(){
     this.props.history.push('./Answer')
     this.props.changeState(this.state.question, this.state.answers, this.state.websites);
   }
 
+  // SECTION  handles backend calling
+
+  /* if image is taken for proccesing */
   async OCR(){
     this.setState({isTextBox: false});
     let question = await OCR(this.state.picture);
@@ -116,21 +139,8 @@ class MobileAppPicture extends React.Component {
     let obj = await scrape(this.state.question);
     this.setState({ answers: obj.answers, websites: obj.websites})
   }
-
-  swipeUp(){
-    if (this.state.gotQuestion){return}
-    this.setState({gotQuestion: true, isTextBox: true, output: 'img'});
-  }
-
-  swipeDown(){
-    if (!this.state.gotQuestion){return}
-    this.setState({gotQuestion: false, isTextBox: false});
-  }
-
-  inputText(e){
-    this.setState({question: e.target.value});
-  }
-
+    
+  /* if question is entered maually */
   async submit(e){
     if (e.key === 'Enter'){
       this.setState({isTextBox: false})
@@ -140,11 +150,30 @@ class MobileAppPicture extends React.Component {
     }
   }
 
+  // !SECTION
+
+  // SECTION handles manually pulling up bottom section
+  swipeUp(){
+    if (this.state.gotQuestion){return}
+    this.setState({gotQuestion: true, isTextBox: true, output: 'img'});
+  }
+
+  swipeDown(){
+    if (!this.state.gotQuestion){return}
+    this.setState({gotQuestion: false, isTextBox: false});
+  }
+  // !SECTION
+
+  inputText(e){
+    this.setState({question: e.target.value});
+  }
+
   changeTextBox(){
     console.log('double-click');
     this.setState({isTextBox: !this.state.isTextBox});
   }
 
+  // SECTION Handles pressing of the question when it is shown
   touchStart(){
     setTimeout(() => {
       if (this.state.prevent){
@@ -162,11 +191,16 @@ class MobileAppPicture extends React.Component {
     this.setState({longpress: false, prevent: true});
   }
 
+  //!SECTION
+
+  /* !SECTION */
+
   render(){
     const func = this.state.output === 'vid' ? this.capture : this.OCR;
     const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
     return (
       <div className="App">
+        {/* SECTION  NAV */}
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
           {this.state.output === 'vid' ?
           <Flash />:
@@ -174,11 +208,13 @@ class MobileAppPicture extends React.Component {
           <Settings showDefault={this.showDefault} />
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
+        {/* !SECTION */}
         <Swipe
           onSwipeUp={this.swipeUp}
           onSwipeDown={this.swipeDown}
         >
           <div>
+            {/* SECTION Image/Video displayer */}
             <div style={{...imgContainerStyle, height: Math.round(9 * window.innerHeight / 10), top: Math.round(window.innerHeight/10)}}>{
               this.state.output === 'img' ?
               <img src={this.state.picture} alt="pic" style={imgStyle} id="image" /> :
@@ -192,11 +228,16 @@ class MobileAppPicture extends React.Component {
               ref='webcam'
               />
             }</div>
+            {/* !SECTION */}
+            {/* SECTION Capture/Process buttom\n */}
             <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2)}} onClick={func}>
               {this.state.output === 'img' ? <img className="searchImg" src={require('./pictures/search.png')} alt="search icon" /> : null}
             </button>
+            {/* !SECTION */}
+            {/* SECTION Bottom bar */}
             <footer style={{minHeight: Math.round(window.innerHeight/10), bottom: footerBottom, boxSizing: 'border-box' }}>
                 <div className="bar"></div>
+                {/* Checks whether bar is up */}
                 {this.state.gotQuestion ?
                   (<div className="info" style={{borderRadius: window.innerWidth/50}} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
                     {this.state.isTextBox ?
@@ -206,6 +247,7 @@ class MobileAppPicture extends React.Component {
                   : null
                 }
             </footer>
+            {/* !SECTION */}
           </div>
         </Swipe>
       </div>

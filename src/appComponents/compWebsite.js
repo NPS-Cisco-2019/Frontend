@@ -1,9 +1,11 @@
+// SECTION imports
 import React from 'react';
 import {Firefox, Chrome, Safari, getBrowser} from './elements';
 import './desktopApp.css';
 import './animations.css';
 import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+// !SECTION
 
 const highlightStyle = {
   position: 'absolute',
@@ -19,7 +21,6 @@ export default class CompApp extends React.Component {
     this.defaultTutorial = this.getJsx(browser);
     this.defaultLink = `/${browser[0].toUpperCase()}${browser.slice(1)}`;
     this.state = {
-      tutorial: this.getJsx(browser),
       browser: browser,
       firefox: { top:0, height:0, left:0, width:0, borderBottomColor: 'rgb(200, 0, 0)' },
       chrome: { top:0, height:0, left:0, width:0, borderBottomColor: 'rgb(18, 218, 0)' },
@@ -28,22 +29,17 @@ export default class CompApp extends React.Component {
       currentScrollHeight: 0
     }
     
+    // SECTION function bindings
     this.handleClick = this.handleClick.bind(this);
     this.calcHighlight = this.calcHighlight.bind(this);
     this.calcBrowserPos = this.calcBrowserPos.bind(this);
     this.changeHeadHeight = this.changeHeadHeight.bind(this);
+    // !SECTION
   }
 
-  getJsx(browser){
-    if (browser === 'firefox'){
-      return Firefox;
-    } else if (browser === 'chrome'){
-      return Chrome;
-    } else if (browser === 'safari'){
-      return Safari;
-    }
-  }
+  /* SECTION FUNCTIONS */
 
+  // calculates position of selected highlighter
   calcHighlight(browser){
     const obj = document.getElementById(browser).getBoundingClientRect();
 
@@ -54,7 +50,7 @@ export default class CompApp extends React.Component {
     } else {
       top = Math.round(obj.top - this.state.headHeight);
     }
-    //WARNING THROWN HERE, BE CAREFUL
+    // NOTE WARNING THROWN HERE, BE CAREFUL
     // eslint-disable-next-line
     this.state[browser] = {
           top: top,
@@ -65,11 +61,14 @@ export default class CompApp extends React.Component {
         }
   }
 
+  // gets the height of the header
+  // NOTE seems to return 0 every time but breaks if its removed :/
   changeHeadHeight(){
     const head = document.getElementById('head');
     this.setState({headHeight: head.clientHeight});
   }
 
+  // handles changing of tutorial
   handleClick(e){
     const browser = e.currentTarget.className;
     
@@ -81,6 +80,7 @@ export default class CompApp extends React.Component {
     }
   }
 
+  // calculate the highlight for all browsers
   calcBrowserPos(){
     let l = ['firefox', 'chrome', 'safari'];
     for (let i = 0; i<3; i++){
@@ -89,23 +89,35 @@ export default class CompApp extends React.Component {
     this.forceUpdate();
   }
 
+  // SECTION Life Cycle Components
   componentDidMount() {
+    // used to determine opacity of header
     window.onscroll =()=>{
       this.setState({currentScrollHeight: window.scrollY})
     }
+
+    // calculates header height and highlight positions
     this.calcBrowserPos();
     this.changeHeadHeight();
+
+    // makes the browser recalculate the above if window dimensions change
     window.addEventListener('resize', this.calcBrowserPos);
     window.addEventListener('resize', this.changeHeadHeight);
+
+    // makes the highlight render
     this.forceUpdate();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.calcBrowserPos);
-    window.addEventListener('resize', this.changeHeadHeight);
+    window.removeEventListener('resize', this.changeHeadHeight);
   }
+  // !SECTION
+
+  /* !SECTION */
 
   render(){
+    // opacity for header
     let opacity = Math.max(Math.min(50 / this.state.currentScrollHeight  , 1), 0.7);
     return(
       <BrowserRouter>
@@ -114,6 +126,7 @@ export default class CompApp extends React.Component {
             <h1>This app is not supported on Computers.</h1>
           </header>
           <div className="body" style={{top: this.state.headHeight}} id="main">
+            {/* SECTION Main section, contains about and navlinks to tutorials */}
             <div className="description">
               <div style={{...highlightStyle, ...this.state[this.state.browser]}}></div>
               <p style={{fontSize: "1.3em", marginBottom: 30, textAlign: "center"}}>Insert name here is a problem solving app, just take a picture and the app automatically scans the web to find the best answers for you.(this is temporary and not complete). Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -139,6 +152,8 @@ export default class CompApp extends React.Component {
                 </Link>
               </div>
             </div>
+            {/* !SECTION */}
+            {/* SECTION Tutorials */}
             <Route render={({location}) => {return (
               <TransitionGroup style={{overflow: 'hidden', marginTop: 30}}>
                 <CSSTransition
@@ -157,6 +172,7 @@ export default class CompApp extends React.Component {
                 </CSSTransition>
               </TransitionGroup>
             )}} />
+            {/* !SECTION */}
           </div>
         </div>
       </BrowserRouter>
