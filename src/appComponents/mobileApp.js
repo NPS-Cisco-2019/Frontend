@@ -15,12 +15,12 @@ class MobileApp extends React.Component {
       question: testDetails.question,
       answers: testDetails.answers,
       websites: testDetails.websites,
-      displayAnswer: true
+      displayAnswer: false
     }
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
 
-    this.props.history.push(this.state.displayAnswer ? 'Answer' : 'Picture' );
+    this.props.history.push(this.state.displayAnswer ? '/Answer' : '/Picture' );
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
