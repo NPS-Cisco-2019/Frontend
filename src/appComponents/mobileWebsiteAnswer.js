@@ -114,7 +114,7 @@ class MobileAppAnswer extends React.Component{
                 <Route render={({location}) => (
                     <TransitionGroup>
                         <CSSTransition
-                            timeout={1000}
+                            timeout={600}
                             classNames="fade"
                             key={location.key}
                         >

@@ -28,7 +28,7 @@
 
 .fade-enter-active {
     opacity: 1;
-    transition: opacity 600ms linear 400ms;
+    transition: opacity 400ms linear 300ms;
 }
 
 .fade-exit {
@@ -37,7 +37,7 @@
 
 .fade-exit-active {
     opacity: 0;
-    transition: opacity 400ms linear;
+    transition: opacity 250ms linear;
 }
 
 
@@ -47,7 +47,7 @@
 
 .crunch-enter-active {
     height: 100%;
-    transition: all 600ms ease-out 400ms;
+    transition: all 350ms ease-out 250ms;
 }
 
 .crunch-exit {

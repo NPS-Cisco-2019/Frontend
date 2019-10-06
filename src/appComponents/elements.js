@@ -130,7 +130,7 @@ export function Answer(props){
 
     return (
         <div className="info" style={{...infoStyle, ...answer, height: height.current.height}}>
-            <p className="answerP" id={props.id}>{props.answer}</p>
+            <p style={{margin: 0}} id={props.id}>{props.answer}</p>
         </div>
     )
 }
