@@ -20,6 +20,28 @@ const webStyle = {
     position: 'fixed',
     zIndex: 69
 }
+
+const container = {
+    position: 'absolute',
+    margin: 0,
+    top: window.innerHeight / 11,
+    width: window.innerWidth,
+    padding: window.innerWidth / 20,
+    justifyItems: 'center',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    paddingTop: 0,
+    paddingBottom: 7 * window.innerHeight / 100,
+    overflow: 'hidden'
+}
+
+const infoStyle = {
+    boxSizing: 'border-box',
+    borderRadius: window.innerWidth/50,
+    width: 9 * window.innerWidth/10,
+    padding: 10,
+    margin: '1.4% 0'
+}
 // !SECTION
 
 class MobileAppAnswer extends React.Component{
@@ -29,6 +51,8 @@ class MobileAppAnswer extends React.Component{
             num: 0,
             lastNum: (this.props.answers).length
         }
+
+        document.body.style.overflowX = 'hidden';
 
         // SECTION function bindings
         this.backClick = this.backClick.bind(this);
@@ -42,12 +66,12 @@ class MobileAppAnswer extends React.Component{
 
     // goes to previous answer
     backClick(){
-        this.setState({num: this.state.num - 1, swipe: 'Right'});
+        this.setState({num: this.state.num - 1});
     }
 
     // goes to next answer
     nextClick(){
-        this.setState({num: this.state.num + 1, swipe: 'Left'});
+        this.setState({num: this.state.num + 1});
     }
 
     // SECTION swipe functions
@@ -124,47 +148,24 @@ class MobileAppAnswer extends React.Component{
                 )} />
                 {/* !SECTION */}
                 {/* SECTION Answer displayer */}
-                <Swipe
-                    onSwipeLeft={this.swipeNext}
-                    onSwipeRight={this.swipeBack}
-                    tolerance={100}
-                >
-                    <Route render={({location}) => (
-                        <TransitionGroup>
-                            <CSSTransition
-                                timeout={1000}
-                                classNames={"crunch"}
-                                key={location.key}
-                            >
-                                <Switch location={location}>
-                                    <Route path={'/Answer/answer0'} render={() => (
-                                        <Answer question={this.props.question} answer={this.props.answers[0]} />
-                                    )} />
-
-                                    <Route path={'/Answer/answer1'} render={() => (
-                                        <Answer question={this.props.question} answer={this.props.answers[1]} />
-                                    )} />
-
-                                    <Route path={'/Answer/answer2'} render={() => (
-                                        <Answer question={this.props.question} answer={this.props.answers[2]} />
-                                    )} />
-
-                                    <Route path={'/Answer/answer3'} render={() => (
-                                        <Answer question={this.props.question} answer={this.props.answers[3]} />
-                                    )} />
-
-                                    <Route path={'/Answer/answer4'} render={() => (
-                                        <Answer question={this.props.question} answer={this.props.answers[4]} />
-                                    )} />
-                                    
-                                    <Route path={'/'} render={() => (
-                                        <Answer question={this.props.question} answer={this.props.answers[0]} />
-                                    )} />
-                                </Switch>
-                            </CSSTransition>
-                        </TransitionGroup>
-                    )} />
-                </Swipe>
+                <div style={container}>
+                    <div className="info" style={infoStyle} id="question">
+                        <p style={{margin: 0}}>{this.props.question}</p>
+                    </div>
+                    <Swipe
+                        onSwipeLeft={this.swipeNext}
+                        onSwipeRight={this.swipeBack}
+                        tolerance={100}
+                    >
+                        <div className="answerContainer" style={{transform: `translateX(-${this.state.num * 110}%)`}}>
+                            {
+                                this.props.answers.map((item, i) => (
+                                    <Answer question={this.props.question} answer={item} key={this.props.websites[i]} id={"p" + i} />
+                                ))
+                            }
+                        </div>
+                    </Swipe>
+                </div>
                 {/* !SECTION */}
                 {/* SECTION Bottom Navigation */}
                 <div className="bot">

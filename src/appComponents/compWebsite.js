@@ -18,7 +18,6 @@ export default class CompApp extends React.Component {
   constructor(props){
     super(props);
     const browser = getBrowser();
-    this.defaultTutorial = this.getJsx(browser);
     this.defaultLink = `/${browser[0].toUpperCase()}${browser.slice(1)}`;
     this.state = {
       browser: browser,
@@ -72,12 +71,7 @@ export default class CompApp extends React.Component {
   handleClick(e){
     const browser = e.currentTarget.className;
     
-    //Change tutorial
-    let jsx = this.getJsx(browser);
-    
-    if (jsx){
-      this.setState({ tutorial: jsx, browser: browser });
-    }
+    this.setState({ browser: browser });
   }
 
   // calculate the highlight for all browsers

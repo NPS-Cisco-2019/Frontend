@@ -99,6 +99,12 @@ footer {
   background-color: rgb(75, 75, 75);
 }
 
+.answerContainer {
+  display: flex;
+  max-height: 70%;
+  transition: transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
 .top {
   position: fixed;
   display: grid;

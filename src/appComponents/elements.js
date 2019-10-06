@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 
 // SECTION inline styles
@@ -16,26 +16,23 @@ const navObj = {
     objectFit: 'cover'
 }
 
-const container = {
-    position: 'absolute',
-    margin: 0,
-    top: window.innerHeight / 10,
-    width: window.innerWidth,
-    padding: '5%',
-    justifyItems: 'center',
-    alignItems: 'center',
-    boxSizing: 'border-box',
-    paddingTop: 0,
-    paddingBottom: 7 * window.innerHeight / 100,
-    overflow: 'hidden'
-}
-
 const infoStyle = {
     boxSizing: 'border-box',
     borderRadius: window.innerWidth/50,
     width: 9 * window.innerWidth/10,
-    padding: 10,
+    padding: 15,
     margin: '3% 0'
+}
+
+const answer = {
+    maxHeight: 3 * window.innerHeight / 4,
+    overflowY: 'scroll',
+    objectFit: 'cover',
+    display: 'inline-block',
+    minWidth: 9 * window.innerWidth / 10,
+    margin: '10px 10%',
+    marginLeft: 0,
+    flex: 1
 }
 // !SECTION
 
@@ -120,14 +117,20 @@ export function Back(props){
 };
 
 export function Answer(props){
+
+    
+    let height = useRef({});
+
+    useEffect(() => {
+        // eslint-disable-next-line
+        let pRect = document.getElementById(props.id).getBoundingClientRect();
+        height.current.height = Math.min((3 * window.innerHeight / 4), (pRect.height + (2 * infoStyle.padding)));
+        // eslint-disable-next-line
+    }, [])
+
     return (
-        <div style={container}>
-            <div className="info" style={infoStyle} id="question">
-                <p style={{margin: 0}}>{props.question}</p>
-            </div>
-            <div className="info" style={infoStyle}>
-                <p className="notCenter">{props.answer}</p>
-            </div>
+        <div className="info" style={{...infoStyle, ...answer, height: height.current.height}}>
+            <p className="answerP" id={props.id}>{props.answer}</p>
         </div>
     )
 }
