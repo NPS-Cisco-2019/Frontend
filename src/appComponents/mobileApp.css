@@ -73,7 +73,7 @@ footer {
   align-items: center;
   justify-content: center;
   transition: bottom 300ms ease-in-out;
-  transition: all 600ms cubic-bezier(0.075, 0.82, 0.165, 1), background-color 600ms linear;
+  transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1), background-color 600ms linear, border-radius 600ms linear;
 }
 
 .bar {
@@ -96,7 +96,7 @@ footer {
   margin-bottom: 20px;
   padding: 2%;
   background-color: rgb(75, 75, 75);
-  transition: all 600ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .answerContainer {

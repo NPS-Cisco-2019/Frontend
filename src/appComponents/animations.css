@@ -5,7 +5,7 @@
 
 .dipReplace-enter, .dipReplace-appear {
     opacity: 0;
-    transform: translateY(40%);
+    transform: translateY(30%);
 }
 
 .dipReplace-enter-active {
@@ -21,7 +21,7 @@
 
 .dipReplace-exit-active{
     opacity: 0;
-    transform: translateY(40%);
+    transform: translateY(30%);
     transition: opacity 700ms linear, transform 700ms ease-out;
 }
 
