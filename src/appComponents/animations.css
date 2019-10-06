@@ -1,3 +1,8 @@
+.fadein {
+    animation: fadein 1000ms;
+}
+
+
 .dipReplace-enter, .dipReplace-appear {
     opacity: 0;
     transform: translateY(40%);
@@ -41,39 +46,15 @@
 }
 
 
-.crunch-enter, .crunch-appear {
-    height: 0%;
-}
-
-.crunch-enter-active {
-    height: 100%;
-    transition: all 350ms ease-out 250ms;
-}
-
-.crunch-exit {
-    height: 100%;
-}
-
-.crunch-exit-active {
-    height: 0%;
-    transition: all 400ms ease-in
-}
 
 
-.backleft-enter, .backleft-appear {
-    transform: translateX(-100%);
-}
 
-.backleft-enter-active {
-    transform: translateX(0);
-    transition: all 10s;
-}
-
-.backleft-exit {
-    transform: translateX(0);
-}
-
-.backleft-exit-active {
-    transform: translateX(100%);
-    transition: all 10s;
-}
+@keyframes fadein {
+    0% {
+      opacity: 0;
+    }
+  
+    100% {
+      opacity: 1;
+    }
+  }

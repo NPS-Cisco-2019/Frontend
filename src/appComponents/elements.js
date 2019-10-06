@@ -124,7 +124,9 @@ export function Answer(props){
     useEffect(() => {
         // eslint-disable-next-line
         let pRect = document.getElementById(props.id).getBoundingClientRect();
-        height.current.height = Math.min((3 * window.innerHeight / 4), (pRect.height + (2 * infoStyle.padding)));
+        let container = document.getElementById('ansContainer').getBoundingClientRect();
+
+        height.current.height = Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding)));
         // eslint-disable-next-line
     }, [])
 

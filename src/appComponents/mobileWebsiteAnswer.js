@@ -52,6 +52,8 @@ class MobileAppAnswer extends React.Component{
             lastNum: (this.props.answers).length
         }
 
+        this.maxHeight = 0;
+
         document.body.style.overflowX = 'hidden';
 
         // SECTION function bindings
@@ -93,6 +95,12 @@ class MobileAppAnswer extends React.Component{
     componentDidMount(){
         let websitePosition = document.getElementById('websitePosition').getBoundingClientRect();
         this.pos = {top: websitePosition.top, left: websitePosition.left};
+
+        let ansContainer = document.getElementById('ansContainer').getBoundingClientRect();
+        let bot = document.getElementById('bot').getBoundingClientRect();
+
+        this.maxHeight = window.innerHeight - ansContainer.top - bot.height;
+        this.forceUpdate();
     }
     /* !SECTION */
 
@@ -102,7 +110,7 @@ class MobileAppAnswer extends React.Component{
         return (
             <div style={{minHeight: window.innerHeight}}>
                 {/* SECTION Back Button */}
-                <header className="top" style={{height: Math.round(window.innerHeight/11)}}>
+                <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
                     <Link to="/Picture">
                         <Back handleClick={this.props.backClick} />
                     </Link>
@@ -157,7 +165,7 @@ class MobileAppAnswer extends React.Component{
                         onSwipeRight={this.swipeBack}
                         tolerance={100}
                     >
-                        <div className="answerContainer" style={{transform: `translateX(-${this.state.num * 110}%)`}}>
+                        <div className="answerContainer fadein" style={{transform: `translateX(-${this.state.num * 110}%)`, maxHeight: this.maxHeight}} id="ansContainer">
                             {
                                 this.props.answers.map((item, i) => (
                                     <Answer question={this.props.question} answer={item} key={this.props.websites[i]} id={"p" + i} />
@@ -168,7 +176,7 @@ class MobileAppAnswer extends React.Component{
                 </div>
                 {/* !SECTION */}
                 {/* SECTION Bottom Navigation */}
-                <div className="bot">
+                <div className="bot fadein" id="bot">
                     {back ?
                     <Link to={`/Answer/answer${this.state.num-1}`}>
                         <p className="botItem button" style={{...botNavStyle, opacity: 1}} onClick={this.backClick}>{'< Back'}</p>

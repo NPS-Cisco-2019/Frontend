@@ -26,13 +26,13 @@ const imgContainerStyle = {
 
 const captureButtonStyle = {
   position: 'fixed',
-  bottom: 3 * window.innerHeight / 20,
   borderRadius: '50%',
   width: maxLength,
   height: maxLength,
   zIndex: 42,
   backgroundColor: 'rgb(224, 0, 0)',
   border: '0.15em solid white',
+  transition: 'bottom 100ms cubic-bezier(0.215, 0.61, 0.355, 1)'
   // display: 'flex',
   // justifyItems: 'center',
   // alignItems: 'center'
@@ -54,8 +54,11 @@ class MobileAppPicture extends React.Component {
       output: 'vid',
       picture: require("./pictures/question.jpg"),
       selectedFile: null,
+      footStyle: { backgroundColor: 'rgb(50, 50, 50)' },
+      ansClicked: false,
+      quesStyle: {},
       gotQuestion: false,
-      question: ''
+      question: 'what is love baby dont hurt me, dont hurt me, no more and then it continues coz its a long ass question that never ends?'
     }
 
     // SECTION function binding 
@@ -111,11 +114,13 @@ class MobileAppPicture extends React.Component {
   // SECTION Handles orientation change
   componentDidMount(){
     window.addEventListener('orientationchange', () => {this.forceUpdate();});
+    this.setState({mounted: true});
   }
 
   componentWillUnmount(){
     window.removeEventListener('orientationchange', () => {this.forceUpdate();})
   }
+  
   // !SECTION
 
   // handles change from image mode back to video
@@ -125,8 +130,52 @@ class MobileAppPicture extends React.Component {
 
   // Utilizes parent function to change Parent state
   showAnswer(){
-    this.props.history.push('./Answer')
     this.props.changeState(this.state.question, this.state.answers, this.state.websites);
+
+    let questionHeight = document.getElementById('question').getBoundingClientRect().height;
+    let top = window.innerHeight/11 + 1.4 * questionHeight / 100 + 4;
+
+    this.setState({
+      footStyle: {
+        width: window.innerWidth,
+        backgroundColor: 'rgb(25, 25, 25)',
+        margin: 0,
+        borderRadius: 0
+      },
+      quesStyle: {
+        top: top,
+        margin: 0,
+        borderRadius: window.innerWidth / 50,
+        padding: 10,
+        position: 'absolute'
+      },
+      ansClicked: true
+    })
+    setTimeout(() => {
+      this.props.history.push('./Answer')
+    }, 600);
+  }
+
+  calculateBottom(){
+    if (!this.state.gotQuestion || !this.state.mounted){
+      return 3 * window.innerHeight / 20;
+    }
+
+    let foot = document.getElementById('foot').getBoundingClientRect();
+    return Math.max(foot.height + 10, 3 * window.innerHeight / 20)
+  }
+
+  calculateHeight(){
+    if (this.state.ansClicked){
+      return window.innerHeight + 3;
+    }
+
+    if (!(this.state.gotQuestion && this.mounted)){
+      return 20;
+    }
+
+    let cont = document.getElementById('quesCont').getBoundingClientRect();
+    return 50 + cont.height;
   }
 
   // SECTION  handles backend calling
@@ -169,7 +218,6 @@ class MobileAppPicture extends React.Component {
   }
 
   changeTextBox(){
-    console.log('double-click');
     this.setState({isTextBox: !this.state.isTextBox});
   }
 
@@ -198,6 +246,8 @@ class MobileAppPicture extends React.Component {
   render(){
     const func = this.state.output === 'vid' ? this.capture : this.OCR;
     const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
+    let bot = this.calculateBottom()
+
     return (
       <div className="App">
         {/* SECTION  NAV */}
@@ -230,21 +280,33 @@ class MobileAppPicture extends React.Component {
             }</div>
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
-            <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2)}} onClick={func}>
+            <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2), bottom: bot}} onClick={func}>
               {this.state.output === 'img' ? <img className="searchImg" src={require('./pictures/search.png')} alt="search icon" /> : null}
             </button>
             {/* !SECTION */}
             {/* SECTION Bottom bar */}
-            <footer style={{minHeight: Math.round(window.innerHeight/10), bottom: footerBottom, boxSizing: 'border-box' }}>
-                <div className="bar"></div>
+            <footer style={{minHeight: Math.round(window.innerHeight/10),
+                            bottom: footerBottom,
+                            boxSizing: 'border-box',
+                            ...this.state.footStyle,
+                            height: this.calculateHeight() }} id="foot">
+                {this.state.ansClicked ? null : <div className="bar"></div>}
                 {/* Checks whether bar is up */}
                 {this.state.gotQuestion ?
-                  (<div className="info" style={{borderRadius: window.innerWidth/50}} onTouchStart={this.touchStart} onTouchEnd={this.touchEnd}>
+                  (<div className="info" id="quesCont"
+                    style={{borderRadius: window.innerWidth/50,
+                            width: 9*window.innerWidth/10,
+                            boxSizing: 'border-box',
+                            ...this.state.quesStyle}}
+                    onTouchStart={this.touchStart}
+                    onTouchEnd={this.touchEnd}
+                  >
                     {this.state.isTextBox ?
                     <input value={this.state.question} type="text" onChange={this.inputText} onKeyDown={this.submit} /> :
-                    <p>{this.state.question}</p>}
+                    <p id="question" style={{margin: 0, fontSize: 16}}>{this.state.question}</p>}
+                    {this.mounted = true}
                   </div>)
-                  : null
+                  : this.mounted = false
                 }
             </footer>
             {/* !SECTION */}
