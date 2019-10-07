@@ -30,21 +30,23 @@ class MobileApp extends React.Component {
 
   // Passed to child <MobileAnswerApp /> to allow it to change the Parent state to show picture mode
   changeDisplayAnswer(){
-    this.setState({displayAnswer: false});
+    setTimeout(() => {
+      this.setState({displayAnswer: false});
+      this.props.history.push('/Picture');
+    }, 300);
   }
 
   render(){
     return (
-      
-        <Switch>
-          <Route path="/Answer" render={() => (
-            <MobileAppAnswer question={this.state.question} answers={this.state.answers} websites={this.state.websites} backClick={this.changeDisplayAnswer} />
-          )} />
-          
-          <Route path="/Picture" render={() => (
-            <MobileAppPicture changeState={this.changeState} />
-          )} />
-        </Switch>
+      <Switch>
+        <Route path="/Answer" render={() => (
+          <MobileAppAnswer question={this.state.question} answers={this.state.answers} websites={this.state.websites} backClick={this.changeDisplayAnswer} />
+        )} />
+        
+        <Route path="/Picture" render={() => (
+          <MobileAppPicture changeState={this.changeState} />
+        )} />
+      </Switch>
     );
   }
 }

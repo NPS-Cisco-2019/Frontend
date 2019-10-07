@@ -162,7 +162,6 @@ class MobileAppPicture extends React.Component {
     }
 
     let foot = document.getElementById('foot').getBoundingClientRect();
-    console.log({foot});
     return Math.max(foot.height + 60, 3 * window.innerHeight / 20)
   }
 
@@ -248,9 +247,8 @@ class MobileAppPicture extends React.Component {
     const func = this.state.output === 'vid' ? this.capture : this.OCR;
     const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
     let bot = this.calculateBottom();
-    console.log({bot});
     return (
-      <div className="App">
+      <div className="App fadein" style={{minHeight: window.innerHeight}}>
         {/* SECTION  NAV */}
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
           {this.state.output === 'vid' ?

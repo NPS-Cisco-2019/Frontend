@@ -49,22 +49,54 @@ class MobileAppAnswer extends React.Component{
         super(props);
         this.state = {
             num: 0,
-            lastNum: (this.props.answers).length
+            lastNum: (this.props.answers).length,
+            showMenu: false,
+            backToAns: false
         }
+        
+        this.props.history.push('/Answer/answer0');
 
         this.maxHeight = 0;
 
         document.body.style.overflowX = 'hidden';
+        document.documentElement.style.setProperty('--popupHeight', this.props.websites.length * window.innerHeight/13 + 'px');
 
         // SECTION function bindings
+        this.jumpto = this.jumpto.bind(this);
         this.backClick = this.backClick.bind(this);
         this.nextClick = this.nextClick.bind(this);
         this.swipeNext = this.swipeNext.bind(this);
         this.swipeBack = this.swipeBack.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+        this.returnToAnswer = this.returnToAnswer.bind(this);
+        this.handleMenuClick = this.handleMenuClick.bind(this);
         // !SECTION
     }
 
     /* SECTION FUNCTIONS */
+
+    jumpto(e){
+        this.props.history.push(`/Answer/answer${e.target.value}`);
+        this.setState({num: e.target.value});
+        this.returnToAnswer();
+    }
+
+    handleMenuClick(){
+        this.setState({ showMenu: true });
+    }
+
+    returnToAnswer(){
+        this.setState({ backToAns: true })
+        setTimeout(() => {
+            this.setState({ showMenu: false, backToAns: false });
+        }, 299);
+    }
+
+    // handles click of the Back button
+    handleClick(){
+        this.setState({backToCam: true});
+        this.props.backClick();
+    }
 
     // goes to previous answer
     backClick(){
@@ -107,13 +139,12 @@ class MobileAppAnswer extends React.Component{
     render(){
         const back = this.state.num > 0;
         const next = this.state.num < this.state.lastNum - 1;
+        let len = this.props.answers.length;
         return (
-            <div style={{minHeight: window.innerHeight}}>
+            <div style={{minHeight: window.innerHeight}} className={this.state.backToCam ? "fadeout" : ""}>
                 {/* SECTION Back Button */}
                 <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
-                    <Link to="/Picture">
-                        <Back handleClick={this.props.backClick} />
-                    </Link>
+                    <Back handleClick={this.handleClick} />
                     <p style={{fontSize: '1.2em', margin: 0, visibility: 'hidden'}} id="websitePosition">Placeholder</p>
                 </header>
                 {/* !SECTION */}
@@ -146,10 +177,6 @@ class MobileAppAnswer extends React.Component{
                                 <Route path="/Answer/answer4" render={() => (
                                     <p style={{...webStyle, ...this.pos}}>{this.props.websites[4]}</p>
                                 )} />
-                                
-                                <Route path="/" render={() => (
-                                    <p style={{...webStyle, ...this.pos}}>{this.props.websites[0]}</p>
-                                )} />
                             </Switch>
                         </CSSTransition>
                     </TransitionGroup>
@@ -175,6 +202,25 @@ class MobileAppAnswer extends React.Component{
                     </Swipe>
                 </div>
                 {/* !SECTION */}
+                {
+                    !this.state.showMenu ? null :
+                    (<div>
+                        <div style={{position: 'absolute',
+                                    width: window.innerHeight,
+                                    height: window.innerHeight,
+                                    top: 0,
+                                    backgroundColor: 'black',
+                                    opacity: 0.6,
+                                    animation: '300ms fadeto06'}}
+                            onClick={this.returnToAnswer} className={this.state.backToAns ? 'end06' : null}></div>
+                        <ul style={{height: len * window.innerHeight/13,
+                                    bottom: 7 * window.innerHeight / 100}} className={`menu-ul ${this.state.backToAns ? 'end' : null}`}>
+                            {this.props.websites.map((website, i) => (
+                                <li key={website} value={i} style={{height: window.innerHeight/15, bottom: i*window.innerHeight/14, animation: `fadein 400ms linear ${i * 200 / len}ms`}} className="menu-li" onClick={this.jumpto}>{website}</li>
+                            ))}
+                        </ul>
+                    </div>)
+                }
                 {/* SECTION Bottom Navigation */}
                 <div className="bot fadein" id="bot">
                     {back ?
@@ -183,7 +229,7 @@ class MobileAppAnswer extends React.Component{
                     </Link>:
                     <p className="botItem button" style={{...botNavStyle, opacity: 0.5}}>{'< Back'}</p>}
                     
-                    <p className="botItem" style={botNavStyle}>Answer {this.state.num + 1}</p>
+                    <p className="botItem" style={botNavStyle} onClick={this.handleMenuClick}>Answer {this.state.num + 1}</p>
 
                     {next ?
                     <Link to={`/Answer/answer${this.state.num+1}`}>

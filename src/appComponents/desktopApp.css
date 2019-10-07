@@ -122,10 +122,12 @@
 
 .tutFirefox {
   grid-template-rows: repeat(3, 45%);
+  --transY: 50%;
 }
 
 .tutOthers {
   grid-template-rows: repeat(3, 30%);
+  --transY: 33%;
 }
 
 .img1 {

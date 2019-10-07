@@ -1,17 +1,28 @@
+:root {
+    --popupHeight: 0;
+}
+
 .fadein {
     animation: fadein 1000ms;
 }
 
+.fadein-short {
+    animation: fadein 500ms;
+}
+
+.fadeout {
+    animation: fadeout 500ms;
+}
 
 .dipReplace-enter, .dipReplace-appear {
     opacity: 0;
-    transform: translateY(30%);
+    transform: translateY(var(--transY));
 }
 
 .dipReplace-enter-active {
     opacity: 1;
     transform: translateY(0%);
-    transition: opacity 700ms linear 700ms, transform 700ms ease-in 700ms;
+    transition: opacity 700ms linear 700ms, transform 700ms ease-out 700ms;
 }
 
 .dipReplace-exit {
@@ -21,8 +32,8 @@
 
 .dipReplace-exit-active{
     opacity: 0;
-    transform: translateY(30%);
-    transition: opacity 700ms linear, transform 700ms ease-out;
+    transform: translateY(var(--transY));
+    transition: opacity 700ms linear, transform 700ms ease-in;
 }
 
 
@@ -46,9 +57,6 @@
 }
 
 
-
-
-
 @keyframes fadein {
     0% {
       opacity: 0;
@@ -57,4 +65,29 @@
     100% {
       opacity: 1;
     }
-  }
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes popup {
+    from { height: 0; }
+    to { height: var(--popupHeight) }
+}
+
+@keyframes fadeto06 {
+    from { opacity: 0 ;}
+    to { opacity: 0.6; }
+}
+
+@keyframes fadeto0 {
+    from { opacity: 0.6; }
+    to { opacity: 0; }
+}
