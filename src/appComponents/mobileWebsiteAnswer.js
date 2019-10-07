@@ -141,7 +141,7 @@ class MobileAppAnswer extends React.Component{
         const next = this.state.num < this.state.lastNum - 1;
         let len = this.props.answers.length;
         return (
-            <div style={{minHeight: window.innerHeight}} className={this.state.backToCam ? "fadeout" : ""}>
+            <div style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}} className={this.state.backToCam ? "slideout" : ""}>
                 {/* SECTION Back Button */}
                 <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
                     <Back handleClick={this.handleClick} />

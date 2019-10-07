@@ -248,7 +248,7 @@ class MobileAppPicture extends React.Component {
     const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
     let bot = this.calculateBottom();
     return (
-      <div className="App fadein" style={{minHeight: window.innerHeight}}>
+      <div className={`App ${this.props.backToCam ? 'slidein' : null}`} style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}}>
         {/* SECTION  NAV */}
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
           {this.state.output === 'vid' ?
