@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import MobileAppPicture from './mobileWebsiteCamera';
 import MobileAppAnswer from './mobileWebsiteAnswer';
 import testDetails from '../test';
@@ -24,6 +24,7 @@ class MobileApp extends React.Component {
 
     // TODO set to only /Picture after developement complete
     this.props.history.push(false ? '/Answer' : '/Picture' );
+    console.log(this.props.history);
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
@@ -55,10 +56,10 @@ class MobileApp extends React.Component {
           <Route path="/Settings" render={() => (
             <SettingsPage backClick={this.changeDisplayAnswer} />
             )} />
-
+            
           <Route path="/Unknown" component={Unknown} />
 
-          <Route render={() => (<Redirect to="/Unknown" />)} />
+          {/* <Route render={() => (<Redirect to="/Unknown" />)} /> */}
         </Switch>
         {
           !this.state.backToCam ? null :

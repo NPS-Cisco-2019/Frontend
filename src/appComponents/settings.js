@@ -1,5 +1,6 @@
 import React from 'react';
 import { Back } from './elements';
+import Tutorial from './mobileTutorial';
 
 export default class SettingsPage extends React.Component {
     constructor(props){
@@ -24,8 +25,10 @@ export default class SettingsPage extends React.Component {
                     <Back handleClick={this.backClick} />
                     <p style={{fontSize: '1.2em', margin: 0}} id="websitePosition">Settings</p>
                 </header>
-                <div>
-                    <img src={require('./pictures/default.jpg')} alt="meme" style={{maxWidth: window.innerWidth, postion: "absolute", marginTop: 200}} />
+                <div style={{top: Math.round(window.innerHeight/10), position: "relative"}}>
+                <img src={require('./pictures/default.jpg')} alt="meme" style={{maxWidth: window.innerWidth, postion: "absolute"}} />
+                    <p style={{marginTop: 30}}>Temporary until a settings page and link to tutorial page is made</p>
+                    <Tutorial />
                 </div>
             </div>
         )
