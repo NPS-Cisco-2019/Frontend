@@ -5,6 +5,7 @@ import './desktopApp.css';
 import './animations.css';
 import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import Unknown from './404';
 // !SECTION
 
 const highlightStyle = {
@@ -162,6 +163,8 @@ export default class CompApp extends React.Component {
                     <Route path="/" render={() => {return (
                       <Redirect to={this.defaultLink} />
                     )}} />
+                    <Route path="/Unknown" component={Unknown} />
+                    <Route render={() => (<Redirect to="/Unknown" />)} />
                   </Switch>
                 </CSSTransition>
               </TransitionGroup>

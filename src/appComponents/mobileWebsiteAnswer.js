@@ -95,7 +95,7 @@ class MobileAppAnswer extends React.Component{
     // handles click of the Back button
     handleClick(){
         this.setState({backToCam: true});
-        this.props.backClick();
+        this.props.backClick('answer');
     }
 
     // goes to previous answer

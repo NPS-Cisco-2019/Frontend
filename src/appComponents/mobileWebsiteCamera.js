@@ -33,9 +33,6 @@ const captureButtonStyle = {
   backgroundColor: 'rgb(224, 0, 0)',
   border: '0.15em solid white',
   transition: 'bottom 100ms cubic-bezier(0.215, 0.61, 0.355, 1)'
-  // display: 'flex',
-  // justifyItems: 'center',
-  // alignItems: 'center'
 };
 
 const videoConstraints = {
@@ -58,7 +55,8 @@ class MobileAppPicture extends React.Component {
       ansClicked: false,
       quesStyle: {},
       gotQuestion: false,
-      question: 'what is love baby dont hurt me, dont hurt me, no more and then it continues coz its a long ass question that never ends?'
+      question: '',
+      navButton: Flash
     }
 
     // SECTION function binding 
@@ -72,8 +70,8 @@ class MobileAppPicture extends React.Component {
     this.inputText = this.inputText.bind(this);
     this.touchStart = this.touchStart.bind(this);
     this.showAnswer = this.showAnswer.bind(this);
-    this.showDefault = this.showDefault.bind(this);
     this.flipOutMode = this.flipOutMode.bind(this);
+    this.showSettings = this.showSettings.bind(this);
     this.changeTextBox = this.changeTextBox.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
     this.cameraErrorHandler = this.cameraErrorHandler.bind(this);
@@ -86,12 +84,6 @@ class MobileAppPicture extends React.Component {
   cameraErrorHandler(error){
     console.log(error);
     this.setState({ picture: require('./pictures/error.jpg'), output: 'img' });
-  }
-
-  // TODO remove this, temporary until settings path programmed/removed
-  showDefault(){
-    let img = require('./pictures/default.jpg');
-    this.setState({output: 'img', picture: img});
   }
 
   // changes whether picture or video is displayed
@@ -108,7 +100,9 @@ class MobileAppPicture extends React.Component {
   // takes a picure and sets output mode
   capture(){
     const imageSrc = this.refs.webcam.getScreenshot();
-    this.setState({picture: imageSrc, output: 'img'});
+    this.setState({picture: imageSrc, output: 'img', navButtonAnimation: true});
+    setTimeout(() => {this.setState({navButton: Back})}, 150);
+    setTimeout(() => {this.setState({navButtonAnimation: false})}, 300);
   }
 
   // SECTION Handles orientation change
@@ -125,7 +119,22 @@ class MobileAppPicture extends React.Component {
 
   // handles change from image mode back to video
   backClick(){
-    this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false }));
+    console.log(true)
+    this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false, navButtonAnimation: true }));
+    setTimeout(() => {this.setState({navButton: Flash})},150);
+    setTimeout(() => {this.setState({navButtonAnimation: false})}, 300);
+
+  }
+
+  // TODO remove this, temporary until settings path programmed/removed
+  showSettings(){
+    this.setState({footStyle :{
+      backgroundColor: 'rgb(50, 50, 50)',
+      zIndex: 42
+    }});
+    setTimeout(() => {
+      this.props.history.push('/Settings');
+    }, 800);
   }
 
   // Utilizes parent function to change Parent state
@@ -251,10 +260,10 @@ class MobileAppPicture extends React.Component {
       <div className={`App ${this.props.backToCam ? 'slidein' : null}`} style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}}>
         {/* SECTION  NAV */}
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
-          {this.state.output === 'vid' ?
-          <Flash />:
-          <Back handleClick={this.backClick} />}
-          <Settings showDefault={this.showDefault} />
+          <div className={this.state.navButtonAnimation ? "nav-button-animation" : null}>
+            <this.state.navButton handleClick={this.backClick} />
+          </div>
+          <Settings showSettings={this.showSettings} />
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
         {/* !SECTION */}

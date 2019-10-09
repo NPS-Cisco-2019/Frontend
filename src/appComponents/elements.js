@@ -64,20 +64,42 @@ export class Flash extends React.Component {
 export class Settings extends React.Component {
     constructor(props){
         super(props);
+
+        this.state = {
+            style: {zIndex: 70},
+            imgClass: ''
+        }
+
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(){
-        this.props.showDefault();
+        this.setState({
+            style: {
+                borderRadius: 0,
+                height: window.innerHeight,
+                width: window.innerWidth,
+                backgroundColor: 'rgb(25 ,25, 25)',
+                top: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'absolute',
+                zIndex: '69'
+            },
+            imgClass: "lateFade"
+        })
+        this.props.showSettings();
     }
 
     // TODO make settings menu
     render(){
         return (
-            <div style={navObj}>
+            <div style={{...navObj, ...this.state.style}} className="settings-transitions">
                 <img src={require("./pictures/settings.png")} 
                 alt="settings" 
-                className="nav-img" 
+                className={`nav-img ${this.state.imgClass}`}
+                style={{maxHeight: 3*maxLength/5}}
                 onClick={this.handleClick} />
             </div>
         );

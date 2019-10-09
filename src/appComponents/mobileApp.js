@@ -1,8 +1,10 @@
 import React from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import MobileAppPicture from './mobileWebsiteCamera';
 import MobileAppAnswer from './mobileWebsiteAnswer';
 import testDetails from '../test';
+import Unknown from './404';
+import SettingsPage from './settings';
 
 // ANCHOR Main Mobile App that renders various mobile pages
 // NOTE gets called by <App />, does not render by itself
@@ -15,25 +17,25 @@ class MobileApp extends React.Component {
       question: testDetails.question,
       answers: testDetails.answers,
       websites: testDetails.websites,
-      displayAnswer: false,
       backToCam: false
     }
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
 
-    this.props.history.push(this.state.displayAnswer ? '/Answer' : '/Picture' );
+    // TODO set to only /Picture after developement complete
+    this.props.history.push(false ? '/Answer' : '/Picture' );
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
   changeState(question, answers, website){
-    this.setState({question: question, answers: answers, website: website, displayAnswer: true});
+    this.setState({question: question, answers: answers, website: website});
   }
 
   // Passed to child <MobileAnswerApp /> to allow it to change the Parent state to show picture mode
   changeDisplayAnswer(){
     this.setState({ backToCam: true });
     setTimeout(() => {
-      this.setState({displayAnswer: false, backToCam: false});
+      this.setState({backToCam: false});
       this.props.history.push('/Picture');
     }, 500);
   }
@@ -49,6 +51,14 @@ class MobileApp extends React.Component {
           <Route path="/Picture" render={() => (
             <MobileAppPicture changeState={this.changeState} />
           )} />
+
+          <Route path="/Settings" render={() => (
+            <SettingsPage backClick={this.changeDisplayAnswer} />
+            )} />
+
+          <Route path="/Unknown" component={Unknown} />
+
+          <Route render={() => (<Redirect to="/Unknown" />)} />
         </Switch>
         {
           !this.state.backToCam ? null :
