@@ -263,7 +263,9 @@ class MobileAppPicture extends React.Component {
           <div className={this.state.navButtonAnimation ? "nav-button-animation" : null}>
             <this.state.navButton handleClick={this.backClick} />
           </div>
-          <Settings showSettings={this.showSettings} />
+          <div id="settingsDiv">
+            <Settings showSettings={this.showSettings} />
+          </div>
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
         {/* !SECTION */}

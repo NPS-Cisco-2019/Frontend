@@ -66,11 +66,16 @@ export class Settings extends React.Component {
         super(props);
 
         this.state = {
-            style: {zIndex: 70},
+            style: {zIndex: 69},
             imgClass: ''
         }
 
         this.handleClick = this.handleClick.bind(this);
+    }
+
+    componentDidMount(){
+        let left = document.getElementById('settingsDiv').getBoundingClientRect().left;
+        this.setState({style: { zIndex: 69, left: left }})
     }
 
     handleClick(){
@@ -85,7 +90,8 @@ export class Settings extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                zIndex: '69'
+                zIndex: '69',
+                left: 0
             },
             imgClass: "lateFade"
         })
