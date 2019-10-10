@@ -1,11 +1,12 @@
 // SECTION imports
 import React from 'react';
-import {Firefox, Chrome, Safari, getBrowser} from './elements';
+import { Firefox, Chrome, Safari } from './elements';
 import './desktopApp.css';
 import './animations.css';
 import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Unknown from './404';
+import  browser from '../browserDetection';
 // !SECTION
 
 const highlightStyle = {
@@ -18,7 +19,6 @@ const highlightStyle = {
 export default class CompApp extends React.Component {
   constructor(props){
     super(props);
-    const browser = getBrowser();
     this.defaultLink = `/${browser[0].toUpperCase()}${browser.slice(1)}`;
     this.state = {
       browser: browser,
@@ -81,7 +81,6 @@ export default class CompApp extends React.Component {
     for (let i = 0; i<3; i++){
         this.calcHighlight(l[i]);
     }
-    this.forceUpdate();
   }
 
   // SECTION Life Cycle Components

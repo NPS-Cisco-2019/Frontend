@@ -3,6 +3,7 @@ import CompApp from './appComponents/compWebsite';
 import MobileApp from './appComponents/mobileApp';
 import { BrowserRouter } from 'react-router-dom';
 
+
 /* ANCHOR  Main app, renders all components and is attached to the DOM
  *
  * Suggestion: Add the Name: Comment Anchors Extension (for VS Code atleast)
@@ -11,7 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 
 // TEMPORARY, If its true the website shows mobile app on desktop also, just for developement
-let dev = true;
+let dev = false;
 
 function App(){
   //checks whether user is on mobile

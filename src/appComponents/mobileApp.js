@@ -5,6 +5,7 @@ import MobileAppAnswer from './mobileWebsiteAnswer';
 import testDetails from '../test';
 import Unknown from './404';
 import SettingsPage from './settings';
+import Tutorial from './mobileTutorial';
 
 // ANCHOR Main Mobile App that renders various mobile pages
 // NOTE gets called by <App />, does not render by itself
@@ -24,7 +25,6 @@ class MobileApp extends React.Component {
 
     // TODO set to only /Picture after developement complete
     this.props.history.push(false ? '/Answer' : '/Picture' );
-    console.log(this.props.history);
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
@@ -56,6 +56,10 @@ class MobileApp extends React.Component {
           <Route path="/Settings" render={() => (
             <SettingsPage backClick={this.changeDisplayAnswer} />
             )} />
+
+          <Route path="/Tutorial" render={() => (
+            <Tutorial backClick={this.changeDisplayAnswer} />
+          )} />
             
           <Route path="/Unknown" component={Unknown} />
 

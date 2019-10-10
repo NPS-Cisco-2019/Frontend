@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getBrowser } from './elements';
+import browser from '../browserDetection';
 
 export default function(){
 
@@ -11,9 +11,7 @@ export default function(){
     let width = isMobile ? window.innerWidth/2 : window.innerWidth/6;
     let marginTop = isMobile ? window.innerHeight / 8 + 60 : window.innerHeight / 13
 
-    let browser = getBrowser();
     let home = '/' + (isMobile ? 'Picture' : browser[0].toUpperCase() + browser.slice(1));
-    console.log({isMobile, home}, getBrowser());
 
     return (
         <div style={{backgroundColor: 'rgb(40, 40, 40)', minHeight: window.innerHeight}}>

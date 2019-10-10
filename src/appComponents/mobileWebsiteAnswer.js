@@ -192,10 +192,10 @@ class MobileAppAnswer extends React.Component{
                         onSwipeRight={this.swipeBack}
                         tolerance={100}
                     >
-                        <div className="answerContainer fadein" style={{transform: `translateX(-${this.state.num * 110}%)`, maxHeight: this.maxHeight}} id="ansContainer">
+                        <div className="answerContainer fadein" style={{transform: `translateX(-${this.state.num * 110}%)`, height: this.maxHeight}} id="ansContainer">
                             {
                                 this.props.answers.map((item, i) => (
-                                    <Answer question={this.props.question} answer={item} key={this.props.websites[i]} id={"p" + i} />
+                                    <Answer question={this.props.question} answer={item} key={this.props.websites[i]} id={`p${i}`} />
                                 ))
                             }
                         </div>

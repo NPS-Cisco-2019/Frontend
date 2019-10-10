@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 // SECTION inline styles
@@ -25,7 +25,6 @@ const infoStyle = {
 }
 
 const answer = {
-    maxHeight: 3 * window.innerHeight / 4,
     overflowY: 'scroll',
     objectFit: 'cover',
     display: 'inline-block',
@@ -147,19 +146,22 @@ export function Back(props){
 export function Answer(props){
 
     
-    let height = useRef({});
+    let [height, setHeight] = useState(0);
 
     useEffect(() => {
-        // eslint-disable-next-line
-        let pRect = document.getElementById(props.id).getBoundingClientRect();
-        let container = document.getElementById('ansContainer').getBoundingClientRect();
+        setTimeout(() => {
+            // eslint-disable-next-line
+            let pRect = document.getElementById(props.id).getBoundingClientRect();
+            let container = document.getElementById('ansContainer').getBoundingClientRect();
+            console.log({container});
 
-        height.current.height = Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding)));
+            setHeight(Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding))));
+        }, 100);
+        
         // eslint-disable-next-line
-    }, [])
-
+    }, []);
     return (
-        <div className="info" style={{...infoStyle, ...answer, height: height.current.height}}>
+        <div className="info" style={{...infoStyle, ...answer, height: height}}>
             <p style={{margin: 0}} id={props.id}>{props.answer}</p>
         </div>
     )
@@ -252,19 +254,6 @@ export function Safari() {
             </div>
         </div>
     );
-}
-
-// detects which browser is being used
-export function getBrowser(){
-    if (typeof InstallTrigger !== 'undefined') {
-        return 'firefox';
-    } else if (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'])) {
-        return 'safari';
-    } else if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) {
-        return 'chrome';
-    } else {
-        console.log('unknown');
-    }
 }
 
 // !SECTION
