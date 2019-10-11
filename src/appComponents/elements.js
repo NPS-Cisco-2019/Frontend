@@ -153,7 +153,6 @@ export function Answer(props){
             // eslint-disable-next-line
             let pRect = document.getElementById(props.id).getBoundingClientRect();
             let container = document.getElementById('ansContainer').getBoundingClientRect();
-            console.log({container});
 
             setHeight(Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding))));
         }, 100);

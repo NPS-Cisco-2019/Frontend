@@ -101,11 +101,19 @@ class MobileAppAnswer extends React.Component{
     // goes to previous answer
     backClick(){
         this.setState({num: this.state.num - 1});
+        setTimeout(() => {
+            let websitePosition = document.getElementById('websitePosition').getBoundingClientRect();
+            this.setState({pos: {top: websitePosition.top, left: websitePosition.left}})
+        }, 260)
     }
 
     // goes to next answer
     nextClick(){
         this.setState({num: this.state.num + 1});
+        setTimeout(() => {
+            let websitePosition = document.getElementById('websitePosition').getBoundingClientRect();
+            this.setState({pos: {top: websitePosition.top, left: websitePosition.left}})
+        }, 260)
     }
 
     // SECTION swipe functions
@@ -126,7 +134,7 @@ class MobileAppAnswer extends React.Component{
 
     componentDidMount(){
         let websitePosition = document.getElementById('websitePosition').getBoundingClientRect();
-        this.pos = {top: websitePosition.top, left: websitePosition.left};
+        this.setState({pos: {top: websitePosition.top, left: websitePosition.left}});
 
         let ansContainer = document.getElementById('ansContainer').getBoundingClientRect();
         let bot = document.getElementById('bot').getBoundingClientRect();
@@ -145,7 +153,7 @@ class MobileAppAnswer extends React.Component{
                 {/* SECTION Back Button */}
                 <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
                     <Back handleClick={this.handleClick} />
-                    <p style={{fontSize: '1.2em', margin: 0, visibility: 'hidden'}} id="websitePosition">Placeholder</p>
+                    <p style={{fontSize: '1.2em', margin: 0, visibility: 'hidden'}} id="websitePosition">{this.props.websites[this.state.num]}</p>
                 </header>
                 {/* !SECTION */}
                 {/* SECTION Website displayer */}
@@ -153,29 +161,29 @@ class MobileAppAnswer extends React.Component{
                 <Route render={({location}) => (
                     <TransitionGroup>
                         <CSSTransition
-                            timeout={600}
+                            timeout={700}
                             classNames="fade"
                             key={location.key}
                         >
                             <Switch location={location}>
                                 <Route path="/Answer/answer0" render={() => (
-                                    <p style={{...webStyle, ...this.pos}}>{this.props.websites[0]}</p>
+                                    <p style={{...webStyle, ...this.state.pos}}>{this.props.websites[0]}</p>
                                 )} />
 
                                 <Route path="/Answer/answer1" render={() => (
-                                    <p style={{...webStyle, ...this.pos}}>{this.props.websites[1]}</p>
+                                    <p style={{...webStyle, ...this.state.pos}}>{this.props.websites[1]}</p>
                                 )} />
 
                                 <Route path="/Answer/answer2" render={() => (
-                                    <p style={{...webStyle, ...this.pos}}>{this.props.websites[2]}</p>
+                                    <p style={{...webStyle, ...this.state.pos}}>{this.props.websites[2]}</p>
                                 )} />
 
                                 <Route path="/Answer/answer3" render={() => (
-                                    <p style={{...webStyle, ...this.pos}}>{this.props.websites[3]}</p>
+                                    <p style={{...webStyle, ...this.state.pos}}>{this.props.websites[3]}</p>
                                 )} />
 
                                 <Route path="/Answer/answer4" render={() => (
-                                    <p style={{...webStyle, ...this.pos}}>{this.props.websites[4]}</p>
+                                    <p style={{...webStyle, ...this.state.pos}}>{this.props.websites[4]}</p>
                                 )} />
                             </Switch>
                         </CSSTransition>

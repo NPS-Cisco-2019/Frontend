@@ -34,7 +34,7 @@ export function register(config) {
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
-      if (isLocalhost) {
+      if (!isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
         checkValidServiceWorker(swUrl, config);
 
@@ -48,6 +48,7 @@ export function register(config) {
         });
       } else {
         // Is not localhost. Just register service worker
+        console.log('hello');
         registerValidSW(swUrl, config);
       }
     });
@@ -55,6 +56,11 @@ export function register(config) {
 }
 
 function registerValidSW(swUrl, config) {
+  const cacheName = "imgCache";
+  const toCache = [
+    '/appComponents/pictures'
+  ];
+
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -96,6 +102,27 @@ function registerValidSW(swUrl, config) {
     .catch(error => {
       console.error('Error during service worker registration:', error);
     });
+
+  // eslint-disable-next-line
+  self.addEventListener('install', event => {
+    event.waitUntil(
+      caches.open(cacheName)
+        .then(cache => {
+          return cache.addAll(toCache);
+        })
+        .catch(err => console.log(`Caching error: ${err}`))
+    )
+  });
+
+  // eslint-disable-next-line
+  self.addEventListener('fetch', event => {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          return response || fetch(event.request)
+        })
+    )
+  });
 }
 
 function checkValidServiceWorker(swUrl, config) {

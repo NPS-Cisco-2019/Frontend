@@ -8,14 +8,6 @@ import Swipe from 'react-easy-swipe';
 import { withRouter } from "react-router-dom";
 // !SECTION
 
-let isInstalled = false;
-
-if (window.matchMedia('(display-mode: standalone)').matches) {
-  isInstalled = true;
-}
-
-console.log(isInstalled);
-
 // SECTION Inline styles  
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
@@ -66,6 +58,8 @@ class MobileAppPicture extends React.Component {
       question: '',
       navButton: Flash
     }
+
+    document.body.style.overflowX = 'auto';
 
     // SECTION function binding 
     this.OCR = this.OCR.bind(this);
