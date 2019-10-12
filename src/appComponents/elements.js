@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import PropTypes from 'prop-types';
 
 // SECTION inline styles
 let maxLength = (10/100) * (69/100) * window.innerHeight;
@@ -54,13 +54,13 @@ export class Flash extends React.Component {
     render(){
         return (
             <div id={this.state.selected ? 'selected' : '' } className="selectable" style={navObj} onClick={this.handleClick}>
-                <img src={require("./pictures/flash.png")} alt="flash" className="nav-img" />
+                <img id={this.state.selected ? 'selectedImg' : '' } src={require("./pictures/flash.png")} alt="flash" className="nav-img" />
             </div>
         );
     }
 };
 
-export class Settings extends React.Component {
+export class SettingsButton extends React.Component {
     constructor(props){
         super(props);
 
@@ -83,13 +83,13 @@ export class Settings extends React.Component {
                 borderRadius: 0,
                 height: window.innerHeight,
                 width: window.innerWidth,
-                backgroundColor: 'rgb(25 ,25, 25)',
+                backgroundColor: 'var(--backCol)',
                 top: 0,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 position: 'absolute',
-                zIndex: '69',
+                zIndex: '1000',
                 left: 0
             },
             imgClass: "lateFade"
@@ -162,6 +162,59 @@ export function Answer(props){
     return (
         <div className="info" style={{...infoStyle, ...answer, height: height}}>
             <p style={{margin: 0}} id={props.id}>{props.answer}</p>
+        </div>
+    )
+}
+
+export function Switch(props){
+
+    let [enabled, setEnabled] = useState(Boolean(props.enabled));
+
+    let [style, setStyle] = useState({borderRadius: '50%', height: 15});
+
+    useEffect(() => {
+        let height = document.getElementById(props.id).getBoundingClientRect().height;
+        setStyle({ borderRadius: height/7, height: height/3.5, width: height/1.5 });
+    }, [props.id])
+
+    const handleClick = () => {
+        setEnabled(!enabled);
+        props.handleClick();
+    }
+
+    return (
+        <button className="switch" onClick={handleClick}
+            style={{...style,
+                    justifyContent: enabled ? 'flex-end' : 'flex-start',
+                    backgroundColor: enabled ? 'var(--highlightCol)' : null}}
+        >
+            <div className="switch-selector" style={{
+                width: 1.3*style.height,
+                height: 1.3*style.height,
+                top: -0.2*style.height,
+                right: enabled ? -0.2*style.height : null,
+                left: enabled ? null : -0.2*style.height
+            }}></div>
+        </button>
+    )
+}
+
+export function Setting({ type, name, id, handleClick }){
+
+    let Component;
+    let enabled;
+
+    if (type === 'switch'){
+        Component = Switch;
+    }
+
+
+    return (
+        <div className="setting-wrapper">
+            <div className="setting" id={id} style={{height: window.innerHeight/13 }}>
+                <p>{name}</p>
+                <Component id={id} handleClick={handleClick} enabled={enabled} />
+            </div>
         </div>
     )
 }
@@ -283,4 +336,40 @@ export class ErrorBoundary extends React.Component {
   
       return this.props.children; 
     }
+}
+
+
+
+
+
+
+SettingsButton.propTypes = {
+    showSettings: PropTypes.func.isRequired
+}
+
+Gallery.propTypes = {
+    selectFileHandle: PropTypes.func.isRequired
+}
+
+Back.propTypes = {
+    handleClick: PropTypes.func.isRequired
+}
+
+Answer.propTypes = {
+    id: PropTypes.string.isRequired,
+    answer: PropTypes.string.isRequired
+}
+
+Switch.propTypes = {
+    enabled: PropTypes.bool,
+    handleClick: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired
+}
+
+Setting.propTypes = {
+    type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    handleClick: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    enabled: PropTypes.bool
 }

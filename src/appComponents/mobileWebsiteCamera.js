@@ -1,11 +1,12 @@
 // SECTION imports
 import React from 'react';
 import Webcam from 'react-webcam';
-import {Flash, Settings, Gallery, Back} from './elements';
+import {Flash, SettingsButton, Gallery, Back} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
 import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types';
 // !SECTION
 
 // SECTION Inline styles  
@@ -19,7 +20,7 @@ const imgStyle = {
 };
 
 const imgContainerStyle = {
-  backgroundColor: 'rgb(25,25,25)',
+  backgroundColor: 'var(--backCol)',
   display: 'flex',
   position: 'relative'
 };
@@ -51,7 +52,7 @@ class MobileAppPicture extends React.Component {
       output: 'vid',
       picture: require("./pictures/question.jpg"),
       selectedFile: null,
-      footStyle: { backgroundColor: 'rgb(50, 50, 50)' },
+      footStyle: { backgroundColor: 'var(--midGray2)' },
       ansClicked: false,
       quesStyle: {},
       gotQuestion: false,
@@ -121,7 +122,6 @@ class MobileAppPicture extends React.Component {
 
   // handles change from image mode back to video
   backClick(){
-    console.log(true)
     this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false, navButtonAnimation: true }));
     setTimeout(() => {this.setState({navButton: Flash})},150);
     setTimeout(() => {this.setState({navButtonAnimation: false})}, 300);
@@ -131,7 +131,7 @@ class MobileAppPicture extends React.Component {
   // TODO remove this, temporary until settings path programmed/removed
   showSettings(){
     this.setState({footStyle :{
-      backgroundColor: 'rgb(50, 50, 50)',
+      backgroundColor: 'var(--midGray2)',
       zIndex: 42
     }});
     setTimeout(() => {
@@ -149,7 +149,7 @@ class MobileAppPicture extends React.Component {
     this.setState({
       footStyle: {
         width: window.innerWidth,
-        backgroundColor: 'rgb(25, 25, 25)',
+        backgroundColor: 'var(--backCol)',
         margin: 0,
         borderRadius: 0
       },
@@ -266,7 +266,7 @@ class MobileAppPicture extends React.Component {
             <this.state.navButton handleClick={this.backClick} />
           </div>
           <div id="settingsDiv">
-            <Settings showSettings={this.showSettings} />
+            <SettingsButton showSettings={this.showSettings} />
           </div>
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
@@ -331,3 +331,9 @@ class MobileAppPicture extends React.Component {
 
 
 export default withRouter(MobileAppPicture);
+
+
+
+MobileAppPicture.propTypes = {
+  changeState: PropTypes.func.isRequired
+}

@@ -6,9 +6,31 @@ import testDetails from '../test';
 import Unknown from './404';
 import SettingsPage from './settings';
 import Tutorial from './mobileTutorial';
+import { changeMode } from '../localStorageHandleing';
 
 // ANCHOR Main Mobile App that renders various mobile pages
 // NOTE gets called by <App />, does not render by itself
+
+let style = document.documentElement.style;
+
+
+let highlightColor = localStorage.getItem('highlightCol');
+if (highlightColor === null){
+  localStorage.setItem('highlightCol', 'rgb(50, 90, 245)');
+  highlightColor = 'rgb(50, 90, 245)';
+}
+
+let mode = localStorage.getItem('mode');
+if (mode === null){
+  localStorage.setItem('mode', 'dark');
+  mode = 'dark'
+}
+
+changeMode(mode);
+
+style.setProperty('--highlightCol', highlightColor)
+
+document.getElementById('root').style.backgroundColor = 'var(--backCol)';
 
 class MobileApp extends React.Component {
   constructor(props){

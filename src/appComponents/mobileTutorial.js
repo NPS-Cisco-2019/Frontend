@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { Chrome, Firefox, Safari, Back } from './elements';
 import browser from '../browserDetection';
+import PropTypes from 'prop-types';
 
 let Tutorial;
+let minHeight;
 
 if (browser === 'firefox'){
     Tutorial = Firefox;
+    minHeight = window.innerHeight * 2;
 } else if (browser === 'safari'){
     Tutorial = Safari;
+    minHeight = window.innerHeight * 3;
 } else {
     Tutorial = Chrome;
+    minHeight = window.innerHeight * 3;
 }
 
-export default function(props){
+function Tut(props){
 
     const backClick = () => {
         props.backClick();
@@ -32,7 +37,7 @@ export default function(props){
     rootStyle.setProperty('--rowGap', '0');
 
     return (
-        <div style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}} className={backToCam ? "slideout" : "fadein"}>
+        <div style={{minHeight: minHeight, position: "absolute", width: window.innerWidth, backgroundColor: 'var(--backCol)', overflow: 'hidden'}} className={backToCam ? "slideout" : "fadein"}>
             <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
                 <Back handleClick={backClick} />
                 <p style={{fontSize: '1.2em', margin: 0}} id="websitePosition">Tutorial</p>
@@ -42,4 +47,12 @@ export default function(props){
             </div>
         </div>
     )
+}
+
+
+export default Tut;
+
+
+Tut.propTypes = {
+    backClick: PropTypes.func.isRequired
 }

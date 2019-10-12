@@ -6,6 +6,7 @@ import './animations.css'
 import Swipe from 'react-easy-swipe';
 import { Route, Link, Switch, withRouter } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import PropTypes from 'prop-types';
 // !SECTION
 
 // SECTION Inline Styles
@@ -32,7 +33,8 @@ const container = {
     boxSizing: 'border-box',
     paddingTop: 0,
     paddingBottom: 7 * window.innerHeight / 100,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: 'var(--backCol)'
 }
 
 const infoStyle = {
@@ -79,6 +81,10 @@ class MobileAppAnswer extends React.Component{
         this.props.history.push(`/Answer/answer${e.target.value}`);
         this.setState({num: e.target.value});
         this.returnToAnswer();
+        setTimeout(() => {
+            let websitePosition = document.getElementById('websitePosition').getBoundingClientRect();
+            this.setState({pos: {top: websitePosition.top, left: websitePosition.left}})
+        }, 260)
     }
 
     handleMenuClick(){
@@ -252,3 +258,12 @@ class MobileAppAnswer extends React.Component{
 }
 
 export default withRouter(MobileAppAnswer);
+
+
+
+MobileAppAnswer.protoTypes = {
+    question: PropTypes.string.isRequired,
+    answers: PropTypes.array.isRequired,
+    websites: PropTypes.array.isRequired,
+    backClick: PropTypes.func.isRequired
+}
