@@ -20,6 +20,11 @@ if (highlightColor === null){
   highlightColor = 'rgb(50, 90, 245)';
 }
 
+let pressDelay = localStorage.getItem('pressDelay');
+if (pressDelay === null){
+  localStorage.setItem('pressDelay', '300')
+}
+
 let mode = localStorage.getItem('mode');
 if (mode === null){
   localStorage.setItem('mode', 'dark');
@@ -47,7 +52,7 @@ class MobileApp extends React.Component {
 
     // TODO set to only /Picture after developement complete
     this.props.history.push(false ? '/Answer' : '/Picture' );
-    // this.props.history.push('/Settings');
+    this.props.history.push('/Settings');
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer

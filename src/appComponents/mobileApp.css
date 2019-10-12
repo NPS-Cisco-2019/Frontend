@@ -5,7 +5,6 @@
   --midGray: rgb(75, 75, 75);
   --backCol2: rgb(30, 30, 30);
   --midGray2: rgb(50, 50, 50);
-  --midGray3: rgb(100, 100, 100);
   --filter: none;
 }
 
@@ -160,13 +159,12 @@ footer {
   background-color: var(--backCol);
   display: flex;
   justify-content: center;
-  width: 50%;
-  left: 25%;
   border-top-left-radius: 7%;
   border-top-right-radius: 7%;
   overflow: hidden;
   animation: popup 400ms cubic-bezier(0.215, 0.610, 0.355, 1);
   padding: 0 5%;
+  box-sizing: border-box;
 }
 
 .end {
@@ -258,12 +256,20 @@ footer {
   width: 95%;
   background-color: var(--midGray2);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   border-radius: 10px;
   padding-top: 2.5%;
   padding-bottom: 2.5%;
   margin: 4% 2.5%;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: color 300ms linear, background-color 300ms linear;
+  overflow: hidden;
+}
+
+.height-trans {
+  transition: height 300ms ease-in-out, color 300ms linear, background-color 300ms linear;
 }
 
 .setting {
@@ -274,6 +280,8 @@ footer {
   align-items: center;
   font-family: Raleway;
   padding: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .setting p {
@@ -291,6 +299,39 @@ footer {
   border-radius: 50%;
   background-color: var(--textCol);
   position: relative;
+}
+
+.slider {
+  margin: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--backCol2);
+  border-radius: 10px;
+  height: 20px;
+}
+
+.slider:focus {
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: var(--highlightCol);
+  content: 'hello';
+}
+
+.slider::-moz-range-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: var(--highlightCol);
+  content: 'hello';
 }
 
 button {

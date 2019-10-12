@@ -9,6 +9,10 @@ import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 // !SECTION
 
+let pressDelay = localStorage.getItem('pressDelay');
+
+const vibratable = "vibrate" in navigator;
+
 // SECTION Inline styles  
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
@@ -237,10 +241,13 @@ class MobileAppPicture extends React.Component {
     setTimeout(() => {
       if (!this.state.prevent){
         this.setState({longpress: true});
+        if (vibratable){
+          navigator.vibrate(50);
+        }
       } else {
         this.setState({prevent: false});
       }
-    }, 300);
+    }, pressDelay);
   }
 
   touchEnd(){

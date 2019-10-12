@@ -74,7 +74,8 @@ export class SettingsButton extends React.Component {
 
     componentDidMount(){
         let left = document.getElementById('settingsDiv').getBoundingClientRect().left;
-        this.setState({style: { zIndex: 69, left: left }})
+        let top = document.getElementsByClassName('settings-transitions')[0].getBoundingClientRect().top;
+        this.setState({style: { zIndex: 69, left: left, top: top }})
     }
 
     handleClick(){
@@ -199,22 +200,48 @@ export function Switch(props){
     )
 }
 
-export function Setting({ type, name, id, handleClick }){
+function Num(props){
+    return (
+        <p id={props.id}>300ms</p>
+    )    
+}
+
+export function Setting({ type, name, id, handleClick, children, props }){
+
+    // const expandClick = () => {
+    //     setMaxHeight(!open ? 300 : window.innerHeight/13 + window.innerHeight/40);
+    //     setOpen(!open);
+    // }
+    let [open, setOpen] = useState(true)
+    let [maxHeight, setMaxHeight] = useState('100%');
+    let [transition, setTransition] = useState(false);
+
+    useEffect(() => {
+        let totHeight = document.getElementById(`${id}-wrapper`).getBoundingClientRect().height;
+        console.log(document.getElementById(`${id}-wrapper`).getBoundingClientRect().height);
+        setMaxHeight(totHeight);
+        setOpen(false);
+        setTimeout(() => setTransition(true), 50);
+        //eslint-disable-next-line
+    }, [])
 
     let Component;
-    let enabled;
+    let height = window.innerHeight/13 + window.innerHeight/40;
 
     if (type === 'switch'){
         Component = Switch;
+    } else if (type === 'num'){
+        Component = Num;
     }
 
 
     return (
-        <div className="setting-wrapper">
-            <div className="setting" id={id} style={{height: window.innerHeight/13 }}>
+        <div className={`setting-wrapper ${transition ? 'height-trans' : null}`} id={`${id}-wrapper`} style={{height: open ? maxHeight : height}}>
+            <div className="setting" id={id} style={{flexBasis: window.innerHeight/12 }} onClick={()=>setOpen(!open)}>
                 <p>{name}</p>
-                <Component id={id} handleClick={handleClick} enabled={enabled} />
+                <Component id={id} handleClick={handleClick} {...props} />
             </div>
+            {children}
         </div>
     )
 }
@@ -369,7 +396,7 @@ Switch.propTypes = {
 Setting.propTypes = {
     type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    handleClick: PropTypes.func.isRequired,
+    handleClick: PropTypes.func,
     id: PropTypes.string.isRequired,
-    enabled: PropTypes.bool
+    props: PropTypes.object
 }

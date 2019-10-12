@@ -227,7 +227,7 @@ class MobileAppAnswer extends React.Component{
                                     opacity: 0.6,
                                     animation: '300ms fadeto06'}}
                             onClick={this.returnToAnswer} className={this.state.backToAns ? 'end06' : null}></div>
-                        <ul style={{height: len * window.innerHeight/13,
+                        <ul style={{height: len * window.innerHeight/13, width: window.innerWidth/2, left: window.innerWidth/4,
                                     bottom: 7 * window.innerHeight / 100}} className={`menu-ul ${this.state.backToAns ? 'end' : null}`}>
                             {this.props.websites.map((website, i) => (
                                 <li key={website} value={i} style={{height: window.innerHeight/15, bottom: i*window.innerHeight/14, animation: `fadein 400ms linear ${i * 200 / len}ms`}} className="menu-li" onClick={this.jumpto}>{website}</li>
