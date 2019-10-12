@@ -47,6 +47,7 @@ class MobileApp extends React.Component {
 
     // TODO set to only /Picture after developement complete
     this.props.history.push(false ? '/Answer' : '/Picture' );
+    // this.props.history.push('/Settings');
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer

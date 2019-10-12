@@ -92,7 +92,7 @@ class SettingsPage extends React.Component {
                     </div>
                 </div>
                 
-                <div style={{top: Math.round(window.innerHeight/10 + (this.state.showTutBanner ? window.innerHeight/9 : 0)),
+                <div style={{top: Math.round(window.innerHeight/10 + (this.state.showTutBanner ? window.innerHeight/11 : 0)),
                             position: "relative",
                             transition: 'all 300ms cubic-bezier(0.215, 0.610, 0.355, 1)'}}
                 >

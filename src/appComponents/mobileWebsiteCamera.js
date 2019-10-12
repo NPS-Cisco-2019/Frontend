@@ -235,8 +235,10 @@ class MobileAppPicture extends React.Component {
   // SECTION Handles pressing of the question when it is shown
   touchStart(){
     setTimeout(() => {
-      if (this.state.prevent){
+      if (!this.state.prevent){
         this.setState({longpress: true});
+      } else {
+        this.setState({prevent: false});
       }
     }, 300);
   }
@@ -317,6 +319,26 @@ class MobileAppPicture extends React.Component {
                     <input value={this.state.question} type="text" onChange={this.inputText} onKeyDown={this.submit} /> :
                     <p id="question" style={{margin: 0, fontSize: 16}}>{this.state.question}</p>}
                     {this.mounted = true}
+                    {this.state.ansClicked ? null :
+                      (<div style={{position: "absolute", right: window.innerWidth/19}}>
+                        <div onClick={this.changeTextBox} style={{
+                          height: window.innerHeight/20,
+                          width: window.innerHeight/20,
+                          cursor: 'pointer',
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          position: "relative",
+                          top: -window.innerWidth/36,
+                          left: window.innerWidth/36
+                        }}>
+                          {this.state.isTextBox ?
+                            <div style={{ height: '50%', width: '50%', backgroundColor: 'var(--midGray)', borderRadius: '50%', right: 0, position: "relative"}}>&#215;</div> : null
+                            // <img className="invert" src={require('./pictures/edit.png')} alt="edit" style={{ height: '50%' }} />
+                          }
+                        </div>
+                      </div>) 
+                    }
                   </div>)
                   : this.mounted = false
                 }
