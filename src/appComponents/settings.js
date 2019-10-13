@@ -97,10 +97,10 @@ class SettingsPage extends React.Component {
                             transition: 'all 300ms cubic-bezier(0.215, 0.610, 0.355, 1)'}}
                 >
                     <Setting name="Dark Mode" type="switch" id="darkMode" handleClick={this.changeMode} props={{enabled: mode === 'dark'}} />
-                    <Setting name="Long Press Delay" type="num" id="pressDelay" handleClick={()=>console.log('hello')}>
+                    {/*<Setting name="Long Press Delay" type="num" id="pressDelay" handleClick={()=>console.log('hello')}>
                         <input id="pressDelaySlider" type="range" min="200" max="600" defaultValue={300} className="slider" style={{'--content' : 20}} />
                         <button onClick={changeLongDuration}>ok</button>
-                    </Setting>
+                    </Setting>*/}
                     <p style={{marginTop: 30}}>More settings to be implemented</p>
                 </div>
             </div>
@@ -110,10 +110,10 @@ class SettingsPage extends React.Component {
 
 export default withRouter(SettingsPage);
 
-function changeLongDuration(){
-    let value = document.getElementById('pressDelaySlider').value;
-    localStorage.setItem('pressDelay', value + '');
-}
+// function changeLongDuration(){
+//     let value = document.getElementById('pressDelaySlider').value;
+//     localStorage.setItem('pressDelay', value + '');
+// }
 
 
 SettingsPage.propTypes = {

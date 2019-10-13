@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import MobileAppPicture from './mobileWebsiteCamera';
 import MobileAppAnswer from './mobileWebsiteAnswer';
 import testDetails from '../test';
@@ -47,12 +47,14 @@ class MobileApp extends React.Component {
       websites: testDetails.websites,
       backToCam: false
     }
+
+    setTimeout(() => { this.started = true; },100);
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
 
     // TODO set to only /Picture after developement complete
     this.props.history.push(false ? '/Answer' : '/Picture' );
-    this.props.history.push('/Settings');
+    // this.props.history.push('/Settings');
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
@@ -70,6 +72,7 @@ class MobileApp extends React.Component {
   }
 
   render(){
+    console.log(this.props.location.pathname)
     return (
       <div>
         <Switch>
@@ -91,7 +94,7 @@ class MobileApp extends React.Component {
             
           <Route path="/Unknown" component={Unknown} />
 
-          {/* <Route render={() => (<Redirect to="/Unknown" />)} /> */}
+          {this.started ? <Route path="*" render={() => (<Redirect to="/Unknown" />)} /> : null}
         </Switch>
         {
           !this.state.backToCam ? null :

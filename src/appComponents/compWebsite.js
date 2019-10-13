@@ -114,7 +114,7 @@ export default class CompApp extends React.Component {
     // opacity for header
     let opacity = Math.max(Math.min(50 / this.state.currentScrollHeight  , 1), 0.7);
     return(
-      <BrowserRouter>
+      <BrowserRouter basename="/Frontend">
         <div className="App deskApp">
           <header className="deskHead" style={{opacity: opacity}} id="head">
             <h1>This app is not supported on Computers.</h1>

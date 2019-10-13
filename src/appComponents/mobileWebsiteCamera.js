@@ -210,7 +210,7 @@ class MobileAppPicture extends React.Component {
       this.setState({isTextBox: false})
       let obj = await scrape(this.state.question);
       this.setState({ answers: obj.answers, websites: obj.websites})
-      this.showAnswer();
+      setTimeout(() => this.showAnswer(), 75)
     }
   }
 
