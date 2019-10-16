@@ -218,7 +218,6 @@ export function Setting({ type, name, id, handleClick, children, props }){
 
     useEffect(() => {
         let totHeight = document.getElementById(`${id}-wrapper`).getBoundingClientRect().height;
-        console.log(document.getElementById(`${id}-wrapper`).getBoundingClientRect().height);
         setMaxHeight(totHeight);
         setOpen(false);
         setTimeout(() => setTransition(true), 50);

@@ -58,8 +58,8 @@ class MobileApp extends React.Component {
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
-  changeState(question, answers, website){
-    this.setState({question: question, answers: answers, website: website});
+  changeState(question, answers, websites){
+    this.setState({question: question, answers: answers, websites: websites});
   }
 
   // Passed to child <MobileAnswerApp /> to allow it to change the Parent state to show picture mode
@@ -72,7 +72,6 @@ class MobileApp extends React.Component {
   }
 
   render(){
-    console.log(this.props.location.pathname)
     return (
       <div>
         <Switch>

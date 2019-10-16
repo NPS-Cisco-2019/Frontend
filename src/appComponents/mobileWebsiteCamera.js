@@ -198,18 +198,31 @@ class MobileAppPicture extends React.Component {
   /* if image is taken for proccesing */
   async OCR(){
     this.setState({isTextBox: false});
-    let question = await OCR(this.state.picture);
+    
+    let responseOCR = await OCR(this.state.picture);
+    let questionJSON = await responseOCR.json();
+    let question = questionJSON.question;
+    
     this.setState({ question: question, gotQuestion: true })
-    let obj = await scrape(this.state.question);
-    this.setState({ answers: obj.answers, websites: obj.websites})
+    console.log('question gotten');
+    
+    let responseScrapy = await scrape(this.state.question);
+    let obj = await responseScrapy.json();
+    // let obj = objJSON
+    
+    this.setState({ answers: obj.answers, websites: obj.websites});
+    console.log("answers gotten");
   }
     
-  /* if question is entered maually */
+  /* Scraping function */
   async submit(e){
     if (e.key === 'Enter'){
       this.setState({isTextBox: false})
-      let obj = await scrape(this.state.question);
+      let response = await scrape(this.state.question);
+      let obj = await response.json();
+      // let obj = objJSON
       this.setState({ answers: obj.answers, websites: obj.websites})
+      console.log("answers gotten");
       setTimeout(() => this.showAnswer(), 75)
     }
   }
@@ -254,7 +267,7 @@ class MobileAppPicture extends React.Component {
     if (!!this.state.longpress){
       this.changeTextBox();
     } else if (!this.state.isTextBox){
-      this.submit({key: 'Enter'});
+      this.showAnswer();
     }
     this.setState({longpress: false, prevent: true});
   }
