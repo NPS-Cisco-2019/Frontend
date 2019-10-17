@@ -167,7 +167,7 @@ export function Answer(props){
     )
 }
 
-export function Switch(props){
+function Switch(props){
 
     let [enabled, setEnabled] = useState(Boolean(props.enabled));
 
@@ -202,19 +202,40 @@ export function Switch(props){
 
 function Num(props){
     return (
-        <p id={props.id}>300ms</p>
+        <p id={props.id}>{props.value}{props.suffix}</p>
     )    
 }
 
-export function Setting({ type, name, id, handleClick, children, props }){
+export function Null(){return <div></div>}
 
-    // const expandClick = () => {
-    //     setMaxHeight(!open ? 300 : window.innerHeight/13 + window.innerHeight/40);
-    //     setOpen(!open);
-    // }
+let pressDelay = localStorage.getItem('pressDelay');
+
+export function Slider({ updateOpen, updateValue }){
+    let [value, setValue] = useState(pressDelay);
+
+    const submit = () => {
+        localStorage.setItem('pressDelay', value)
+        updateOpen(false);
+        updateValue(value);
+    }
+
+    return (
+        <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+            <div style={{display: 'flex', width: window.innerWidth * 0.8, marginBottom: 5}}>
+                <input id="pressDelaySlider" type="range" min="200" max="600" value={value} onChange={e => setValue(e.target.value)} className="slider" />
+                <p style={{margin: '0'}}>{value}</p>
+            </div>
+            <button style={{width: 50, height: 30, backgroundColor: 'var(--midGray)', borderRadius: 5}} onClick={submit}>ok</button>
+        </div>
+    )
+}
+
+export function Setting({ type, name, id, handleClick, Children, props, compValue }){
+
     let [open, setOpen] = useState(true)
     let [maxHeight, setMaxHeight] = useState('100%');
     let [transition, setTransition] = useState(false);
+    let [value, setValue] = useState(compValue);
 
     useEffect(() => {
         let totHeight = document.getElementById(`${id}-wrapper`).getBoundingClientRect().height;
@@ -224,23 +245,26 @@ export function Setting({ type, name, id, handleClick, children, props }){
         //eslint-disable-next-line
     }, [])
 
+
     let Component;
     let height = window.innerHeight/13 + window.innerHeight/40;
 
+    let openable = true;
+
     if (type === 'switch'){
         Component = Switch;
+        openable = false;
     } else if (type === 'num'){
         Component = Num;
     }
 
-
     return (
         <div className={`setting-wrapper ${transition ? 'height-trans' : null}`} id={`${id}-wrapper`} style={{height: open ? maxHeight : height}}>
-            <div className="setting" id={id} style={{flexBasis: window.innerHeight/12 }} onClick={()=>setOpen(!open)}>
+            <div className="setting" id={id} style={{flexBasis: window.innerHeight/12 }} onClick={openable ? ()=>setOpen(!open) : null}>
                 <p>{name}</p>
-                <Component id={id} handleClick={handleClick} {...props} />
+                <Component id={id} handleClick={handleClick} {...props} value={value} />
             </div>
-            {children}
+            <Children updateOpen={setOpen} updateValue={setValue} value />
         </div>
     )
 }

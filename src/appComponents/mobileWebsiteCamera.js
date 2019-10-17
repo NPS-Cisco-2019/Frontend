@@ -336,7 +336,7 @@ class MobileAppPicture extends React.Component {
                     onTouchEnd={this.touchEnd}
                   >
                     {this.state.isTextBox ?
-                    <input value={this.state.question} type="text" onChange={this.inputText} onKeyDown={this.submit} /> :
+                    <input value={this.state.question} type="text" onChange={this.inputText} onKeyDown={this.submit} style={{marginRight: window.innerHeight/40}} /> :
                     <p id="question" style={{margin: 0, fontSize: 16}}>{this.state.question}</p>}
                     {this.mounted = true}
                     {this.state.ansClicked ? null :

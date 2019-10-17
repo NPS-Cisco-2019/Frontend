@@ -1,5 +1,5 @@
 import React from 'react';
-import { Back, Setting } from './elements';
+import { Back, Setting, Slider, Null } from './elements';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { changeMode } from '../localStorageHandleing';
@@ -20,7 +20,7 @@ class SettingsPage extends React.Component {
             animateOutBanner: false,
             bannerStyle: {
                 height: window.innerHeight/11,
-                backgroundColor: 'var(--highlightCol',
+                backgroundColor: 'var(--highlightCol)',
                 borderRadius: window.innerWidth/50,
                 width: window.innerWidth * 0.95,
                 top: Math.round(window.innerHeight/10),
@@ -96,11 +96,8 @@ class SettingsPage extends React.Component {
                             position: "relative",
                             transition: 'all 300ms cubic-bezier(0.215, 0.610, 0.355, 1)'}}
                 >
-                    <Setting name="Dark Mode" type="switch" id="darkMode" handleClick={this.changeMode} props={{enabled: mode === 'dark'}} />
-                    {/*<Setting name="Long Press Delay" type="num" id="pressDelay" handleClick={()=>console.log('hello')}>
-                        <input id="pressDelaySlider" type="range" min="200" max="600" defaultValue={300} className="slider" style={{'--content' : 20}} />
-                        <button onClick={changeLongDuration}>ok</button>
-                    </Setting>*/}
+                    <Setting name="Dark Mode" type="switch" id="darkMode" handleClick={this.changeMode} props={{enabled: mode === 'dark'}} Children={Null} />
+                    <Setting name="Long Press Delay" type="num" id="pressDelay" props={{suffix: 'ms'}} compValue={localStorage.getItem('pressDelay')} Children={Slider} />
                     <p style={{marginTop: 30}}>More settings to be implemented</p>
                 </div>
             </div>
