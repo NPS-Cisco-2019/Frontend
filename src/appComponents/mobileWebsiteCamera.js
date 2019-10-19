@@ -7,6 +7,8 @@ import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
 import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
+import Loader from 'react-spinners/CircleLoader';
+import { css } from '@emotion/core'
 // !SECTION
 
 let pressDelay = localStorage.getItem('pressDelay');
@@ -37,7 +39,10 @@ const captureButtonStyle = {
   zIndex: 42,
   backgroundColor: 'rgb(224, 0, 0)',
   border: '0.15em solid white',
-  transition: 'bottom 100ms cubic-bezier(0.215, 0.61, 0.355, 1)'
+  transition: 'bottom 100ms cubic-bezier(0.215, 0.61, 0.355, 1)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
 };
 
 const videoConstraints = {
@@ -46,6 +51,12 @@ const videoConstraints = {
   height: window.innerWidth,
   width: window.innerHeight
 };
+
+const overide = css`
+  postion: relative;
+  top: -1px;
+  left: -1px;
+`;
 
 // !SECTION 
 
@@ -61,7 +72,8 @@ class MobileAppPicture extends React.Component {
       quesStyle: {},
       gotQuestion: false,
       question: '',
-      navButton: Flash
+      navButton: Flash,
+      isLoading: false
     }
 
     document.body.style.overflowX = 'auto';
@@ -145,6 +157,7 @@ class MobileAppPicture extends React.Component {
 
   // Utilizes parent function to change Parent state
   showAnswer(){
+    if (this.state.isLoading){ return }
     this.props.changeState(this.state.question, this.state.answers, this.state.websites);
 
     let questionHeight = document.getElementById('question').getBoundingClientRect().height;
@@ -197,7 +210,7 @@ class MobileAppPicture extends React.Component {
 
   /* if image is taken for proccesing */
   async OCR(){
-    this.setState({isTextBox: false});
+    this.setState({isTextBox: false, isLoading: true});
     
     let responseOCR = await OCR(this.state.picture);
     let questionJSON = await responseOCR.json();
@@ -210,18 +223,18 @@ class MobileAppPicture extends React.Component {
     let obj = await responseScrapy.json();
     // let obj = objJSON
     
-    this.setState({ answers: obj.answers, websites: obj.websites});
+    this.setState({ answers: obj.answers, websites: obj.websites, isLoading: false});
     console.log("answers gotten");
   }
     
   /* Scraping function */
   async submit(e){
     if (e.key === 'Enter'){
-      this.setState({isTextBox: false})
+      this.setState({isTextBox: false, isLoading: true})
       let response = await scrape(this.state.question);
       let obj = await response.json();
       // let obj = objJSON
-      this.setState({ answers: obj.answers, websites: obj.websites})
+      this.setState({ answers: obj.answers, websites: obj.websites, isLoading: false})
       console.log("answers gotten");
       setTimeout(() => this.showAnswer(), 75)
     }
@@ -315,7 +328,18 @@ class MobileAppPicture extends React.Component {
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
             <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2), bottom: bot}} onClick={func}>
-              {this.state.output === 'img' ? <img className="searchImg" src={require('./pictures/search.png')} alt="search icon" /> : null}
+              {this.state.output === 'img' ?
+                (this.state.isLoading ?
+                  (<Loader
+                    css={overide}
+                    sizeUnit={'px'}
+                    size={6*maxLength/10}
+                    color={"#FFF"}
+                    loading={true}
+                  />) :
+                  <img className="searchImg" src={require('./pictures/search.png')} alt="search icon" />
+                ): null
+              }
             </button>
             {/* !SECTION */}
             {/* SECTION Bottom bar */}

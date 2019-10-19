@@ -19,7 +19,9 @@ export function OCR(imgPath){
         return new Promise((resolve, reject) => {
             resolve({
                 json: () => new Promise((resolve, reject) => {
-                    resolve({ question: testDetails.question })
+                    setTimeout(() => {
+                        resolve({ question: testDetails.question });
+                    }, 2000);
                 })
             })
         })
@@ -37,10 +39,12 @@ export function scrape(question){
         return new Promise((resolve, reject) => {
             resolve({
                 json: () => new Promise((resolve, reject) => {
-                    resolve({
-                        answers: testDetails.answers,
-                        websites: testDetails.websites
-                    })
+                    setTimeout(() => {
+                        resolve({
+                            answers: testDetails.answers,
+                            websites: testDetails.websites
+                        });
+                    }, 10000)
                 })
             })
         })

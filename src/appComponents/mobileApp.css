@@ -147,10 +147,9 @@ footer {
 
 .searchImg {
   position: relative;
-  top: 3px;
   max-width: 60%;
   max-height: 60%;
-  margin: auto;
+  margin: 0;
   animation: fadein 500ms;
 }
 
