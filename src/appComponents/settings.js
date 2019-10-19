@@ -1,5 +1,5 @@
 import React from 'react';
-import { Back, Setting, Slider, Null } from './elements';
+import { Back, Setting, Slider, Null, ColorPicker } from './elements';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { changeMode } from '../localStorageHandleing';
@@ -72,6 +72,7 @@ class SettingsPage extends React.Component {
 
     render(){
         let mode = localStorage.getItem('mode');
+        let colour = localStorage.getItem('highlightCol')
         return (
             <div style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth, backgroundColor: 'var(--backCol)'}} className={this.state.backToCam ? "slideout" : "fadein"}>
                 <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
@@ -97,7 +98,8 @@ class SettingsPage extends React.Component {
                             transition: 'all 300ms cubic-bezier(0.215, 0.610, 0.355, 1)'}}
                 >
                     <Setting name="Dark Mode" type="switch" id="darkMode" handleClick={this.changeMode} props={{enabled: mode === 'dark'}} Children={Null} />
-                    <Setting name="Long Press Delay" type="num" id="pressDelay" props={{suffix: 'ms'}} compValue={localStorage.getItem('pressDelay')} Children={Slider} />
+                    <Setting name="Long Press Delay" type="num" id="pressDelay" props={{suffix: 'ms'}} childProps={{min: 200, max: 600, localStorageItem: 'pressDelay'}} compValue={localStorage.getItem('pressDelay')} Children={Slider} />
+                    <Setting name="Highlight Colour" type="colorPicker" id="highlightColPick" props={{colour, localStorageItem: 'highlightCol'}} childProps={{localStorageItem: 'highlightCol'}} Children={ColorPicker} />
                     <p style={{marginTop: 30}}>More settings to be implemented</p>
                 </div>
             </div>

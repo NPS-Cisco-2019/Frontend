@@ -200,37 +200,107 @@ function Switch(props){
     )
 }
 
+function Range({ min, max, value, setValue, id, highlightCol = "var(--highlightCol)" }){
+    return (
+        <div style={{display: 'flex', width: window.innerWidth * 0.8, marginBottom: 5, maxWidth: '100%' }}>
+            <input id={id} style={{highlightCol}} type="range" min={min} max={max} value={value} onChange={e => setValue(e.target.value)} className="slider" />
+            <p style={{margin: '0'}}>{value}</p>
+        </div>
+    )
+}
+
 function Num(props){
     return (
         <p id={props.id}>{props.value}{props.suffix}</p>
     )    
 }
 
-export function Null(){return <div></div>}
+function Color({ colour, localStorageItem = null }){
+    let backCol;
 
-let pressDelay = localStorage.getItem('pressDelay');
+    if (localStorageItem !== null) {
+        backCol = `var(--${localStorageItem})`;
+    } else {
+        backCol = colour;
+    }
+    return (
+        <div className="colourShower" style={{backgroundColor: backCol}}></div>
+    )
+}
 
-export function Slider({ updateOpen, updateValue }){
-    let [value, setValue] = useState(pressDelay);
+export function ColorPicker({ updateOpen, localStorageItem, id }){
 
     const submit = () => {
-        localStorage.setItem('pressDelay', value)
+        localStorage.setItem(localStorageItem, `rgb(${valueR},${valueG},${valueB})`);
         updateOpen(false);
-        updateValue(value);
+        document.documentElement.style.setProperty('--highlightCol', `rgb(${valueR},${valueG},${valueB})`)
     }
+
+    useEffect(() => {
+        let rSlider = document.getElementById(`${id}-sliderR`).style;
+        rSlider.setProperty('--thumbCol', 'rgb(255, 0, 0)');
+
+        let gSlider = document.getElementById(`${id}-sliderG`).style;
+        gSlider.setProperty('--thumbCol', 'rgb(0, 255, 0)');
+
+        let bSlider = document.getElementById(`${id}-sliderB`).style;
+        bSlider.setProperty('--thumbCol', 'rgb(0, 0, 255)');
+
+        let parentHeight = document.getElementById(id).getBoundingClientRect().height;
+        setHeight(7*parentHeight/10);
+        // eslint-disable-next-line
+    }, [])
+
+    let rgbVal = localStorage.getItem(localStorageItem);
+    let rgbArr = strToRgb(rgbVal);
+    
+
+    let [valueR, setValueR] = useState(rgbArr[0]);
+    let [valueG, setValueG] = useState(rgbArr[1]);
+    let [valueB, setValueB] = useState(rgbArr[2]);
+    let [height, setHeight] = useState('70%');
 
     return (
         <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-            <div style={{display: 'flex', width: window.innerWidth * 0.8, marginBottom: 5}}>
-                <input id="pressDelaySlider" type="range" min="200" max="600" value={value} onChange={e => setValue(e.target.value)} className="slider" />
-                <p style={{margin: '0'}}>{value}</p>
+            <div id={id} style={{display: 'flex', alignItems: 'center', margin: '0px 17.5px'}}>
+                <div style={{
+                    height: height,
+                    width: window.innerWidth/12,
+                    borderRadius: window.innerWidth/24 ,
+                    border: '1px solid var(--highlightCol)',
+                    marginRight: 15,
+                    backgroundColor: `rgb(${valueR},${valueG},${valueB})`}}></div>
+                <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column', width: 7*window.innerWidth/10}}>
+                    <Range id={`${id}-sliderR`} min={0} max={255} value={valueR} setValue={setValueR} highlightCol="rgb(255,0,0)" />
+                    <Range id={`${id}-sliderG`} min={0} max={255} value={valueG} setValue={setValueG} highlightCol="rgb(0,255,0)" />
+                    <Range id={`${id}-sliderB`} min={0} max={255} value={valueB} setValue={setValueB} highlightCol="rgb(0,0,255)" />
+                </div>
             </div>
             <button style={{width: 50, height: 30, backgroundColor: 'var(--midGray)', borderRadius: 5}} onClick={submit}>ok</button>
         </div>
     )
 }
 
-export function Setting({ type, name, id, handleClick, Children, props, compValue }){
+export function Null(){return <div></div>}
+
+export function Slider({ updateOpen, updateValue, min, max, localStorageItem }){
+    let [value, setValue] = useState(localStorage.getItem(localStorageItem));
+
+    const submit = () => {
+        localStorage.setItem(localStorageItem, value)
+        updateOpen(false);
+        updateValue(value);
+    }
+
+    return (
+        <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+            <Range min={min} max={max} value={value} setValue={setValue} />
+            <button style={{width: 50, height: 30, backgroundColor: 'var(--midGray)', borderRadius: 5}} onClick={submit}>ok</button>
+        </div>
+    )
+}
+
+export function Setting({ type, name, id, handleClick, Children, props, childProps, compValue }){
 
     let [open, setOpen] = useState(true)
     let [maxHeight, setMaxHeight] = useState('100%');
@@ -256,6 +326,8 @@ export function Setting({ type, name, id, handleClick, Children, props, compValu
         openable = false;
     } else if (type === 'num'){
         Component = Num;
+    } else if (type === 'colorPicker'){
+        Component = Color;
     }
 
     return (
@@ -264,7 +336,7 @@ export function Setting({ type, name, id, handleClick, Children, props, compValu
                 <p>{name}</p>
                 <Component id={id} handleClick={handleClick} {...props} value={value} />
             </div>
-            <Children updateOpen={setOpen} updateValue={setValue} value />
+            <Children id={`${id}-child`} updateOpen={setOpen} updateValue={setValue} {...childProps} />
         </div>
     )
 }
@@ -391,7 +463,9 @@ export class ErrorBoundary extends React.Component {
 
 
 
-
+function strToRgb(rgbStr){
+    return rgbStr.slice(4, rgbStr.length - 1).split(',')
+}
 
 SettingsButton.propTypes = {
     showSettings: PropTypes.func.isRequired
