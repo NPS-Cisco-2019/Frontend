@@ -5,13 +5,15 @@ import MobileAppAnswer from './mobileWebsiteAnswer';
 import testDetails from '../test';
 import Unknown from './404';
 import SettingsPage from './settings';
+import GradeChoice from './gradeChoice';
 import Tutorial from './mobileTutorial';
 import { init } from '../localStorageHandleing';
 
 // ANCHOR Main Mobile App that renders various mobile pages
 // NOTE gets called by <App />, does not render by itself
 
-init()
+init();
+let newPerson = sessionStorage.getItem('new') === "true";
 
 class MobileApp extends React.Component {
   constructor(props){
@@ -28,9 +30,10 @@ class MobileApp extends React.Component {
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
 
-    // TODO set to only /Picture after developement complete
+    this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
+    // TODO delete below history.pushes, the one above is correct
     // this.props.history.push(false ? '/Answer' : '/Picture' );
-    this.props.history.push('/Settings');
+    // this.props.history.push('/Settings');
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
@@ -62,6 +65,8 @@ class MobileApp extends React.Component {
           <Route path="/Settings" render={() => (
             <SettingsPage backClick={this.changeDisplayAnswer} />
             )} />
+
+          <Route path="/GradeChoice" component={GradeChoice} />
 
           <Route path="/Tutorial" render={() => (
             <Tutorial backClick={this.changeDisplayAnswer} />

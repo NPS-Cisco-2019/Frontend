@@ -12,11 +12,6 @@ export function init(){
         localStorage.setItem('pressDelay', '300')
     }
 
-    let grade = localStorage.getItem('grade');
-    if (grade === null){
-        localStorage.setItem('grade', '11');
-    }
-
     let mode = localStorage.getItem('mode');
     if (mode === null){
         localStorage.setItem('mode', 'dark');
@@ -28,6 +23,10 @@ export function init(){
     style.setProperty('--highlightCol', highlightColor)
 
     document.getElementById('root').style.backgroundColor = 'var(--backCol)';
+
+    let grade = localStorage.getItem('grade');
+
+    sessionStorage.setItem('new', grade === null)
 }
 
 export function reset(){

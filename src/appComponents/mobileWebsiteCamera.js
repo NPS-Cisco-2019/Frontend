@@ -127,6 +127,9 @@ class MobileAppPicture extends React.Component {
   // SECTION Handles orientation change
   componentDidMount(){
     window.addEventListener('orientationchange', () => {this.forceUpdate();});
+    setTimeout(() => {
+      sessionStorage.setItem('new', false);
+    }, 500);
     this.setState({mounted: true});
   }
 
@@ -299,8 +302,9 @@ class MobileAppPicture extends React.Component {
     const func = this.state.output === 'vid' ? this.capture : this.OCR;
     const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
     let bot = this.calculateBottom();
+    let newPerson = sessionStorage.getItem('new') === "true";
     return (
-      <div className={`App ${this.props.backToCam ? 'slidein' : null}`} style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}}>
+      <div className={`App ${this.props.backToCam ? 'slidein' : (newPerson ? 'fadein-short' : null)}`} style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}}>
         {/* SECTION  NAV */}
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
           <div className={this.state.navButtonAnimation ? "nav-button-animation" : null}>
