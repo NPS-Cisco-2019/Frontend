@@ -21,7 +21,7 @@ export function OCR(imgPath){
                 json: () => new Promise((resolve, reject) => {
                     setTimeout(() => {
                         resolve({ question: testDetails.question });
-                    }, 2000);
+                    }, 1000);
                 })
             })
         })
@@ -44,7 +44,7 @@ export function scrape(question){
                             answers: testDetails.answers,
                             websites: testDetails.websites
                         });
-                    }, 10000)
+                    }, 2000)
                 })
             })
         })

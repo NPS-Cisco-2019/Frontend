@@ -39,7 +39,7 @@ const captureButtonStyle = {
   zIndex: 42,
   backgroundColor: 'rgb(224, 0, 0)',
   border: '0.15em solid white',
-  transition: 'bottom 100ms cubic-bezier(0.215, 0.61, 0.355, 1)',
+  transition: 'bottom 500ms cubic-bezier(0.215, 0.61, 0.355, 1)',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center'
@@ -190,7 +190,10 @@ class MobileAppPicture extends React.Component {
     }
 
     let foot = document.getElementById('foot').getBoundingClientRect();
-    return Math.max(foot.height + 60, 3 * window.innerHeight / 20)
+
+    let bottomHeight = this.state.ansClicked ? foot.height : this.calculateHeight();
+
+    return Math.max(bottomHeight + 60, 3 * window.innerHeight / 20)
   }
 
   calculateHeight(){
@@ -216,7 +219,10 @@ class MobileAppPicture extends React.Component {
     let questionJSON = await responseOCR.json();
     let question = questionJSON.question;
     
-    this.setState({ question: question, gotQuestion: true })
+    this.setState({ question: question, gotQuestion: true, isLoading: false })
+    setTimeout(() => this.setState({isLoading: true}), 2)
+    // setTimeout(() => this.forceUpdate(), 500)
+    this.forceUpdate();
     console.log('question gotten');
     
     let responseScrapy = await scrape(this.state.question);
