@@ -2,7 +2,7 @@ import React from 'react';
 import { Back, Setting, Slider, Null, ColorPicker } from './elements';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { changeMode } from '../localStorageHandleing';
+import { changeMode, reset } from '../localStorageHandleing';
 
 let isInstalled = false;
 
@@ -29,10 +29,17 @@ class SettingsPage extends React.Component {
             bannerChildAnimation: ''
         }
 
+        this.reset = this.reset.bind(this);
         this.tutClick = this.tutClick.bind(this);
         this.backClick = this.backClick.bind(this);
         this.changeMode = this.changeMode.bind(this);
         this.closeBanner = this.closeBanner.bind(this);
+    }
+
+    reset(){
+        reset();
+        this.props.history.push('./BlackScreen');
+        setTimeout(() => this.props.history.push('./Settings'));
     }
 
     backClick(){
@@ -93,13 +100,25 @@ class SettingsPage extends React.Component {
                     </div>
                 </div>
                 
-                <div style={{top: Math.round(window.innerHeight/10 + (this.state.showTutBanner ? window.innerHeight/11 : 0)),
+                <div style={{top: Math.round(window.innerHeight/10 + (this.state.showTutBanner ? window.innerHeight/9 : 0)),
                             position: "relative",
                             transition: 'all 300ms cubic-bezier(0.215, 0.610, 0.355, 1)'}}
                 >
-                    <Setting name="Dark Mode" type="switch" id="darkMode" handleClick={this.changeMode} props={{enabled: mode === 'dark'}} Children={Null} />
-                    <Setting name="Long Press Delay" type="num" id="pressDelay" props={{suffix: 'ms'}} childProps={{min: 200, max: 600, localStorageItem: 'pressDelay'}} compValue={localStorage.getItem('pressDelay')} Children={Slider} />
-                    <Setting name="Highlight Colour" type="colorPicker" id="highlightColPick" props={{colour, localStorageItem: 'highlightCol'}} childProps={{localStorageItem: 'highlightCol'}} Children={ColorPicker} />
+                    <section>
+                        <p>Functionality</p>
+                        <Setting name="Grade" type="value" id="gradeSelector" props={{prefix: 'Class ', defaultValue: 11}} childProps={{min: 9, max: 12, localStorageItem: 'grade'}} compValue={localStorage.getItem('grade')} Children={Slider} />
+                        <Setting name="Long Press Delay" type="value" id="pressDelay" props={{suffix: 'ms', defaultValue: 300}} childProps={{min: 200, max: 600, localStorageItem: 'pressDelay'}} compValue={localStorage.getItem('pressDelay')} Children={Slider} />
+                    </section>
+                    <hr/>
+                    <section>
+                        <p>Looks</p>
+                        <Setting name="Dark Mode" type="switch" id="darkMode" handleClick={this.changeMode} props={{enabled: mode === 'dark'}} Children={Null} />
+                        <Setting name="Highlight Colour" type="colorPicker" id="highlightColPick" props={{colour, localStorageItem: 'highlightCol'}} childProps={{localStorageItem: 'highlightCol'}} Children={ColorPicker} />
+                    </section>
+                    <hr/>
+                    <button className="center" style={{width: 100, height: 40, backgroundColor: 'var(--midGray2)', borderRadius: 10}} onClick={this.reset}>
+                        <p style={{margin: 0}}>Reset</p>
+                    </button>
                     <p style={{marginTop: 30}}>More settings to be implemented</p>
                 </div>
             </div>

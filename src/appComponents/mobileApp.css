@@ -368,3 +368,10 @@ input {
 img {
   transition: filter 300ms ease-out;
 }
+
+hr {
+  margin: 20px auto;
+  width: 90%;
+  border-top: none;
+  color: var(--midGray);
+}

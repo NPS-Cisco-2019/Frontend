@@ -6,36 +6,12 @@ import testDetails from '../test';
 import Unknown from './404';
 import SettingsPage from './settings';
 import Tutorial from './mobileTutorial';
-import { changeMode } from '../localStorageHandleing';
+import { init } from '../localStorageHandleing';
 
 // ANCHOR Main Mobile App that renders various mobile pages
 // NOTE gets called by <App />, does not render by itself
 
-let style = document.documentElement.style;
-
-
-let highlightColor = localStorage.getItem('highlightCol');
-if (highlightColor === null){
-  localStorage.setItem('highlightCol', 'rgb(50, 90, 245)');
-  highlightColor = 'rgb(50, 90, 245)';
-}
-
-let pressDelay = localStorage.getItem('pressDelay');
-if (pressDelay === null){
-  localStorage.setItem('pressDelay', '300')
-}
-
-let mode = localStorage.getItem('mode');
-if (mode === null){
-  localStorage.setItem('mode', 'dark');
-  mode = 'dark'
-}
-
-changeMode(mode);
-
-style.setProperty('--highlightCol', highlightColor)
-
-document.getElementById('root').style.backgroundColor = 'var(--backCol)';
+init()
 
 class MobileApp extends React.Component {
   constructor(props){
@@ -53,8 +29,8 @@ class MobileApp extends React.Component {
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
 
     // TODO set to only /Picture after developement complete
-    this.props.history.push(false ? '/Answer' : '/Picture' );
-    // this.props.history.push('/Settings');
+    // this.props.history.push(false ? '/Answer' : '/Picture' );
+    this.props.history.push('/Settings');
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
@@ -89,6 +65,10 @@ class MobileApp extends React.Component {
 
           <Route path="/Tutorial" render={() => (
             <Tutorial backClick={this.changeDisplayAnswer} />
+          )} />
+
+          <Route path="/BlackScreen" render={() => (
+            <div></div>
           )} />
             
           <Route path="/Unknown" component={Unknown} />

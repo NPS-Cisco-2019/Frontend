@@ -34,26 +34,24 @@ export default class CompApp extends React.Component {
     this.calcHighlight = this.calcHighlight.bind(this);
     this.calcBrowserPos = this.calcBrowserPos.bind(this);
     this.changeHeadHeight = this.changeHeadHeight.bind(this);
+    this.calcHighlightTop = this.calcHighlightTop.bind(this);
     // !SECTION
   }
 
   /* SECTION FUNCTIONS */
 
-  // calculates position of selected highlighter
-  calcHighlight(browser){
-    const obj = document.getElementById(browser).getBoundingClientRect();
+  calcHighlightTop(){
+    const obj = document.getElementById('firefox').getBoundingClientRect();
+    return Math.round(obj.top - this.state.headHeight + this.state.currentScrollHeight);
+  }
 
-    let top;
-    
-    if (browser !== 'firefox'){
-      top = this.state.firefox.top;
-    } else {
-      top = Math.round(obj.top - this.state.headHeight);
-    }
+  // calculates position of selected highlighter
+  calcHighlight(browser, highlightTop){
+    const obj = document.getElementById(browser).getBoundingClientRect();
     // NOTE WARNING THROWN HERE, BE CAREFUL
     // eslint-disable-next-line
     this.state[browser] = {
-          top: top,
+          top: highlightTop,
           height: Math.round(obj.height),
           left: obj.left,
           width: Math.round(obj.width),
@@ -77,10 +75,13 @@ export default class CompApp extends React.Component {
 
   // calculate the highlight for all browsers
   calcBrowserPos(){
+    let highlightTop = this.calcHighlightTop();
+
     let l = ['firefox', 'chrome', 'safari'];
     for (let i = 0; i<3; i++){
-        this.calcHighlight(l[i]);
+        this.calcHighlight(l[i], highlightTop);
     }
+    this.setState({ highlightTop })
   }
 
   // SECTION Life Cycle Components
@@ -99,7 +100,7 @@ export default class CompApp extends React.Component {
     window.addEventListener('resize', this.changeHeadHeight);
 
     // makes the highlight render
-    this.forceUpdate();
+    this.setState({mounted: true});
   }
 
   componentWillUnmount() {
@@ -111,6 +112,9 @@ export default class CompApp extends React.Component {
   /* !SECTION */
 
   render(){
+    if (this.state.mounted && this.state.highlightTop !== this.calcHighlightTop()){
+      this.calcBrowserPos();
+    }
     // opacity for header
     let opacity = Math.max(Math.min(50 / this.state.currentScrollHeight  , 1), 0.7);
     return(

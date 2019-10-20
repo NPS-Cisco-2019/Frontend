@@ -209,9 +209,11 @@ function Range({ min, max, value, setValue, id, highlightCol = "var(--highlightC
     )
 }
 
-function Num(props){
+function Value(props){
     return (
-        <p id={props.id}>{props.value}{props.suffix}</p>
+        <p id={props.id} name="reset-value-selector" prefix={props.prefix} suffix={props.suffix} defaultValue={props.defaultValue}>
+            {props.prefix}{props.value}{props.suffix}
+        </p>
     )    
 }
 
@@ -303,6 +305,7 @@ export function Slider({ updateOpen, updateValue, min, max, localStorageItem }){
 export function Setting({ type, name, id, handleClick, Children, props, childProps, compValue }){
 
     let [open, setOpen] = useState(true)
+    let [childOpen, setChildOpen] = useState(true);
     let [maxHeight, setMaxHeight] = useState('100%');
     let [transition, setTransition] = useState(false);
     let [value, setValue] = useState(compValue);
@@ -311,9 +314,19 @@ export function Setting({ type, name, id, handleClick, Children, props, childPro
         let totHeight = document.getElementById(`${id}-wrapper`).getBoundingClientRect().height;
         setMaxHeight(totHeight);
         setOpen(false);
+        setChildOpen(false);
         setTimeout(() => setTransition(true), 50);
         //eslint-disable-next-line
     }, [])
+
+    const openClick = () => {
+        if (open){
+            setTimeout(() => setChildOpen(false), 300);
+        } else {
+            setChildOpen(true);
+        }
+        setOpen(!open);
+    }
 
 
     let Component;
@@ -324,19 +337,19 @@ export function Setting({ type, name, id, handleClick, Children, props, childPro
     if (type === 'switch'){
         Component = Switch;
         openable = false;
-    } else if (type === 'num'){
-        Component = Num;
+    } else if (type === 'value'){
+        Component = Value;
     } else if (type === 'colorPicker'){
         Component = Color;
     }
 
     return (
         <div className={`setting-wrapper ${transition ? 'height-trans' : null}`} id={`${id}-wrapper`} style={{height: open ? maxHeight : height}}>
-            <div className="setting" id={id} style={{flexBasis: window.innerHeight/12 }} onClick={openable ? ()=>setOpen(!open) : null}>
+            <div className="setting" id={id} style={{flexBasis: window.innerHeight/12 }} onClick={openable ? openClick : null}>
                 <p>{name}</p>
                 <Component id={id} handleClick={handleClick} {...props} value={value} />
             </div>
-            <Children id={`${id}-child`} updateOpen={setOpen} updateValue={setValue} {...childProps} />
+            {childOpen ? <Children id={`${id}-child`} updateOpen={setOpen} updateValue={setValue} {...childProps} /> : null}
         </div>
     )
 }

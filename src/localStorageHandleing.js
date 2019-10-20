@@ -1,5 +1,45 @@
 let style = document.documentElement.style;
 
+export function init(){
+    let highlightColor = localStorage.getItem('highlightCol');
+    if (highlightColor === null){
+        localStorage.setItem('highlightCol', 'rgb(50, 90, 245)');
+        highlightColor = 'rgb(50, 90, 245)';
+    }
+
+    let pressDelay = localStorage.getItem('pressDelay');
+    if (pressDelay === null){
+        localStorage.setItem('pressDelay', '300')
+    }
+
+    let grade = localStorage.getItem('grade');
+    if (grade === null){
+        localStorage.setItem('grade', '11');
+    }
+
+    let mode = localStorage.getItem('mode');
+    if (mode === null){
+        localStorage.setItem('mode', 'dark');
+    mode = 'dark'
+    }
+
+    changeMode(mode);
+
+    style.setProperty('--highlightCol', highlightColor)
+
+    document.getElementById('root').style.backgroundColor = 'var(--backCol)';
+}
+
+export function reset(){
+    localStorage.setItem('highlightCol', 'rgb(50, 90, 245)');
+    localStorage.setItem('pressDelay', '300')
+    localStorage.setItem('grade', '11');
+    localStorage.setItem('mode', 'dark');
+    
+    changeMode('dark');
+    style.setProperty('--highlightCol', 'rgb(50, 90, 245)')
+}
+
 export function changeMode(mode){
     if (mode === 'dark'){
         style.setProperty('--backCol', 'rgb(25, 25, 25)');
