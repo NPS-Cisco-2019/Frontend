@@ -73,7 +73,8 @@ class MobileAppPicture extends React.Component {
       gotQuestion: false,
       question: '',
       navButton: Flash,
-      isLoading: false
+      isLoading: false,
+      imageSelector: false
     }
 
     document.body.style.overflowX = 'auto';
@@ -92,7 +93,10 @@ class MobileAppPicture extends React.Component {
     this.flipOutMode = this.flipOutMode.bind(this);
     this.showSettings = this.showSettings.bind(this);
     this.changeTextBox = this.changeTextBox.bind(this);
+    this.canvasTouchEnd = this.canvasTouchEnd.bind(this);
+    this.canvasTouchMove = this.canvasTouchMove.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
+    this.canvasTouchStart = this.canvasTouchStart.bind(this);
     this.cameraErrorHandler = this.cameraErrorHandler.bind(this);
     // !SECTION 
   }
@@ -130,7 +134,13 @@ class MobileAppPicture extends React.Component {
     setTimeout(() => {
       sessionStorage.setItem('new', false);
     }, 500);
-    this.setState({mounted: true});
+
+    let canvas = document.getElementById('canvas');
+    let c = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    this.setState({mounted: true, context: c});
   }
 
   componentWillUnmount(){
@@ -294,6 +304,53 @@ class MobileAppPicture extends React.Component {
     this.setState({longpress: false, prevent: true});
   }
 
+  canvasTouchStart(e){
+    // console.log({x: e.touches[0].screenX, y: e.touches[0].screenY})
+    this.setState({ startCoords: {
+      x: e.touches[0].screenX,
+      y: e.touches[0].screenY
+    }})
+    this.stat.context.beginPath();
+  }
+  
+  canvasTouchEnd(e){
+    let endCoords = {
+      x: e.touches[0].screenX,
+      y: e.touches[0].screenY
+    };
+
+    let {startX, startY} = this.state.startCoords;
+    let ctx = this.state.context;
+    
+    // ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+    ctx.beginPath();
+    ctx.strokeStyle = "var(--textCol)";
+    ctx.rect(startX, startY, endCoords.x - startX, endCoords.y - startY)
+    ctx.stroke();
+
+
+    this.setState({ endCoords });
+  }
+
+  canvasTouchMove(e){
+    let endCoords = {
+      x: e.touches[0].screenX,
+      y: e.touches[0].screenY
+    };
+
+    let {startX, startY} = this.state.startCoords;
+    let ctx = this.state.context;
+    
+    // ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+    // ctx.beginPath();
+    ctx.strokeStyle = "white";
+    ctx.rect(startX, startY, endCoords.x - startX, endCoords.y - startY)
+    ctx.stroke();
+
+
+    this.setState({ endCoords });
+  }
+
   //!SECTION
 
   /* !SECTION */
@@ -316,9 +373,15 @@ class MobileAppPicture extends React.Component {
           <Gallery selectFileHandle={this.selectFileHandle} />
         </header>
         {/* !SECTION */}
+        <canvas
+          id="canvas"
+          onTouchStart={this.state.imageSelector ? this.canvasTouchStart : null}
+          onTouchMove={this.state.imageSelector ? this.canvasTouchMove : null}
+          onTouchEnd={this.state.imageSelector ? this.canvasTouchEnd : null} 
+        />
         <Swipe
-          onSwipeUp={this.swipeUp}
-          onSwipeDown={this.swipeDown}
+          onSwipeUp={this.state.imageSelector ? null : this.swipeUp}
+          onSwipeDown={this.state.imageSelector ? null : this.swipeDown}
         >
           <div>
             {/* SECTION Image/Video displayer */}
@@ -337,6 +400,13 @@ class MobileAppPicture extends React.Component {
             }</div>
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
+            <button className="imageSelector" style={{
+              backgroundColor: this.state.imageSelector ? 'var(--highlightCol)' : 'rgb(40, 40, 40)',
+              top: window.innerHeight/10 + 10,
+              right: 10
+            }} onClick={() => {
+              this.setState({imageSelector: !this.state.imageSelector});
+            }}>&#9744;</button>
             <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2), bottom: bot}} onClick={func}>
               {this.state.output === 'img' ?
                 (this.state.isLoading ?

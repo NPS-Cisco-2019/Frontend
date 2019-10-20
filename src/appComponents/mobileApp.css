@@ -368,6 +368,21 @@ footer {
   border-radius: 10px;
 }
 
+.imageSelector {
+  height: 30px;
+  width: 30px;
+  position: fixed;
+  border-radius: 50%;
+  z-index: 69;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+}
+
 button {
   border: none;
   background-color: transparent;
