@@ -6,9 +6,9 @@ let deploy = false;
 // NOTE functions which will handle all backend calls
 // TODO integration
 
-export function OCR(imgPath){
+export function OCR(imgPath, cropJSON){
+    let img = base64(imgPath, cropJSON);
     if (deploy) {
-        let img = base64(imgPath);
         return fetch("/OCR", {
             method: 'POST',
             body: JSON.stringify({img}),
@@ -20,7 +20,7 @@ export function OCR(imgPath){
             resolve({
                 json: () => new Promise((resolve, reject) => {
                     setTimeout(() => {
-                        resolve({ question: testDetails.question });
+                        resolve({ question: testDetails.question, img: img });
                     }, 1000);
                 })
             })

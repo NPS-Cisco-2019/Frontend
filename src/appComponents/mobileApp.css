@@ -373,7 +373,7 @@ footer {
   width: 30px;
   position: fixed;
   border-radius: 50%;
-  z-index: 69;
+  z-index: 42;
 }
 
 #canvas {

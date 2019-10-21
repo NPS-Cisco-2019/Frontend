@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 function GradeChoice({ history }){
+    sessionStorage.setItem('fromGradeChoice', 'true');
+
     const changeChoice = e => {
         setSelected(+e.target.title);
     }
@@ -12,7 +14,7 @@ function GradeChoice({ history }){
     }
 
     let [selected, setSelected] = useState(-1);
-    let [animation, setAnimation] = useState(null);
+    let [animation, setAnimation] = useState('fadein');
 
     let grades = [
         9,

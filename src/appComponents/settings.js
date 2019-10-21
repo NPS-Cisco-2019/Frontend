@@ -26,7 +26,8 @@ class SettingsPage extends React.Component {
                 top: Math.round(window.innerHeight/10),
                 marginLeft: window.innerWidth / 40
             },
-            bannerChildAnimation: ''
+            bannerChildAnimation: '',
+            fadeout: false
         }
 
         this.reset = this.reset.bind(this);
@@ -37,9 +38,9 @@ class SettingsPage extends React.Component {
     }
 
     reset(){
+        this.setState({ fadeout: true })
         reset();
-        this.props.history.push('./BlackScreen');
-        setTimeout(() => this.props.history.push('./Settings'));
+        setTimeout(() => this.props.history.push('./GradeChoice'), 500);
     }
 
     backClick(){
@@ -81,7 +82,7 @@ class SettingsPage extends React.Component {
         let mode = localStorage.getItem('mode');
         let colour = localStorage.getItem('highlightCol')
         return (
-            <div style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth, backgroundColor: 'var(--backCol)'}} className={this.state.backToCam ? "slideout" : "fadein"}>
+            <div style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth, backgroundColor: 'var(--backCol)'}} className={this.state.backToCam ? "slideout" : (this.state.fadeout ? "fadeout" : "fadein")}>
                 <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
                     <Back handleClick={this.backClick} />
                     <p style={{fontSize: '1.2em', margin: 0}} id="websitePosition">Settings</p>

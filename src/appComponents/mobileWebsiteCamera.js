@@ -20,7 +20,7 @@ const vibratable = "vibrate" in navigator;
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 
 const imgStyle = {
-  height: window.innerHeight,
+  height: 9*window.innerHeight/10,
   zIndex: '0',
   margin: 'auto'
 };
@@ -74,10 +74,14 @@ class MobileAppPicture extends React.Component {
       question: '',
       navButton: Flash,
       isLoading: false,
-      imageSelector: false
+      imageSelector: false,
+      startCoords: [0, 0],
+      endCoords: [window.innerWidth, window.innerHeight]
     }
 
     document.body.style.overflowX = 'auto';
+
+    console.log(window.devicePixelRatio);
 
     // SECTION function binding 
     this.OCR = this.OCR.bind(this);
@@ -93,7 +97,6 @@ class MobileAppPicture extends React.Component {
     this.flipOutMode = this.flipOutMode.bind(this);
     this.showSettings = this.showSettings.bind(this);
     this.changeTextBox = this.changeTextBox.bind(this);
-    this.canvasTouchEnd = this.canvasTouchEnd.bind(this);
     this.canvasTouchMove = this.canvasTouchMove.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
     this.canvasTouchStart = this.canvasTouchStart.bind(this);
@@ -132,7 +135,7 @@ class MobileAppPicture extends React.Component {
   componentDidMount(){
     window.addEventListener('orientationchange', () => {this.forceUpdate();});
     setTimeout(() => {
-      sessionStorage.setItem('new', false);
+      sessionStorage.setItem('fromGradeChoice', false);
     }, 500);
 
     let canvas = document.getElementById('canvas');
@@ -227,15 +230,45 @@ class MobileAppPicture extends React.Component {
   /* if image is taken for proccesing */
   async OCR(){
     this.setState({isTextBox: false, isLoading: true});
+
+    let [startX, startY] = this.state.startCoords;
+    let [endX, endY] = this.state.endCoords;
+
+    startX += window.scrollX;
+    startY += window.scrollY;
+    endX += window.scrollX;
+    endY += window.scrollY;
+
+    // window.devicePixelRatio = 2;
+
+    startX *= window.devicePixelRatio;
+    startY *= window.devicePixelRatio;
+    endX *= window.devicePixelRatio;
+    endY *= window.devicePixelRatio;
+
+    alert(startX);
+    alert(startY);
+    alert(endX);
+    alert(endY);
+
+    let ocrJSON = {
+      x: Math.min(endX, startX),
+      y: Math.min(endY, startY),
+      width: Math.abs(endX - startX),
+      height: Math.abs(endY - startY),
+    }
+
+    console.log({ocrJSON})
     
-    let responseOCR = await OCR(this.state.picture);
+    let responseOCR = await OCR(this.state.picture, ocrJSON);
     let questionJSON = await responseOCR.json();
     let question = questionJSON.question;
+
+    // gotQuestion: true, 
     
-    this.setState({ question: question, gotQuestion: true, isLoading: false })
+    this.setState({ question: question, isLoading: false, picture: questionJSON.img })
     setTimeout(() => this.setState({isLoading: true}), 2)
-    // setTimeout(() => this.forceUpdate(), 500)
-    this.forceUpdate();
+
     console.log('question gotten');
     
     let responseScrapy = await scrape(this.state.question);
@@ -305,46 +338,25 @@ class MobileAppPicture extends React.Component {
   }
 
   canvasTouchStart(e){
-    // console.log({x: e.touches[0].screenX, y: e.touches[0].screenY})
-    this.setState({ startCoords: {
-      x: e.touches[0].screenX,
-      y: e.touches[0].screenY
-    }})
-    this.stat.context.beginPath();
-  }
-  
-  canvasTouchEnd(e){
-    let endCoords = {
-      x: e.touches[0].screenX,
-      y: e.touches[0].screenY
-    };
-
-    let {startX, startY} = this.state.startCoords;
-    let ctx = this.state.context;
-    
-    // ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
-    ctx.beginPath();
-    ctx.strokeStyle = "var(--textCol)";
-    ctx.rect(startX, startY, endCoords.x - startX, endCoords.y - startY)
-    ctx.stroke();
-
-
-    this.setState({ endCoords });
+    this.setState({ startCoords: [
+      e.touches[0].clientX,
+      e.touches[0].clientY
+    ]})
   }
 
   canvasTouchMove(e){
-    let endCoords = {
-      x: e.touches[0].screenX,
-      y: e.touches[0].screenY
-    };
+    let endCoords = [
+      e.touches[0].clientX,
+      e.touches[0].clientY
+    ];
 
-    let {startX, startY} = this.state.startCoords;
+    let [startX, startY] = this.state.startCoords;
     let ctx = this.state.context;
-    
-    // ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
-    // ctx.beginPath();
-    ctx.strokeStyle = "white";
-    ctx.rect(startX, startY, endCoords.x - startX, endCoords.y - startY)
+
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
+    ctx.beginPath();
+    ctx.strokeStyle = "rgb(100, 100, 100)";
+    ctx.rect(startX, startY, endCoords[0] - startX, endCoords[1] - startY)
     ctx.stroke();
 
 
@@ -359,9 +371,9 @@ class MobileAppPicture extends React.Component {
     const func = this.state.output === 'vid' ? this.capture : this.OCR;
     const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
     let bot = this.calculateBottom();
-    let newPerson = sessionStorage.getItem('new') === "true";
+    let fromGradeChoice = sessionStorage.getItem('fromGradeChoice') === "true";
     return (
-      <div className={`App ${this.props.backToCam ? 'slidein' : (newPerson ? 'fadein-short' : null)}`} style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}}>
+      <div className={`App ${this.props.backToCam ? 'slidein' : (fromGradeChoice ? 'fadein-short' : null)}`} style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}}>
         {/* SECTION  NAV */}
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
           <div className={this.state.navButtonAnimation ? "nav-button-animation" : null}>
@@ -377,7 +389,6 @@ class MobileAppPicture extends React.Component {
           id="canvas"
           onTouchStart={this.state.imageSelector ? this.canvasTouchStart : null}
           onTouchMove={this.state.imageSelector ? this.canvasTouchMove : null}
-          onTouchEnd={this.state.imageSelector ? this.canvasTouchEnd : null} 
         />
         <Swipe
           onSwipeUp={this.state.imageSelector ? null : this.swipeUp}
