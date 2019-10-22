@@ -246,11 +246,6 @@ class MobileAppPicture extends React.Component {
     endX *= window.devicePixelRatio;
     endY *= window.devicePixelRatio;
 
-    alert(startX);
-    alert(startY);
-    alert(endX);
-    alert(endY);
-
     let ocrJSON = {
       x: Math.min(endX, startX),
       y: Math.min(endY, startY),
@@ -258,15 +253,17 @@ class MobileAppPicture extends React.Component {
       height: Math.abs(endY - startY),
     }
 
-    console.log({ocrJSON})
+    // console.log({ocrJSON})
     
     let responseOCR = await OCR(this.state.picture, ocrJSON);
+    console.log({responseOCR});
     let questionJSON = await responseOCR.json();
+    console.log({questionJSON});
     let question = questionJSON.question;
 
-    // gotQuestion: true, 
+    console.log({question})
     
-    this.setState({ question: question, isLoading: false, picture: questionJSON.img })
+    this.setState({ question: question, gotQuestion: true, isLoading: false, picture: questionJSON.img })
     setTimeout(() => this.setState({isLoading: true}), 2)
 
     console.log('question gotten');

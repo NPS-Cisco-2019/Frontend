@@ -8,6 +8,7 @@ let deploy = false;
 
 export function OCR(imgPath, cropJSON){
     let img = base64(imgPath, cropJSON);
+    console.log({img});
     if (deploy) {
         return fetch("/OCR", {
             method: 'POST',

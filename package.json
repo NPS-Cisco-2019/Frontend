@@ -40,5 +40,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://nps-cisco-2019.github.io/Frontend"
+  "homepage": "https://nps-cisco-2019.github.io/Frontend",
+
+  "proxy": "http://139.59.24.177:5000"
 }
