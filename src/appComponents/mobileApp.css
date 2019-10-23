@@ -103,10 +103,10 @@ footer {
 .bar {
   position: absolute;
   background-color: var(--textCol);
-  width: 30%;
-  height: 3%;
-  right: 35%;
-  border-radius: 15%;
+  width: 40%;
+  height: 3px;
+  right: 30%;
+  border-radius: 1.5px;
   top: 10%;
   z-index: 100;
 }

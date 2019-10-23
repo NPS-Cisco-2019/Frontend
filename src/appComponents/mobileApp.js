@@ -31,10 +31,17 @@ class MobileApp extends React.Component {
     this.changeState = this.changeState.bind(this);
     this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
 
-    // this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
-    // TODO delete below history.pushes, the one above is correct
-    this.props.history.push(false ? '/Answer' : '/Picture' );
-    // this.props.history.push('/Settings');
+    const query = new URLSearchParams(this.props.location.search);
+
+    if (query.get("type") === "unknown"){
+      console.log("YEET");
+      this.props.history.push("/Unknown");
+    } else {
+      // this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
+      // TODO delete below history.pushes, the one above is correct
+      this.props.history.push(false ? '/Answer' : '/Picture' );
+      // this.props.history.push('/Settings');
+    }
   }
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer

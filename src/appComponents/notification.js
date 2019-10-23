@@ -16,8 +16,9 @@ function Notify({ content }){
             transform: `translateY(${-height - 20}px)`
         });
         setTimeout(() => {
-            let notify = document.getElementById('notify');
-            notify.remove()
+            let notify = document.getElementById('notification-root');
+            // notify.remove();
+            ReactDOM.unmountComponentAtNode(notify);
         }, 300)
     }
 

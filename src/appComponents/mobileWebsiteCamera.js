@@ -9,6 +9,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Loader from 'react-spinners/CircleLoader';
 import { css } from '@emotion/core'
+import notification from './notification';
 // !SECTION
 
 let pressDelay = localStorage.getItem('pressDelay');
@@ -81,8 +82,6 @@ class MobileAppPicture extends React.Component {
 
     document.body.style.overflowX = 'auto';
 
-    console.log(window.devicePixelRatio);
-
     // SECTION function binding 
     this.OCR = this.OCR.bind(this);
     this.submit = this.submit.bind(this);
@@ -96,6 +95,7 @@ class MobileAppPicture extends React.Component {
     this.showAnswer = this.showAnswer.bind(this);
     this.flipOutMode = this.flipOutMode.bind(this);
     this.showSettings = this.showSettings.bind(this);
+    this.backendError = this.backendError.bind(this);
     this.changeTextBox = this.changeTextBox.bind(this);
     this.canvasTouchMove = this.canvasTouchMove.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
@@ -173,7 +173,10 @@ class MobileAppPicture extends React.Component {
 
   // Utilizes parent function to change Parent state
   showAnswer(){
-    if (this.state.isLoading){ return }
+    if (this.state.isLoading){
+      notification("Please wait, the answer is loading");
+      return
+    }
     this.props.changeState(this.state.question, this.state.answers, this.state.websites);
 
     let questionHeight = document.getElementById('question').getBoundingClientRect().height;
@@ -227,6 +230,15 @@ class MobileAppPicture extends React.Component {
 
   // SECTION  handles backend calling
 
+  backendError(response){
+    notification([
+      "An internal error occured",
+      "Please try again. If this error comes multiple times, then try again later."
+    ]);
+    console.log({response})
+    this.setState({ isLoading: false })
+  }
+
   /* if image is taken for proccesing */
   async OCR(){
     this.setState({isTextBox: false, isLoading: true});
@@ -256,19 +268,24 @@ class MobileAppPicture extends React.Component {
     // console.log({ocrJSON})
     
     let responseOCR = await OCR(this.state.picture, ocrJSON);
-    console.log({responseOCR});
+    if (responseOCR.status !== '200') {
+      this.backendError(responseOCR)
+      return
+    }
     let questionJSON = await responseOCR.json();
-    console.log({questionJSON});
     let question = questionJSON.question;
 
-    console.log({question})
-    
-    this.setState({ question: question, gotQuestion: true, isLoading: false, picture: questionJSON.img })
-    setTimeout(() => this.setState({isLoading: true}), 2)
+    this.setState({ question: question, gotQuestion: true })
+
+    setTimeout(() => this.forceUpdate(), 3)
 
     console.log('question gotten');
     
     let responseScrapy = await scrape(this.state.question);
+    if (responseScrapy.status !== '200') {
+      this.backendError(responseScrapy)
+      return
+    }
     let obj = await responseScrapy.json();
     // let obj = objJSON
     
@@ -281,6 +298,10 @@ class MobileAppPicture extends React.Component {
     if (e.key === 'Enter'){
       this.setState({isTextBox: false, isLoading: true})
       let response = await scrape(this.state.question);
+      if (response.status !== '200') {
+        this.backendError(response);
+        return
+      }
       let obj = await response.json();
       // let obj = objJSON
       this.setState({ answers: obj.answers, websites: obj.websites, isLoading: false})

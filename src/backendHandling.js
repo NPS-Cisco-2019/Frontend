@@ -8,7 +8,7 @@ let deploy = false;
 
 export function OCR(imgPath, cropJSON){
     let img = base64(imgPath, cropJSON);
-    console.log({img});
+
     if (deploy) {
         return fetch("/OCR", {
             method: 'POST',
@@ -19,6 +19,7 @@ export function OCR(imgPath, cropJSON){
         // TODO Remove Temporary non linked server promises which serve test details
         return new Promise((resolve, reject) => {
             resolve({
+                status: "200",
                 json: () => new Promise((resolve, reject) => {
                     setTimeout(() => {
                         resolve({ question: testDetails.question, img: img });
@@ -39,13 +40,14 @@ export function scrape(question){
         // TODO Remove Temporary non linked server promises which serve test details
         return new Promise((resolve, reject) => {
             resolve({
+                status: "200",
                 json: () => new Promise((resolve, reject) => {
                     setTimeout(() => {
                         resolve({
                             answers: testDetails.answers,
                             websites: testDetails.websites
                         });
-                    }, 2000)
+                    }, 5000)
                 })
             })
         })

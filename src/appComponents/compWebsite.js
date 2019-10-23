@@ -95,6 +95,8 @@ export default class CompApp extends React.Component {
     this.calcBrowserPos();
     this.changeHeadHeight();
 
+    setTimeout(() => this.forceUpdate(), 100);
+
     // makes the browser recalculate the above if window dimensions change
     window.addEventListener('resize', this.calcBrowserPos);
     window.addEventListener('resize', this.changeHeadHeight);
