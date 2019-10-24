@@ -177,6 +177,11 @@ class MobileAppPicture extends React.Component {
       notification("Please wait, the answer is loading");
       return
     }
+
+    if (!this.state.gotAnswer) {
+      this.submit({ key: "Enter" });
+      return
+    }
     this.props.changeState(this.state.question, this.state.answers, this.state.websites);
 
     let questionHeight = document.getElementById('question').getBoundingClientRect().height;
@@ -236,27 +241,27 @@ class MobileAppPicture extends React.Component {
       "Please try again. If this error comes multiple times, then try again later."
     ]);
     console.log({response})
-    this.setState({ isLoading: false })
+    this.setState({ isLoading: false, gotQuestion: false })
   }
 
   /* if image is taken for proccesing */
   async OCR(){
-    this.setState({isTextBox: false, isLoading: true});
+    this.setState({isTextBox: false, isLoading: true, gotAnswer: false});
 
     let [startX, startY] = this.state.startCoords;
     let [endX, endY] = this.state.endCoords;
 
     startX += window.scrollX;
-    startY += window.scrollY;
+    startY += window.scrollY - window.innerHeight/10;
     endX += window.scrollX;
     endY += window.scrollY;
 
     // window.devicePixelRatio = 2;
 
-    startX *= window.devicePixelRatio;
-    startY *= window.devicePixelRatio;
-    endX *= window.devicePixelRatio;
-    endY *= window.devicePixelRatio;
+    // startX *= window.devicePixelRatio;
+    // startY *= window.devicePixelRatio;
+    // endX *= window.devicePixelRatio;
+    // endY *= window.devicePixelRatio;
 
     let ocrJSON = {
       x: Math.min(endX, startX),
@@ -265,8 +270,6 @@ class MobileAppPicture extends React.Component {
       height: Math.abs(endY - startY),
     }
 
-    // console.log({ocrJSON})
-    
     let responseOCR = await OCR(this.state.picture, ocrJSON);
     if (responseOCR.status !== '200') {
       this.backendError(responseOCR)
@@ -289,14 +292,14 @@ class MobileAppPicture extends React.Component {
     let obj = await responseScrapy.json();
     // let obj = objJSON
     
-    this.setState({ answers: obj.answers, websites: obj.websites, isLoading: false});
+    this.setState({ answers: obj.answers, websites: obj.websites, isLoading: false, gotAnswer: true});
     console.log("answers gotten");
   }
     
   /* Scraping function */
   async submit(e){
     if (e.key === 'Enter'){
-      this.setState({isTextBox: false, isLoading: true})
+      this.setState({isTextBox: false, isLoading: true, gotAnswer: false})
       let response = await scrape(this.state.question);
       if (response.status !== '200') {
         this.backendError(response);
@@ -304,7 +307,7 @@ class MobileAppPicture extends React.Component {
       }
       let obj = await response.json();
       // let obj = objJSON
-      this.setState({ answers: obj.answers, websites: obj.websites, isLoading: false})
+      this.setState({ answers: obj.answers, websites: obj.websites, isLoading: false, gotAnswer: true})
       console.log("answers gotten");
       setTimeout(() => this.showAnswer(), 75)
     }

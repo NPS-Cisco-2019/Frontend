@@ -7,6 +7,7 @@ let deploy = false;
 // TODO integration
 
 export function OCR(imgPath, cropJSON){
+
     let img = base64(imgPath, cropJSON);
 
     if (deploy) {
