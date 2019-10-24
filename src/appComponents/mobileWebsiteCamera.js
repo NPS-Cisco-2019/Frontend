@@ -76,8 +76,8 @@ class MobileAppPicture extends React.Component {
       navButton: Flash,
       isLoading: false,
       imageSelector: false,
-      startCoords: [0, 0],
-      endCoords: [window.innerWidth, window.innerHeight]
+      startCoords: [-1, -1],
+      endCoords: [-1, -1]
     }
 
     document.body.style.overflowX = 'auto';
@@ -154,7 +154,7 @@ class MobileAppPicture extends React.Component {
 
   // handles change from image mode back to video
   backClick(){
-    this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false, navButtonAnimation: true }));
+    this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false, navButtonAnimation: true, loading: false }));
     setTimeout(() => {this.setState({navButton: Flash})},150);
     setTimeout(() => {this.setState({navButtonAnimation: false})}, 300);
 

@@ -6,6 +6,14 @@ export default function base64(imgPath, cropJSON){
 
     let img = new Image();
     img.src = imgPath;
+
+    if (x < 0){
+        x = 0;
+        y = 0;
+        width = img.naturalWidth;
+        height = img.naturalHeight
+    }
+
     // console.log({h: img.naturalHeight, img})
     let h = 9*window.innerHeight/10;
     let imgH = img.naturalHeight;
