@@ -435,7 +435,8 @@ class MobileAppPicture extends React.Component {
             <button className="imageSelector" style={{
               backgroundColor: this.state.imageSelector ? 'var(--highlightCol)' : 'rgb(40, 40, 40)',
               top: window.innerHeight/10 + 10,
-              right: 10
+              right: 10,
+              color: "white"
             }} onClick={() => {
               this.setState({imageSelector: !this.state.imageSelector});
             }}>&#9744;</button>
