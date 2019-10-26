@@ -1,7 +1,7 @@
 // SECTION imports
 import React from 'react';
 import Webcam from 'react-webcam';
-import {Flash, SettingsButton, Gallery, Back} from './elements';
+import {Flash, SettingsButton, Gallery, Back, Img} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
@@ -246,7 +246,7 @@ class MobileAppPicture extends React.Component {
 
   /* if image is taken for proccesing */
   async OCR(){
-    this.setState({isTextBox: false, isLoading: true, gotAnswer: false});
+    this.setState({isTextBox: false, isLoading: true, gotAnswer: false, gotQuestion: false});
 
     let [startX, startY] = this.state.startCoords;
     let [endX, endY] = this.state.endCoords;
@@ -419,7 +419,7 @@ class MobileAppPicture extends React.Component {
             {/* SECTION Image/Video displayer */}
             <div style={{...imgContainerStyle, height: Math.round(9 * window.innerHeight / 10), top: Math.round(window.innerHeight/10)}}>{
               this.state.output === 'img' ?
-              <img src={this.state.picture} alt="pic" style={imgStyle} id="image" /> :
+              <Img src={this.state.picture} /> :
               <Webcam 
               audio={false}
               videoConstraints={videoConstraints}

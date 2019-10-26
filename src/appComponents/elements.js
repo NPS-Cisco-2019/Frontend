@@ -16,6 +16,12 @@ const navObj = {
     objectFit: 'cover'
 }
 
+const imgStyle = {
+    // height: 9*window.innerHeight/10,
+    zIndex: '0',
+    margin: 'auto'
+  };
+
 const infoStyle = {
     boxSizing: 'border-box',
     borderRadius: window.innerWidth/50,
@@ -143,6 +149,31 @@ export function Back(props){
         </div>
     )
 };
+
+export function Img({ src }){
+
+    let [fixHeight, setFixHeight] = useState(true);
+
+    useEffect(() => {
+        let img = new Image();
+        img.src = src;
+        let bool = img.naturalHeight / img.naturalWidth > 1;
+        setFixHeight(bool);
+    }, [src])
+
+    return (
+        <img
+            src={src}
+            alt="pic"
+            style={{
+                ...imgStyle,
+                height: fixHeight ? 9 * window.innerHeight / 10 : 'auto',
+                width: fixHeight ? 'auto' : window.innerWidth
+            }}
+            id="image"
+        />
+    )
+}
 
 export function Answer(props){
 
