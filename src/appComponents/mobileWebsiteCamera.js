@@ -1,7 +1,7 @@
 // SECTION imports
 import React from 'react';
 import Webcam from 'react-webcam';
-import {Flash, SettingsButton, Gallery, Back, Img} from './elements';
+import {Flash, SettingsButton, Gallery, Back, Img, Subject} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
@@ -432,13 +432,19 @@ class MobileAppPicture extends React.Component {
             }</div>
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
-            <button className="imageSelector" style={{
-              backgroundColor: this.state.imageSelector ? 'var(--highlightCol)' : 'rgb(40, 40, 40)',
-              top: window.innerHeight/10 + 10,
-              right: 10
-            }} onClick={() => {
-              this.setState({imageSelector: !this.state.imageSelector});
-            }}>&#9744;</button>
+            <div className="buttonHolder" style={{top: window.innerHeight/10 + 10}}>
+              <Subject />
+              <div className="cropDiv">
+                <button className="imageSelector" style={{
+                  backgroundColor: this.state.imageSelector ? 'var(--highlightCol)' : 'rgb(40, 40, 40)',
+                }} onClick={() => this.setState({imageSelector: !this.state.imageSelector})}>
+                  crop
+                </button>
+                <button className="clearButton" onClick={() => this.state.context.clearRect(0, 0, window.innerWidth, window.innerHeight)}>
+                  clear
+                </button>
+              </div>
+            </div>
             <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2), bottom: bot}} onClick={func}>
               {this.state.output === 'img' ?
                 (this.state.isLoading ?

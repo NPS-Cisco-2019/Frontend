@@ -1,5 +1,6 @@
 import React from 'react';
-import { Back, Setting, Slider, Null, ColorPicker } from './elements';
+import { Setting, Slider, Null, ColorPicker } from './settingsElements';
+import { Back } from './elements';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { changeMode, reset } from '../localStorageHandleing';
@@ -24,7 +25,8 @@ class SettingsPage extends React.Component {
                 borderRadius: window.innerWidth/50,
                 width: window.innerWidth * 0.95,
                 top: Math.round(window.innerHeight/10),
-                marginLeft: window.innerWidth / 40
+                marginLeft: window.innerWidth / 40,
+                zIndex: 42
             },
             bannerChildAnimation: '',
             fadeout: false
@@ -56,7 +58,8 @@ class SettingsPage extends React.Component {
                 borderRadius: 0,
                 width: window.innerWidth,
                 marginLeft: 0,
-                top: 0
+                top: 0,
+                zIndex: 1000
             },
             bannerChildAnimation: 'lateFade'
         })

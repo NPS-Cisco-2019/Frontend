@@ -1,6 +1,4 @@
 export default function base64(imgPath, cropJSON){
-    console.log({cropJSON})
-
     let x = cropJSON.x;
     let y = cropJSON.y;
     let width = cropJSON.width;

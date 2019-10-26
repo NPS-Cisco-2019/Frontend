@@ -303,6 +303,7 @@ footer {
 .slider {
   margin: 10px 15px;
   margin-left: 0;
+  width: 57vw;
   appearance: none;
   -webkit-appearance: none;
   background: var(--backCol2);
@@ -368,12 +369,70 @@ footer {
   border-radius: 10px;
 }
 
+.buttonHolder {
+  display: flex;
+  position: fixed;
+  z-index: 42;
+  width: 100vw;
+  justify-content: space-between;
+  padding: 0 10px;
+  box-sizing: border-box;
+  height: 40px;
+}
+
+.subject-button {
+  background-color: rgb(40, 40, 40);
+  width: 130px;
+  border-radius: 15px;
+  flex-direction: column;
+  padding: 5px 0;
+  overflow: hidden;
+}
+
+.subject-button > button {
+  width: 130px;
+  height: 30px;
+  margin-bottom: 10px; 
+  transition: opacity 400ms linear;
+}
+
+.subject-button > section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.subject-button > section > button {
+  margin: 5px;
+}
+
+.cropDiv {
+  gap: 7px;
+  margin: 5px 0;
+  width: 123px;
+  display: flex;
+  justify-items: space-between;
+  flex-direction: row-reverse;
+}
+
+.buttonHolder > div, .buttonHolder > button {
+  font-family: Raleway;
+}
+
 .imageSelector {
   height: 30px;
-  width: 30px;
-  position: fixed;
-  border-radius: 50%;
-  z-index: 42;
+  width: 55px;
+  border-radius: 15px;
+  font-family: inherit;
+}
+
+.clearButton {
+  border-radius: 15px;
+  height: 30px;
+  width: 60px;
+  font-family: inherit;
+  background-color: rgb(40, 40, 40);
 }
 
 #canvas {

@@ -15,10 +15,12 @@ export function init(){
     let mode = localStorage.getItem('mode');
     if (mode === null){
         localStorage.setItem('mode', 'dark');
-    mode = 'dark'
+        mode = 'dark'
     }
 
     changeMode(mode);
+
+    localStorage.setItem('subject', 'General');
 
     style.setProperty('--highlightCol', highlightColor)
 
