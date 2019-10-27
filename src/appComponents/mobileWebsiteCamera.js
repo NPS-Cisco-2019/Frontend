@@ -433,7 +433,6 @@ class MobileAppPicture extends React.Component {
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
             <div className="buttonHolder" style={{top: window.innerHeight/10 + 10}}>
-              <Subject />
               <div className="cropDiv">
                 <button className="imageSelector" style={{
                   backgroundColor: this.state.imageSelector ? 'var(--highlightCol)' : 'rgb(40, 40, 40)',
@@ -444,6 +443,10 @@ class MobileAppPicture extends React.Component {
                   clear
                 </button>
               </div>
+              {
+                localStorage.getItem('subjectSelector') === "Drop down on screen" ?
+                  <Subject /> : null
+              }
             </div>
             <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2), bottom: bot}} onClick={func}>
               {this.state.output === 'img' ?

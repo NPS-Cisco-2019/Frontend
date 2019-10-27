@@ -1,66 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-function Switch(props){
+export function Setting({ type, name, id, handleClick, Children, props, childProps, compValue, children }){
 
-    let [enabled, setEnabled] = useState(Boolean(props.enabled));
-
-    let [style, setStyle] = useState({borderRadius: '50%', height: 15});
+    let [open, setOpen] = useState(true)
+    let [childOpen, setChildOpen] = useState(true);
+    let [maxHeight, setMaxHeight] = useState('100%');
+    let [transition, setTransition] = useState(false);
+    let [value, setValue] = useState(compValue);
 
     useEffect(() => {
-        let height = document.getElementById(props.id).getBoundingClientRect().height;
-        setStyle({ borderRadius: height/7, height: height/3.5, width: height/1.5 });
-    }, [props.id])
+        let totHeight = document.getElementById(`${id}-wrapper`).getBoundingClientRect().height;
+        setMaxHeight(totHeight);
+        setOpen(false);
+        setChildOpen(false);
+        setTimeout(() => setTransition(true), 50);
+    }, [id])
 
-    const handleClick = () => {
-        setEnabled(!enabled);
-        props.handleClick();
+    const openClick = () => {
+        if (open){
+            setTimeout(() => setChildOpen(false), 300);
+        } else {
+            setChildOpen(true);
+        }
+        setOpen(!open);
+    }
+
+
+    let Component;
+    let height = window.innerHeight/13 + window.innerHeight/40;
+
+    let openable = true;
+
+    if (type === 'switch'){
+        Component = Switch;
+        openable = false;
+    } else if (type === 'value'){
+        Component = Value;
+    } else if (type === 'colorPicker'){
+        Component = Color;
     }
 
     return (
-        <button className="switch" onClick={handleClick}
-            style={{...style,
-                    justifyContent: enabled ? 'flex-end' : 'flex-start',
-                    backgroundColor: enabled ? 'var(--highlightCol)' : null}}
-        >
-            <div className="switch-selector" style={{
-                width: 1.3*style.height,
-                height: 1.3*style.height,
-                top: -0.2*style.height,
-                right: enabled ? -0.2*style.height : null,
-                left: enabled ? null : -0.2*style.height
-            }}></div>
-        </button>
-    )
-}
-
-function Range({ min, max, value, setValue, id, highlightCol = "var(--highlightCol)" }){
-    return (
-        <div style={{display: 'flex', width: window.innerWidth * 0.8, marginBottom: 5, maxWidth: '100%' }}>
-            <input id={id} style={{highlightCol}} type="range" min={min} max={max} value={value} onChange={e => setValue(e.target.value)} className="slider" />
-            <p style={{margin: '0'}}>{value}</p>
+        <div className={`setting-wrapper ${transition ? 'height-trans' : null}`} id={`${id}-wrapper`} style={{height: open ? maxHeight : height}}>
+            <div className="setting" id={id} style={{flexBasis: window.innerHeight/12 }} onClick={openable ? openClick : null}>
+                <p>{name}</p>
+                <Component id={id} handleClick={handleClick} {...props} value={value} />
+            </div>
+            {childOpen ? <Children id={`${id}-child`} updateOpen={setOpen} updateValue={setValue} {...childProps} /> : null}
+            { children }
         </div>
-    )
-}
-
-function Value(props){
-    return (
-        <p id={props.id} name="reset-value-selector" prefix={props.prefix} suffix={props.suffix} defaultValue={props.defaultValue}>
-            {props.prefix}{props.value}{props.suffix}
-        </p>
-    )    
-}
-
-function Color({ colour, localStorageItem = null }){
-    let backCol;
-
-    if (localStorageItem !== null) {
-        backCol = `var(--${localStorageItem})`;
-    } else {
-        backCol = colour;
-    }
-    return (
-        <div className="colourShower" style={{backgroundColor: backCol}}></div>
     )
 }
 
@@ -136,54 +125,103 @@ export function Slider({ updateOpen, updateValue, min, max, localStorageItem }){
     )
 }
 
-export function Setting({ type, name, id, handleClick, Children, props, childProps, compValue }){
+export function Choice({ localStorageItem, arr, updateOpen, updateValue }) {
 
-    let [open, setOpen] = useState(true)
-    let [childOpen, setChildOpen] = useState(true);
-    let [maxHeight, setMaxHeight] = useState('100%');
-    let [transition, setTransition] = useState(false);
-    let [value, setValue] = useState(compValue);
-
-    useEffect(() => {
-        let totHeight = document.getElementById(`${id}-wrapper`).getBoundingClientRect().height;
-        setMaxHeight(totHeight);
-        setOpen(false);
-        setChildOpen(false);
-        setTimeout(() => setTransition(true), 50);
-    }, [id])
-
-    const openClick = () => {
-        if (open){
-            setTimeout(() => setChildOpen(false), 300);
-        } else {
-            setChildOpen(true);
-        }
-        setOpen(!open);
+    const changeSelection = e => {
+        setSelected(e.target.innerText);
     }
 
+    const submit = () => {
+        localStorage.setItem(localStorageItem, selected);
+        updateOpen(false);
+        updateValue(selected);
+    }
 
-    let Component;
-    let height = window.innerHeight/13 + window.innerHeight/40;
+    const [selected, setSelected] = useState(localStorage.getItem(localStorageItem));
 
-    let openable = true;
 
-    if (type === 'switch'){
-        Component = Switch;
-        openable = false;
-    } else if (type === 'value'){
-        Component = Value;
-    } else if (type === 'colorPicker'){
-        Component = Color;
+    return (
+        <div className="setting-choices">
+            {
+                arr.map((choice) => (
+                    <div
+                        key={choice}
+                        onClick={changeSelection}
+                        className="setting-choice"
+                        style={{
+                            backgroundColor: choice === selected ? 'rgba(50, 90, 245, 0.2)' : 'var(--midGray)',
+                            border: choice === selected ? '3px solid rgb(50, 90, 245)' : '3px solid transparent',
+                        }}
+                    >
+                        <p>{choice}</p>
+                    </div>
+                ))
+            }
+            <button style={{width: 50, height: 30, backgroundColor: 'var(--midGray)', borderRadius: 5, marginTop: 10}} onClick={submit}>ok</button>
+        </div>
+    )
+}
+
+function Switch(props){
+
+    let [enabled, setEnabled] = useState(Boolean(props.enabled));
+
+    let [style, setStyle] = useState({borderRadius: '50%', height: 15});
+
+    useEffect(() => {
+        let height = document.getElementById(props.id).getBoundingClientRect().height;
+        setStyle({ borderRadius: height/7, height: height/3.5, width: height/1.5 });
+    }, [props.id])
+
+    const handleClick = () => {
+        setEnabled(!enabled);
+        props.handleClick();
     }
 
     return (
-        <div className={`setting-wrapper ${transition ? 'height-trans' : null}`} id={`${id}-wrapper`} style={{height: open ? maxHeight : height}}>
-            <div className="setting" id={id} style={{flexBasis: window.innerHeight/12 }} onClick={openable ? openClick : null}>
-                <p>{name}</p>
-                <Component id={id} handleClick={handleClick} {...props} value={value} />
-            </div>
-            {childOpen ? <Children id={`${id}-child`} updateOpen={setOpen} updateValue={setValue} {...childProps} /> : null}
+        <button className="switch" onClick={handleClick}
+            style={{...style,
+                    justifyContent: enabled ? 'flex-end' : 'flex-start',
+                    backgroundColor: enabled ? 'var(--highlightCol)' : null}}
+        >
+            <div className="switch-selector" style={{
+                width: 1.3*style.height,
+                height: 1.3*style.height,
+                top: -0.2*style.height,
+                right: enabled ? -0.2*style.height : null,
+                left: enabled ? null : -0.2*style.height
+            }}></div>
+        </button>
+    )
+}
+
+function Range({ min, max, value, setValue, id, highlightCol = "var(--highlightCol)" }){
+    return (
+        <div style={{display: 'flex', width: window.innerWidth * 0.8, marginBottom: 5, maxWidth: '100%' }}>
+            <input id={id} style={{highlightCol}} type="range" min={min} max={max} value={value} onChange={e => setValue(e.target.value)} className="slider" />
+            <p style={{margin: '0'}}>{value}</p>
         </div>
+    )
+}
+
+function Value(props){
+    return (
+        <p id={props.id} name="reset-value-selector" prefix={props.prefix} suffix={props.suffix} defaultValue={props.defaultValue} style={{maxWidth: "30vw"}}>
+            {props.prefix}{props.value}{props.suffix}
+        </p>
+    )    
+}
+
+function Color({ colour, localStorageItem = null }){
+    let backCol;
+
+    if (localStorageItem !== null) {
+        backCol = `var(--${localStorageItem})`;
+    } else {
+        backCol = colour;
+    }
+    return (
+        <div className="colourShower" style={{backgroundColor: backCol}}></div>
     )
 }
 

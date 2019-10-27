@@ -222,17 +222,14 @@ export function Subject(){
             }}
             onClick={() => setOpen(!open)}
         >
-            <button style ={{
-                opacity: opacity
-            }}>
+            <button style ={{ opacity }}>
                 {subjects[0]}
             </button>
             <section>
                 {
-                    subjects.map((subject, i) => {
-                        return i === 0 ? null :
-                            <button onClick={changeSubject} key={subject}>{subject}</button>
-                    })
+                    subjects.slice(1).map((subject) => 
+                        <button onClick={changeSubject} key={subject}>{subject}</button>
+                    )
                 }
             </section>
         </div>

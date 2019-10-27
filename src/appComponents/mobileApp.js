@@ -37,9 +37,9 @@ class MobileApp extends React.Component {
       console.log("YEET");
       this.props.history.push("/Unknown");
     } else {
-      // this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
+      this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
       // TODO delete below history.pushes, the one above is correct
-      this.props.history.push(false ? '/Answer' : '/Picture' );
+      // this.props.history.push(false ? '/Answer' : '/Picture' );
       // this.props.history.push('/Settings');
     }
   }

@@ -34,7 +34,11 @@ export function scrape(question){
     if (deploy) {
         return fetch("/scrapy", {
             method: 'POST',
-            body: JSON.stringify({question: question, subject: localStorage.getItem('subject')}),
+            body: JSON.stringify({
+                question: question,
+                subject: localStorage.getItem('subject'),
+                grade: localStorage.getItem('grade')
+            }),
             headers: { 'Content-Type': 'application/json' }
         });
     } else {
