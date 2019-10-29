@@ -4,7 +4,6 @@ import testDetails from "./test";
 let deploy = false;
 
 // NOTE functions which will handle all backend calls
-// TODO integration
 
 export function OCR(imgPath, cropJSON){
 
@@ -52,7 +51,7 @@ export function scrape(question){
                             answers: testDetails.answers,
                             websites: testDetails.websites
                         });
-                    }, 5000)
+                    }, 1000)
                 })
             })
         })

@@ -1,45 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import styles from './style';
 
-// SECTION inline styles
-let maxLength = (10/100) * (69/100) * window.innerHeight;
-
-const navObj = {
-    boxSizing: 'border-box',
-    alignContent: 'center',
-    justifyContent: 'center',
-    padding: maxLength/5,
-    height: maxLength,
-    borderRadius: '50%',
-    width: maxLength,
-    cursor: 'pointer',
-    objectFit: 'cover'
-}
-
-const imgStyle = {
-    // height: 9*window.innerHeight/10,
-    zIndex: '0',
-    margin: 'auto'
-  };
-
-const infoStyle = {
-    boxSizing: 'border-box',
-    borderRadius: window.innerWidth/50,
-    width: 9 * window.innerWidth/10,
-    padding: 15,
-    margin: '3% 0'
-}
-
-const answer = {
-    overflowY: 'scroll',
-    objectFit: 'cover',
-    display: 'inline-block',
-    minWidth: 9 * window.innerWidth / 10,
-    margin: '10px 10%',
-    marginLeft: 0,
-    flex: 1
-}
-// !SECTION
+const maxLength = (10/100) * (69/100) * window.innerHeight;
+let { infoStyle, navObj, imgStyle, answer } = styles;
 
 export class Flash extends React.Component {
     constructor(props){
@@ -101,7 +65,6 @@ export class SettingsButton extends React.Component {
         this.props.showSettings();
     }
 
-    // TODO make settings menu
     render(){
         return (
             <div style={{...navObj, ...this.state.style}} className="settings-transitions">
@@ -154,7 +117,7 @@ export function Img({ src }){
     useEffect(() => {
         let img = new Image();
         img.src = src;
-        let bool = img.naturalHeight / img.naturalWidth > 1;
+        let bool = img.naturalHeight / img.naturalWidth > window.innerHeight / window.innerWidth;
         setFixHeight(bool);
     }, [src])
 
@@ -175,7 +138,9 @@ export function Img({ src }){
 export function Answer(props){
 
     
+    let ansLength = props.answer.length
     let [height, setHeight] = useState(0);
+    let [imgLoaded, setImgLoaded] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
@@ -183,18 +148,41 @@ export function Answer(props){
             let pRect = document.getElementById(props.id).getBoundingClientRect();
             let container = document.getElementById('ansContainer').getBoundingClientRect();
 
+
             setHeight(Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding))));
+
+            if (imgLoaded) {
+                let div = document.getElementById(props.id).getBoundingClientRect();
+                let img = document.getElementById(`${props.id}img`).getBoundingClientRect();
+                setHeight(Math.min(Math.max(img.height, div.height), container.height));
+            }
         }, 100);
         
         // eslint-disable-next-line
-    }, []);
+    }, [imgLoaded]);
+
     return (
         <div className="info" style={{...infoStyle, ...answer, height: height}}>
             <div id={props.id}>{
-                props.answer.map((item, i) => (
+                props.answer.slice(0, ansLength - 1).map((item, i) => (
                     <p style={{marginBottom: 15}} key={props.id + '-' + i}>{item}</p>
-                ))
-            }</div>
+                ))}
+
+                {props.answer[ansLength - 1] ?
+                    <React.Fragment>
+                        <img
+                            src={ props.answer[ansLength - 1] }
+                            alt={`answer-${props.id}`}
+                            style={{width: "100%", marginBottom: 15}}
+                            id={`${props.id}img`}
+                            onLoad={() => setImgLoaded(true)}
+                        />
+                        { imgLoaded ? null : <p>Loading...</p> }
+                    </React.Fragment>
+                     : null
+                }
+
+            </div>
         </div>
     )
 }
@@ -222,13 +210,21 @@ export function Subject(){
             }}
             onClick={() => setOpen(!open)}
         >
-            <button style ={{ opacity }}>
-                {subjects[0]}
+            <button style ={{ opacity, fontFamily: "Raleway" }}>
+                <div className={`hamburger hamburger--collapse ${open ? 'is-active' : ''}`}>
+                    <span className="hamburger-box">
+                        <span className="hamburger-inner"></span>
+                    </span>
+                </div>
+                <p style={{display: "inline", margin: 0, fontWeight: 400}}>{subjects[0]}</p>
             </button>
             <section>
                 {
                     subjects.slice(1).map((subject) => 
-                        <button onClick={changeSubject} key={subject}>{subject}</button>
+                        <button onClick={changeSubject} key={subject} style={{
+                            fontWeight: 400,
+                            fontFamily: "Raleway"
+                        }}>{subject}</button>
                     )
                 }
             </section>
