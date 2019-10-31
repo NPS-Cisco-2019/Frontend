@@ -1,6 +1,6 @@
 // SECTION imports
 import React from 'react';
-import Webcam from 'react-webcam';
+// import Webcam from 'react-webcam';
 import {Flash, SettingsButton, Gallery, Back, Img, Subject} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
@@ -11,10 +11,11 @@ import Loader from 'react-spinners/CircleLoader';
 import { css } from '@emotion/core'
 import notification from './notification';
 import style from "./style";
+import Camera from './camera';
 // !SECTION
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
-let { imgStyle, imgContainerStyle, captureButtonStyle, videoConstraints } = style;
+let { imgContainerStyle, captureButtonStyle } = style;
 
 let pressDelay = localStorage.getItem('pressDelay');
 
@@ -90,7 +91,16 @@ class MobileAppPicture extends React.Component {
 
   // takes a picure and sets output mode
   capture(){
-    const imageSrc = this.refs.webcam.getScreenshot();
+    let canvas = document.createElement("CANVAS");
+    let ctx = canvas.getContext('2d');
+    let video = document.getElementById('camera');
+    console.log({video})
+    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth;
+    ctx.drawImage(video, 0, 0);
+    let imageSrc = canvas.toDataURL('image/png');
+       
+    // const imageSrc = this.refs.webcam.getScreenshot();
     this.setState({picture: imageSrc, output: 'img', navButtonAnimation: true});
     setTimeout(() => {this.setState({navButton: Back})}, 150);
     setTimeout(() => {this.setState({navButtonAnimation: false})}, 300);
@@ -384,15 +394,18 @@ class MobileAppPicture extends React.Component {
             <div style={{...imgContainerStyle, height: Math.round(9 * window.innerHeight / 10), top: Math.round(window.innerHeight/10)}}>{
               this.state.output === 'img' ?
               <Img src={this.state.picture} /> :
-              <Webcam 
-                audio={false}
-                videoConstraints={videoConstraints}
-                onUserMediaError={this.cameraErrorHandler}
-                style={imgStyle}
-                screenshotFormat="image/jpeg"
-                id="camera"
-                ref='webcam'
+              <Camera
+                error={this.cameraErrorHandler}
               />
+              // <Webcam 
+              //   audio={false}
+              //   videoConstraints={videoConstraints}
+              //   onUserMediaError={this.cameraErrorHandler}
+              //   style={imgStyle}
+              //   screenshotFormat="image/jpeg"
+              //   id="camera"
+              //   ref='webcam'
+              // />
             }</div>
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
