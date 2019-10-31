@@ -1,7 +1,7 @@
 // SECTION imports
 import React from 'react';
-import Webcam from 'react-webcam';
-import {Flash, SettingsButton, Gallery, Back} from './elements';
+// import Webcam from 'react-webcam';
+import {Flash, SettingsButton, Gallery, Back, Img, Subject} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
@@ -10,56 +10,22 @@ import PropTypes from 'prop-types';
 import Loader from 'react-spinners/CircleLoader';
 import { css } from '@emotion/core'
 import notification from './notification';
+import style from "./style";
+import Camera from './camera';
 // !SECTION
+
+const maxLength = (10/100) * (69/100) * window.innerHeight;
+let { imgContainerStyle, captureButtonStyle } = style;
 
 let pressDelay = localStorage.getItem('pressDelay');
 
 const vibratable = "vibrate" in navigator;
-
-// SECTION Inline styles  
-
-const maxLength = (10/100) * (69/100) * window.innerHeight;
-
-const imgStyle = {
-  height: 9*window.innerHeight/10,
-  zIndex: '0',
-  margin: 'auto'
-};
-
-const imgContainerStyle = {
-  backgroundColor: 'var(--backCol)',
-  display: 'flex',
-  position: 'relative'
-};
-
-const captureButtonStyle = {
-  position: 'fixed',
-  borderRadius: '50%',
-  width: maxLength,
-  height: maxLength,
-  zIndex: 42,
-  backgroundColor: 'rgb(224, 0, 0)',
-  border: '0.15em solid white',
-  transition: 'bottom 500ms cubic-bezier(0.215, 0.61, 0.355, 1)',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-};
-
-const videoConstraints = {
-  // facingMode: 'user',
-  facingMode:  { exact: "environment" },
-  height: window.innerWidth,
-  width: window.innerHeight
-};
 
 const overide = css`
   postion: relative;
   top: -1px;
   left: -1px;
 `;
-
-// !SECTION 
 
 class MobileAppPicture extends React.Component {
   constructor(props){
@@ -76,8 +42,8 @@ class MobileAppPicture extends React.Component {
       navButton: Flash,
       isLoading: false,
       imageSelector: false,
-      startCoords: [0, 0],
-      endCoords: [window.innerWidth, window.innerHeight]
+      startCoords: [-1, -1],
+      endCoords: [-1, -1]
     }
 
     document.body.style.overflowX = 'auto';
@@ -94,6 +60,7 @@ class MobileAppPicture extends React.Component {
     this.touchStart = this.touchStart.bind(this);
     this.showAnswer = this.showAnswer.bind(this);
     this.flipOutMode = this.flipOutMode.bind(this);
+    this.stateSetter = this.stateSetter.bind(this);
     this.showSettings = this.showSettings.bind(this);
     this.backendError = this.backendError.bind(this);
     this.changeTextBox = this.changeTextBox.bind(this);
@@ -105,6 +72,10 @@ class MobileAppPicture extends React.Component {
   }
   
   /* SECTION FUNCTIONS */
+
+  stateSetter(obj){
+    this.setState(obj);
+  }
 
   // handles error recieved by Webcam component
   cameraErrorHandler(error){
@@ -154,13 +125,12 @@ class MobileAppPicture extends React.Component {
 
   // handles change from image mode back to video
   backClick(){
-    this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false, navButtonAnimation: true }));
+    this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false, navButtonAnimation: true, loading: false }));
     setTimeout(() => {this.setState({navButton: Flash})},150);
     setTimeout(() => {this.setState({navButtonAnimation: false})}, 300);
 
   }
 
-  // TODO remove this, temporary until settings path programmed/removed
   showSettings(){
     this.setState({footStyle :{
       backgroundColor: 'var(--midGray2)',
@@ -239,14 +209,14 @@ class MobileAppPicture extends React.Component {
     notification([
       "An internal error occured",
       "Please try again. If this error comes multiple times, then try again later."
-    ]);
+    ], true);
     console.log({response})
     this.setState({ isLoading: false, gotQuestion: false })
   }
 
   /* if image is taken for proccesing */
   async OCR(){
-    this.setState({isTextBox: false, isLoading: true, gotAnswer: false});
+    this.setState({isTextBox: false, isLoading: true, gotAnswer: false, gotQuestion: false});
 
     let [startX, startY] = this.state.startCoords;
     let [endX, endY] = this.state.endCoords;
@@ -419,27 +389,39 @@ class MobileAppPicture extends React.Component {
             {/* SECTION Image/Video displayer */}
             <div style={{...imgContainerStyle, height: Math.round(9 * window.innerHeight / 10), top: Math.round(window.innerHeight/10)}}>{
               this.state.output === 'img' ?
-              <img src={this.state.picture} alt="pic" style={imgStyle} id="image" /> :
-              <Webcam 
-              audio={false}
-              videoConstraints={videoConstraints}
-              onUserMediaError={this.cameraErrorHandlerndler}
-              style={imgStyle}
-              screenshotFormat="image/jpeg"
-              id="camera"
-              ref='webcam'
+              <Img src={this.state.picture} /> :
+              <Camera
+                error={this.cameraErrorHandler}
+                setParentState={this.stateSetter}
               />
+              // <Webcam 
+              //   audio={false}
+              //   videoConstraints={videoConstraints}
+              //   onUserMediaError={this.cameraErrorHandler}
+              //   style={imgStyle}
+              //   screenshotFormat="image/jpeg"
+              //   id="camera"
+              //   ref='webcam'
+              // />
             }</div>
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
-            <button className="imageSelector" style={{
-              backgroundColor: this.state.imageSelector ? 'var(--highlightCol)' : 'rgb(40, 40, 40)',
-              top: window.innerHeight/10 + 10,
-              right: 10,
-              color: "white"
-            }} onClick={() => {
-              this.setState({imageSelector: !this.state.imageSelector});
-            }}>&#9744;</button>
+            <div className="buttonHolder" style={{top: window.innerHeight/10 + 10}}>
+              <div className="cropDiv">
+                <button className="imageSelector" style={{
+                  backgroundColor: this.state.imageSelector ? 'var(--highlightCol)' : 'rgb(40, 40, 40)',
+                }} onClick={() => this.setState({imageSelector: !this.state.imageSelector})}>
+                  crop
+                </button>
+                <button className="clearButton" onClick={() => this.state.context.clearRect(0, 0, window.innerWidth, window.innerHeight)}>
+                  clear
+                </button>
+              </div>
+              {
+                localStorage.getItem('subjectSelector') === "Drop down on screen" ?
+                  <Subject /> : null
+              }
+            </div>
             <button style={{...captureButtonStyle, left: ((window.innerWidth - maxLength) / 2), bottom: bot}} onClick={func}>
               {this.state.output === 'img' ?
                 (this.state.isLoading ?
