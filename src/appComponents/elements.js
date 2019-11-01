@@ -8,7 +8,7 @@ let { infoStyle, navObj, imgStyle, answer } = styles;
 export class Flash extends React.Component {
     constructor(props){
         super(props);
-        this.state = {selected: true};
+        this.state = {selected: false};
         this.handleClick = this.handleClick.bind(this);
     }
 

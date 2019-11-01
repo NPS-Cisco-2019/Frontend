@@ -16,15 +16,15 @@ export default function Camera({ error }) {
             navigator.mediaDevices.getUserMedia(constraints)
                 .then(stream => {
 
-                    let video = document.getElementById('Flash');
+                    let video = document.getElementById('camera');
 
-                    track = stream.getVideoTracks()[0];
+                    let track = stream.getVideoTracks()[0];
 
 
                     video.srcObject = stream;
                     // video.src = track;
 
-                    btn = document.getElementById('camera');
+                    let btn = document.getElementById('flash');
                     btn.addEventListener('click', () => {
                         track.applyConstraints({
                             advanced: [{ torch: true }]
