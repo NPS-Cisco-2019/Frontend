@@ -13,7 +13,6 @@ export class Flash extends React.Component {
     }
 
     // changes whether flashlight is enabled or disabled
-    // TODO add flashlight fucntionality
     handleClick(){
         this.setState({ selected: !this.state.selected });
     }

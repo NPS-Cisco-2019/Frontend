@@ -20,16 +20,18 @@ export default function Camera({ error }) {
 
                     let track = stream.getVideoTracks()[0];
 
-
                     video.srcObject = stream;
-                    // video.src = track;
 
                     let btn = document.getElementById('flash');
                     btn.addEventListener('click', () => {
-                        track.applyConstraints({
-                            advanced: [{ torch: true }]
-                        })
-                    })
+                        setTimeout(() => {
+                            let flashBtn = document.getElementById('flash');
+                            let selected = flashBtn.classList[flashBtn.classList.length - 1] === 'selected';
+                            track.applyConstraints({
+                                advanced: [{ torch: selected }]
+                            });
+                        }, 10);
+                    });
                 })
                 .catch(err => {
                     error(err);
