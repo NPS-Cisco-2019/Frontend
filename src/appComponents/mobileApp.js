@@ -9,6 +9,7 @@ import GradeChoice from './gradeChoice';
 import Tutorial from './mobileTutorial';
 import { init } from '../localStorageHandleing';
 import "./hamburger.css"
+import SavedAnswerPage from './savedAnswers';
 
 // ANCHOR Main Mobile App that renders various mobile pages
 // NOTE gets called by <App />, does not render by itself
@@ -37,10 +38,11 @@ class MobileApp extends React.Component {
       console.log("YEET");
       this.props.history.push("/Unknown");
     } else {
-      this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
+      // this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
       // TODO delete below history.pushes, the one above is correct
       // this.props.history.push(false ? '/Answer' : '/Picture' );
       // this.props.history.push('/Settings');
+      this.props.history.push('/Saved Answers')
     }
   }
 
@@ -73,6 +75,8 @@ class MobileApp extends React.Component {
           <Route path="/Settings" render={() => (
             <SettingsPage backClick={this.changeDisplayAnswer} />
             )} />
+          
+          <Route path="/Saved Answers" component={SavedAnswerPage} />
 
           <Route path="/GradeChoice" component={GradeChoice} />
 

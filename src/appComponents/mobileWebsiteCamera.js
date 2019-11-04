@@ -1,6 +1,5 @@
 // SECTION imports
 import React from 'react';
-// import Webcam from 'react-webcam';
 import {Flash, SettingsButton, Gallery, Back, Img, Subject} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
@@ -397,15 +396,6 @@ class MobileAppPicture extends React.Component {
               <Camera
                 error={this.cameraErrorHandler}
               />
-              // <Webcam 
-              //   audio={false}
-              //   videoConstraints={videoConstraints}
-              //   onUserMediaError={this.cameraErrorHandler}
-              //   style={imgStyle}
-              //   screenshotFormat="image/jpeg"
-              //   id="camera"
-              //   ref='webcam'
-              // />
             }</div>
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}

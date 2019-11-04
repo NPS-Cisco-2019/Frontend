@@ -25,8 +25,8 @@ const styles = {
         alignItems: 'center'
     },
     videoConstraints: {
-        facingMode: 'user',
-        // facingMode:  { exact: "environment" },
+        // facingMode: 'user',
+        facingMode:  { exact: "environment" },
         width: 9*window.innerHeight/10,
         height: window.innerWidth
     },
@@ -72,7 +72,7 @@ const styles = {
         cursor: 'pointer',
         objectFit: 'cover'
     },
-    answer: {
+    answerStyle: {
         overflowY: 'scroll',
         objectFit: 'cover',
         display: 'inline-block',

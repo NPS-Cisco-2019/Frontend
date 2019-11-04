@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './style';
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
-let { infoStyle, navObj, imgStyle, answer } = styles;
+let { infoStyle, navObj, imgStyle, answerStyle } = styles;
 
 export class Flash extends React.Component {
     constructor(props){
@@ -135,25 +135,24 @@ export function Img({ src }){
     )
 }
 
-export function Answer(props){
+export function Answer({ id, answer, width = 9*window.innerWidth/10 }){
 
     
-    let ansLength = props.answer.length
+    let ansLength = answer.length
     let [height, setHeight] = useState(0);
     let [imgLoaded, setImgLoaded] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
-            // eslint-disable-next-line
-            let pRect = document.getElementById(props.id).getBoundingClientRect();
+            let pRect = document.getElementById(id).getBoundingClientRect();
             let container = document.getElementById('ansContainer').getBoundingClientRect();
 
 
             setHeight(Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding))));
 
             if (imgLoaded) {
-                let div = document.getElementById(props.id).getBoundingClientRect();
-                let img = document.getElementById(`${props.id}img`).getBoundingClientRect();
+                let div = document.getElementById(id).getBoundingClientRect();
+                let img = document.getElementById(`${id}img`).getBoundingClientRect();
                 setHeight(Math.min(Math.max(img.height, div.height), container.height));
             }
         }, 100);
@@ -162,19 +161,19 @@ export function Answer(props){
     }, [imgLoaded]);
 
     return (
-        <div className="info" style={{...infoStyle, ...answer, height: height}}>
-            <div id={props.id}>{
-                props.answer.slice(0, ansLength - 1).map((item, i) => (
-                    <p style={{marginBottom: 15}} key={props.id + '-' + i}>{item}</p>
+        <div className="info" style={{...infoStyle, ...answerStyle, height, width}}>
+            <div id={id}>{
+                answer.slice(0, ansLength - 1).map((item, i) => (
+                    <p style={{marginBottom: 15}} key={id + '-' + i}>{item}</p>
                 ))}
 
-                {props.answer[ansLength - 1] ?
+                {answer[ansLength - 1] ?
                     <React.Fragment>
                         <img
-                            src={ props.answer[ansLength - 1] }
-                            alt={`answer-${props.id}`}
+                            src={ answer[ansLength - 1] }
+                            alt={`answer-${id}`}
                             style={{width: "100%", marginBottom: 15}}
-                            id={`${props.id}img`}
+                            id={`${id}img`}
                             onLoad={() => setImgLoaded(true)}
                         />
                         { imgLoaded ? null : <p>Loading...</p> }
@@ -240,7 +239,7 @@ export class ErrorBoundary extends React.Component {
       this.state = { hasError: false };
     }
   
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError() {
       // Update state so the next render will show the fallback UI.
       return { hasError: true };
     }
