@@ -13,7 +13,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 // TEMPORARY, If its true the website shows mobile app on desktop also, just for developement
 // TODO remove this
-let dev = true;
+let dev = false;
 
 function App(){
   //checks whether user is on mobile

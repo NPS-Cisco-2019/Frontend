@@ -1,6 +1,6 @@
 // SECTION imports
 import React from 'react';
-import {Flash, SettingsButton, Gallery, Back, Img, Subject} from './elements';
+import {BookmarkNav, SettingsButton, Gallery, Back, Img, Subject} from './elements';
 import './mobileApp.css'
 import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
@@ -38,7 +38,7 @@ class MobileAppPicture extends React.Component {
       quesStyle: {},
       gotQuestion: false,
       question: '',
-      navButton: Flash,
+      navButton: BookmarkNav,
       isLoading: false,
       imageSelector: false,
       startCoords: [-1, -1],
@@ -61,6 +61,7 @@ class MobileAppPicture extends React.Component {
     this.flipOutMode = this.flipOutMode.bind(this);
     this.showSettings = this.showSettings.bind(this);
     this.backendError = this.backendError.bind(this);
+    this.showSavedAns = this.showSavedAns.bind(this);
     this.changeTextBox = this.changeTextBox.bind(this);
     this.canvasTouchMove = this.canvasTouchMove.bind(this);
     this.selectFileHandle = this.selectFileHandle.bind(this);
@@ -129,9 +130,19 @@ class MobileAppPicture extends React.Component {
   // handles change from image mode back to video
   backClick(){
     this.setState(() => ({ output: 'vid', gotQuestion: false, swipedUp: false, navButtonAnimation: true, loading: false }));
-    setTimeout(() => {this.setState({navButton: Flash})},150);
+    setTimeout(() => {this.setState({navButton: BookmarkNav})},150);
     setTimeout(() => {this.setState({navButtonAnimation: false})}, 300);
 
+  }
+
+  showSavedAns(){
+    this.setState({footStyle :{
+      backgroundColor: 'var(--midGray2)',
+      zIndex: 42
+    }});
+    setTimeout(() => {
+      this.props.history.push('/Saved Answers');
+    }, 800);
   }
 
   showSettings(){
@@ -370,8 +381,8 @@ class MobileAppPicture extends React.Component {
       <div className={`App ${this.props.backToCam ? 'slidein' : (fromGradeChoice ? 'fadein-short' : null)}`} style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}}>
         {/* SECTION  NAV */}
         <header className="nav" style={{height: Math.round(window.innerHeight/10)}}>
-          <div className={this.state.navButtonAnimation ? "nav-button-animation" : null}>
-            <this.state.navButton handleClick={this.backClick} />
+          <div id="bookmark-holder" className={this.state.navButtonAnimation ? "nav-button-animation" : null}>
+            <this.state.navButton handleClick={this.backClick} showSavedAns={this.showSavedAns} />
           </div>
           <div id="settingsDiv">
             <SettingsButton showSettings={this.showSettings} />

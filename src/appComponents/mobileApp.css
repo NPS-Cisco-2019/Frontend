@@ -66,6 +66,14 @@
   filter: var(--filter);
 }
 
+.bookmark-holder {
+  height: 95%;
+  width: 95%;
+  border-radius: 20%;
+  object-fit: cover;
+  transform: translate(-5px, -5px);
+}
+
 .invert {
   filter: var(--filter);
 }
@@ -84,6 +92,14 @@
 
 .settings-transitions {
   transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1), background-color 600ms ease-out, border-radius 600ms ease-out;
+}
+
+.inline-img {
+  display: inline;
+  border: none;
+  margin: 0 3px;
+  box-shadow: none;
+  height: 1em;
 }
 
 footer {
@@ -497,7 +513,7 @@ footer {
 
 .savedAnswerWrapper {
   box-sizing: border-box;
-  margin: 2.5vh 5vw;
+  margin: 15px 5vw;
   padding: 2vh 2vw;
   width: 90vw;
   background-color: var(--midGray2);

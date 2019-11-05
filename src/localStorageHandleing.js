@@ -17,12 +17,24 @@ export function init(){
         localStorage.setItem('mode', 'dark');
         mode = 'dark'
     }
+    
+    let savedAnswers = localStorage.getItem('savedAnswers');
+    if (savedAnswers === null){
+        localStorage.setItem('savedAnswers', JSON.stringify([]));
+    }
 
     changeMode(mode);
 
-    localStorage.setItem('subject', 'General');
-    localStorage.setItem('subjectSelector', 'Drop down on screen');
+    let subject = localStorage.getItem('subject');
+    if (subject === null){
+        localStorage.setItem('subject', 'General');
+    }
 
+    let subjectSelector = localStorage.getItem('subjectSelector');
+    if (subjectSelector === null){
+        localStorage.setItem('subjectSelector', 'Drop down on screen');
+    }
+    
     style.setProperty('--highlightCol', highlightColor)
 
     document.getElementById('root').style.backgroundColor = 'var(--backCol)';

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import styles from './style';
 // !SECTION
 
-let { botNavStyle, webStyle, container, infoStyle } = styles;
+let { botNavStyle, webStyle, container, infoStyle, navObj } = styles;
 
 
 class MobileAppAnswer extends React.Component{
@@ -20,7 +20,8 @@ class MobileAppAnswer extends React.Component{
             num: 0,
             lastNum: (this.props.answers).length,
             showMenu: false,
-            backToAns: false
+            backToAns: false,
+            selectedArr: createArr(this.props.answers.length)
         }
         
         this.props.history.push('/Answer/answer0');
@@ -36,6 +37,7 @@ class MobileAppAnswer extends React.Component{
         this.nextClick = this.nextClick.bind(this);
         this.swipeNext = this.swipeNext.bind(this);
         this.swipeBack = this.swipeBack.bind(this);
+        this.saveAnswer = this.saveAnswer.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.returnToAnswer = this.returnToAnswer.bind(this);
         this.handleMenuClick = this.handleMenuClick.bind(this);
@@ -43,6 +45,19 @@ class MobileAppAnswer extends React.Component{
     }
 
     /* SECTION FUNCTIONS */
+
+    saveAnswer() {
+        let savedAnswers = JSON.parse(localStorage.getItem('savedAnswers'));
+        savedAnswers.push({ question: this.props.question, answer: this.props.answers[this.state.num] });
+        localStorage.setItem('savedAnswers', JSON.stringify(savedAnswers));
+
+        let arr = this.state.selectedArr;
+        arr[this.state.num] = true;
+        this.setState({ selectedArr: arr });
+        setTimeout(() => {
+            this.forceUpdate();
+        }, 50);
+    }
 
     jumpto(e){
         this.props.history.push(`/Answer/answer${e.target.value}`);
@@ -121,12 +136,21 @@ class MobileAppAnswer extends React.Component{
         const back = this.state.num > 0;
         const next = this.state.num < this.state.lastNum - 1;
         let len = this.props.answers.length;
+        let selected = this.state.selectedArr[this.state.num]
         return (
-            <div style={{minHeight: window.innerHeight, position: "absolute", width: window.innerWidth}} className={this.state.backToCam ? "slideout" : ""}>
+            <div style={{ minHeight: window.innerHeight, position: "absolute", width: window.innerWidth }} className={this.state.backToCam ? "slideout" : ""}>
                 {/* SECTION Back Button */}
-                <header className="top fadein" style={{height: Math.round(window.innerHeight/11)}} id="head">
+                <header className="top fadein" style={{ height: Math.round(window.innerHeight/11), gridTemplateColumns: "2fr 7fr 3fr" }} id="head">
                     <Back handleClick={this.handleClick} />
                     <p style={{fontSize: '1.2em', margin: 0, visibility: 'hidden'}} id="websitePosition">{this.props.websites[this.state.num]}</p>
+                    <div style={navObj}>
+                        <div className="bookmark-holder" style={{
+                            padding: (10/100) * (69/100) * window.innerHeight / 7,
+                            backgroundColor: selected ? "var(--highlightCol)" : "transparent"
+                        }} onClick={this.saveAnswer}>
+                            <img className="nav-img" src={require("./pictures/bookmark.png")} alt="bookmark" />
+                        </div>
+                    </div>
                 </header>
                 {/* !SECTION */}
                 {/* SECTION Website displayer */}
@@ -245,7 +269,13 @@ class MobileAppAnswer extends React.Component{
 
 export default withRouter(MobileAppAnswer);
 
-
+function createArr(len){
+    let arr = []
+    for (let i = 0; i < len; i++){
+        arr.push(false);
+    }
+    return arr;
+}
 
 MobileAppAnswer.protoTypes = {
     question: PropTypes.string.isRequired,

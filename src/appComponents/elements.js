@@ -5,27 +5,51 @@ import styles from './style';
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 let { infoStyle, navObj, imgStyle, answerStyle } = styles;
 
-export class Flash extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {selected: false};
-        this.handleClick = this.handleClick.bind(this);
+export function BookmarkNav({ showSavedAns }) {
+
+    const [style, setStyle] = useState({ zIndex: 69 });
+    const [imgClass, setImgClass] = useState('');
+
+    useEffect(() => {
+        let left = document.getElementById('bookmark-holder').getBoundingClientRect().left;
+        let top = document.getElementById('bookmark-container').getBoundingClientRect().top;
+        setStyle({ zIndex: 69, left: left, top: top })
+    }, []);
+    
+    const handleClick = () => {
+        setStyle({
+            borderRadius: 0,
+            height: window.innerHeight,
+            width: window.innerWidth,
+            backgroundColor: 'var(--backCol)',
+            top: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'absolute',
+            zIndex: '1000',
+            left: 0
+        });
+        setImgClass('lateFade')
+        showSavedAns();
     }
 
-    // changes whether flashlight is enabled or disabled
-    handleClick(){
-        this.setState({ selected: !this.state.selected });
-    }
-
-    render(){
-        
-        return (
-            <div className={`selectable ${this.state.selected ? 'selected' : ''}`} id="flash" style={navObj} onClick={this.handleClick}>
-                <img id={this.state.selected ? 'selectedImg' : '' } src={require("./pictures/flash.png")} alt="flash" className="nav-img" />
-            </div>
-        );
-    }
-};
+    return (
+        <div
+            onClick={handleClick}
+            style={{...navObj, ...style}}
+            className="settings-transitions"
+            id="bookmark-container"
+        >
+            <img
+                className={`nav-img ${imgClass}`}
+                style={{maxHeight: 3*maxLength/5}}
+                src={require("./pictures/bookmark.png")}
+                alt="bookmark"
+            />
+        </div>
+    )
+}
 
 export class SettingsButton extends React.Component {
     constructor(props){
@@ -41,7 +65,7 @@ export class SettingsButton extends React.Component {
 
     componentDidMount(){
         let left = document.getElementById('settingsDiv').getBoundingClientRect().left;
-        let top = document.getElementsByClassName('settings-transitions')[0].getBoundingClientRect().top;
+        let top = document.getElementById('settings-container').getBoundingClientRect().top;
         this.setState({style: { zIndex: 69, left: left, top: top }})
     }
 
@@ -67,12 +91,14 @@ export class SettingsButton extends React.Component {
 
     render(){
         return (
-            <div style={{...navObj, ...this.state.style}} className="settings-transitions">
-                <img src={require("./pictures/settings.png")} 
-                alt="settings" 
-                className={`nav-img ${this.state.imgClass}`}
-                style={{maxHeight: 3*maxLength/5}}
-                onClick={this.handleClick} />
+            <div style={{...navObj, ...this.state.style}} id="settings-container" className="settings-transitions">
+                <img
+                    src={require("./pictures/settings.png")} 
+                    alt="settings" 
+                    className={`nav-img ${this.state.imgClass}`}
+                    style={{maxHeight: 3*maxLength/5}}
+                    onClick={this.handleClick}
+                />
             </div>
         );
     }

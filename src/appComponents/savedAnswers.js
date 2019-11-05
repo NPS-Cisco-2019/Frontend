@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Back } from "./elements";
 
-export default function SavedAnswerPage() {
+export default function SavedAnswerPage(props) {
 
     const delAnswer = i => {
         let newAnswers = answers.slice(0, i).concat(answers.slice(i + 1, answers.length))
@@ -10,27 +10,37 @@ export default function SavedAnswerPage() {
     }
 
     const backClick = () => {
-        localStorage.setItem('savedAnswers', '[{"question":"question1","answer":["answer1", 0]},{"question":"question2","answer":["answer2", 0]},{"question":"question3","answer":["answer3", 0]},{"question":"question4","answer":["answer4", 0]}]')
+        // localStorage.setItem('savedAnswers', '[{"question":"question1","answer":["answer1", 0]},{"question":"question2","answer":["answer2", 0]},{"question":"question3","answer":["answer3", 0]},{"question":"question4","answer":["answer4", 0]}]')
+        setBackToCam(true);
+        props.backClick();
     }
 
-    let [answers, setAnswers] = useState(JSON.parse(localStorage.getItem('savedAnswers')));
-    const [translate, setTranslate] = useState({ amount: 0, i: -1})
+    const [answers, setAnswers] = useState(JSON.parse(localStorage.getItem('savedAnswers')));
+    const [translate, setTranslate] = useState(10000000);
+    const [backToCam, setBackToCam] = useState(false);
 
     return (
-        <div className="fadein">
+        <div className={backToCam ? "slideout" : "fadein"} style={{ position: "absolute" }}>
             <header className="top" style={{height: Math.round(window.innerHeight/11)}} id="head">
                 <Back handleClick={backClick} />
                 <p style={{fontSize: '1.2em', margin: 0}}>Saved Answers</p>
             </header>
             <main style={{ position: 'relative', top: Math.round(window.innerHeight/11) }}>
                 {
-                    answers ?
+                    answers.length > 0 ?
                         answers.map((answer, i) => (
-                            <div key={answer.question} style={{ position: (i === translate.i ? "absolute" : "auto"), top: 0, transform: `translateY(${i > translate.i ? translate.amount : 0}px)`, transition: "transform 500ms cubic-bezier(0.215, 0.610, 0.355, 1)" }}>
+                            <div key={`${i}-${answer.answer}`} style={{ transform: `translateY(${i > translate ? -10 : 0}px)`, transition: "transform 150ms cubic-bezier(0.215, 0.610, 0.355, 1)" }}>
                                 <SavedAnswer setTranslate={setTranslate} obj={answer} delSelf={delAnswer} i={i} id={`saved-answer-${i}`} />
                             </div>
                         ) ) :
-                        <div>No answer</div>
+                        <div style={{display: "flex", flexDirection: "column", alignContent: "center", width: window.innerWidth}}>
+                            <hr/>
+                            <p>Looks like you haven't saved any answers yet</p>
+                            <p>You can save answers by pressing the
+                                <img className="inline-img" src={require("./pictures/bookmark.png")} alt="bookmark" />
+                            </p>
+                            <p>when viewing an answer.</p>
+                        </div>
                 }
             </main>
         </div>
@@ -47,26 +57,21 @@ function SavedAnswer({ obj, delSelf, i, id, setTranslate }) {
     const [maxHeight, setMaxHeight] = useState('100%');
     const [transition, setTransition] = useState(false);
     const [height, setHeight] = useState('100%');
-    const [fadeOut, setFadeOut] = useState(false);
-    const [top, setTop] = useState();
 
     const unmount = () => {
-        setFadeOut(true);
-        let amount = document.getElementById(id).getBoundingClientRect().height + 20;
-        setTranslate({ amount, i });
-        // prevent bubbling effects
-        openClick();
+        setTranslate(i);
+        setHeight(0);
+        setTimeout(() => {
+            setTranslate(10000000);
+        }, 260);
         setTimeout(() => {
             delSelf(i);
-            setTranslate({ amount: 0, i: -1 });
-        }, 30000)
+        }, 310);
     }
 
     useEffect(() => {
-        let top = document.getElementById(id).getBoundingClientRect().top;
         let totHeight = document.getElementById(`${id}-wrapper`).getBoundingClientRect().height;
         let quesHeight = document.getElementById(`${id}-question`).getBoundingClientRect().height;
-        setTop(top);
         setHeight(quesHeight + 20)
         setMaxHeight(totHeight);
         setOpen(false);
@@ -87,7 +92,7 @@ function SavedAnswer({ obj, delSelf, i, id, setTranslate }) {
     let answer = obj.answer;
     let ansLength = answer.length;
     return (
-        <div className="savedAnswerWrapper" id={id} style={fadeOut ? { opacity: 1, top: top } : { opacity: 1 }}>
+        <div className="savedAnswerWrapper">
             <div
                 className={`savedAnswer ${transition ? 'height-trans' : ''}`}
                 id={`${id}-wrapper`}
@@ -98,7 +103,7 @@ function SavedAnswer({ obj, delSelf, i, id, setTranslate }) {
                 {
                     !ansOpen ? null :
                         <>
-                            <div className="info" style={{marginTop: 0, marginBottom: 10}}>
+                            <div className="info" style={{marginTop: 0, marginBottom: 10, flexDirection: "column", alignItems: "center"}}>
                                 {
                                     answer.slice(0, ansLength - 1).map((item, i) => (
                                         <p style={{marginBottom: 15}} key={obj.question + '-' + i}>{item}</p>

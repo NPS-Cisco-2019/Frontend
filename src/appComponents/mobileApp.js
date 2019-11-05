@@ -30,7 +30,7 @@ class MobileApp extends React.Component {
 
     setTimeout(() => { this.started = true; },100);
     this.changeState = this.changeState.bind(this);
-    this.changeDisplayAnswer = this.changeDisplayAnswer.bind(this);
+    this.backToCamera = this.backToCamera.bind(this);
 
     const query = new URLSearchParams(this.props.location.search);
 
@@ -38,11 +38,11 @@ class MobileApp extends React.Component {
       console.log("YEET");
       this.props.history.push("/Unknown");
     } else {
-      // this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
+      this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
       // TODO delete below history.pushes, the one above is correct
       // this.props.history.push(false ? '/Answer' : '/Picture' );
       // this.props.history.push('/Settings');
-      this.props.history.push('/Saved Answers')
+      // this.props.history.push('/Saved Answers')
     }
   }
 
@@ -52,7 +52,7 @@ class MobileApp extends React.Component {
   }
 
   // Passed to child <MobileAnswerApp /> to allow it to change the Parent state to show picture mode
-  changeDisplayAnswer(){
+  backToCamera(){
     this.setState({ backToCam: true });
     setTimeout(() => {
       this.setState({backToCam: false});
@@ -65,7 +65,7 @@ class MobileApp extends React.Component {
       <div>
         <Switch>
           <Route path="/Answer" render={() => (
-            <MobileAppAnswer question={this.state.question} answers={this.state.answers} websites={this.state.websites} backClick={this.changeDisplayAnswer} />
+            <MobileAppAnswer question={this.state.question} answers={this.state.answers} websites={this.state.websites} backClick={this.backToCamera} />
           )} />
           
           <Route path="/Picture" render={() => (
@@ -73,15 +73,17 @@ class MobileApp extends React.Component {
           )} />
 
           <Route path="/Settings" render={() => (
-            <SettingsPage backClick={this.changeDisplayAnswer} />
+            <SettingsPage backClick={this.backToCamera} />
             )} />
           
-          <Route path="/Saved Answers" component={SavedAnswerPage} />
+          <Route path="/Saved Answers" render={() => (
+            <SavedAnswerPage backClick={this.backToCamera} />
+          )} />
 
           <Route path="/GradeChoice" component={GradeChoice} />
 
           <Route path="/Tutorial" render={() => (
-            <Tutorial backClick={this.changeDisplayAnswer} />
+            <Tutorial backClick={this.backToCamera} />
           )} />
 
           <Route path="/BlackScreen" render={() => (
