@@ -3,8 +3,8 @@ import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 
 import { init } from 'functions/localStorageHandleing';
 
-import MobileAppPicture from './mainPage';
-import MobileAppAnswer from './answer';
+import MainPage from './mainPage';
+import AnswerPage from './answer';
 import testDetails from 'shared/test';
 import Unknown from 'shared/404';
 import SettingsPage from './settings';
@@ -66,11 +66,11 @@ class MobileApp extends React.Component {
       <div>
         <Switch>
           <Route path="/Answer" render={() => (
-            <MobileAppAnswer question={this.state.question} answers={this.state.answers} websites={this.state.websites} backClick={this.backToCamera} />
+            <AnswerPage question={this.state.question} answers={this.state.answers} websites={this.state.websites} backClick={this.backToCamera} />
           )} />
           
           <Route path="/Picture" render={() => (
-            <MobileAppPicture changeState={this.changeState} />
+            <MainPage changeState={this.changeState} />
           )} />
 
           <Route path="/Settings" render={() => (
@@ -97,7 +97,7 @@ class MobileApp extends React.Component {
         </Switch>
         {
           !this.state.backToCam ? null :
-          <MobileAppPicture changeState={this.changeState} backToCam={true} />
+          <MainPage changeState={this.changeState} backToCam={true} />
         }
       </div>
     );
