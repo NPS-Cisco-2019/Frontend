@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Back } from "./elements";
 
-export default function SavedAnswerPage(props) {
+import { Back } from "shared/elements";
+
+export default function SavedAnswersPage(props) {
 
     const delAnswer = i => {
         let newAnswers = answers.slice(0, i).concat(answers.slice(i + 1, answers.length))
@@ -10,7 +11,6 @@ export default function SavedAnswerPage(props) {
     }
 
     const backClick = () => {
-        // localStorage.setItem('savedAnswers', '[{"question":"question1","answer":["answer1", 0]},{"question":"question2","answer":["answer2", 0]},{"question":"question3","answer":["answer3", 0]},{"question":"question4","answer":["answer4", 0]}]')
         setBackToCam(true);
         props.backClick();
     }
@@ -37,7 +37,7 @@ export default function SavedAnswerPage(props) {
                             <hr/>
                             <p>Looks like you haven't saved any answers yet</p>
                             <p>You can save answers by pressing the
-                                <img className="inline-img" src={require("./pictures/bookmark.png")} alt="bookmark" />
+                                <img className="inline-img" src={require("pictures/bookmark.png")} alt="bookmark" />
                             </p>
                             <p>when viewing an answer.</p>
                         </div>
@@ -111,7 +111,7 @@ function SavedAnswer({ obj, delSelf, i, id, setTranslate }) {
                                 }
                             </div>
                             <button className="deleteSavedAnswer" onClick={unmount}>
-                                <img src={require("./pictures/delete.png")} alt="trash"/>
+                                <img src={require("pictures/delete.png")} alt="trash"/>
                             </button>
                         </>
                 }
@@ -119,7 +119,3 @@ function SavedAnswer({ obj, delSelf, i, id, setTranslate }) {
         </div>
     )
 }
-
-
-
-// [{"question":"question1","answer":["answer1", 0]},{"question":"question2","answer":["answer2", 0]},{"question":"question3","answer":["answer3", 0]},{"question":"question4","answer":["answer4", 0]}]

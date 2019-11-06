@@ -1,12 +1,13 @@
 // SECTION imports
 import React from 'react';
-import { Firefox, Chrome, Safari } from './tutorialElements';
-import './desktopApp.css';
-import './animations.css';
 import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Unknown from './404';
-import  browser from '../browserDetection';
+
+import { Firefox, Chrome, Safari } from 'shared/tutorialElements';
+import Unknown from 'shared/404';
+import  browser from 'functions/browserDetection';
+import 'style/desktopApp.css';
+import 'style/animations.css';
 // !SECTION
 
 const highlightStyle = {
@@ -134,19 +135,19 @@ export default class CompApp extends React.Component {
               <div className="logos">
                 <Link to="/Firefox">
                   <button className="firefox" onClick={this.handleClick}>
-                    <img className="desk img" id="Firefox" src={require("./pictures/firefox.png")} alt="firefox" />
+                    <img className="desk img" id="Firefox" src={require("pictures/firefox.png")} alt="firefox" />
                     <label htmlFor="Firefox" id="firefox">Firefox</label>
                   </button>
                 </Link>
                 <Link to="/Chrome">
                   <button className="chrome" onClick={this.handleClick}>
-                    <img className="desk img" id="Chrome" src={require("./pictures/chrome.png")} alt="chrome"/>
+                    <img className="desk img" id="Chrome" src={require("pictures/chrome.png")} alt="chrome"/>
                     <label htmlFor="Chrome" id="chrome">Chrome</label>
                   </button>
                 </Link>
                 <Link to="/Safari">
                   <button className="safari" onClick={this.handleClick}>
-                    <img className="desk img" id="Safari" src={require("./pictures/safari.png")} alt="safari"/>
+                    <img className="desk img" id="Safari" src={require("pictures/safari.png")} alt="safari"/>
                     <label htmlFor="Safari" id="safari">Safari</label>
                   </button>
                 </Link>

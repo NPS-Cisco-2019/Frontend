@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import styles from "./style";
+
+import styles from "style/style";
 
 let { imgStyle, videoConstraints } = styles;
 

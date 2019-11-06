@@ -1,19 +1,18 @@
 // SECTION imports
 import React from 'react';
-import { Back, Answer } from './elements';
-import './mobileApp.css';
-import './animations.css'
 import Swipe from 'react-easy-swipe';
 import { Route, Link, Switch, withRouter } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import styles from './style';
+
+import styles from 'style/style';
+import { Back, Answer } from 'shared/elements';
 // !SECTION
 
 let { botNavStyle, webStyle, container, infoStyle, navObj } = styles;
 
 
-class MobileAppAnswer extends React.Component{
+class AnswerPage extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -48,7 +47,10 @@ class MobileAppAnswer extends React.Component{
 
     saveAnswer() {
         let savedAnswers = JSON.parse(localStorage.getItem('savedAnswers'));
-        savedAnswers.push({ question: this.props.question, answer: this.props.answers[this.state.num] });
+        savedAnswers.push({
+            question: `${this.props.question} -${this.props.websites[this.state.num]}`,
+            answer: this.props.answers[this.state.num]
+        });
         localStorage.setItem('savedAnswers', JSON.stringify(savedAnswers));
 
         let arr = this.state.selectedArr;
@@ -148,7 +150,7 @@ class MobileAppAnswer extends React.Component{
                             padding: (10/100) * (69/100) * window.innerHeight / 7,
                             backgroundColor: selected ? "var(--highlightCol)" : "transparent"
                         }} onClick={this.saveAnswer}>
-                            <img className="nav-img" src={require("./pictures/bookmark.png")} alt="bookmark" />
+                            <img className="nav-img" src={require("pictures/bookmark.png")} alt="bookmark" />
                         </div>
                     </div>
                 </header>
@@ -267,7 +269,7 @@ class MobileAppAnswer extends React.Component{
     }
 }
 
-export default withRouter(MobileAppAnswer);
+export default withRouter(AnswerPage);
 
 function createArr(len){
     let arr = []
@@ -277,7 +279,7 @@ function createArr(len){
     return arr;
 }
 
-MobileAppAnswer.protoTypes = {
+AnswerPage.protoTypes = {
     question: PropTypes.string.isRequired,
     answers: PropTypes.array.isRequired,
     websites: PropTypes.array.isRequired,

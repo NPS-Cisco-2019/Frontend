@@ -1,5 +1,5 @@
 import base64 from './base64Converter';
-import testDetails from "./test";
+import testDetails from "shared/test";
 
 let deploy = false;
 

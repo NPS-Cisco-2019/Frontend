@@ -1,6 +1,6 @@
 import React from 'react';
-import CompApp from './appComponents/compWebsite';
-import MobileApp from './appComponents/mobileApp';
+import CompApp from 'compWebsite';
+import MobileApp from 'mobileApp';
 import { BrowserRouter } from 'react-router-dom';
 
 
@@ -13,7 +13,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 // TEMPORARY, If its true the website shows mobile app on desktop also, just for developement
 // TODO remove this
-let dev = false;
+let dev = true;
 
 function App(){
   //checks whether user is on mobile

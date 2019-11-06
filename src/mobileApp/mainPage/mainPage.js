@@ -1,16 +1,17 @@
 // SECTION imports
 import React from 'react';
-import {BookmarkNav, SettingsButton, Gallery, Back, Img, Subject} from './elements';
-import './mobileApp.css'
-import { OCR, scrape } from '../backendHandling';
 import Swipe from 'react-easy-swipe';
 import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Loader from 'react-spinners/CircleLoader';
 import { css } from '@emotion/core'
-import notification from './notification';
-import style from "./style";
+
+import { BookmarkNav, SettingsButton, Gallery, Back, Img, Subject } from 'shared/elements';
+import notification from 'shared/notification';
+import { OCR, scrape } from 'functions/backendHandling';
 import Camera from './camera';
+
+import style from "style/style";
 // !SECTION
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
@@ -26,12 +27,12 @@ const overide = css`
   left: -1px;
 `;
 
-class MobileAppPicture extends React.Component {
+class MainPage extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       output: 'vid',
-      picture: require("./pictures/question.jpg"),
+      picture: require("pictures/question.jpg"),
       selectedFile: null,
       footStyle: { backgroundColor: 'var(--midGray2)' },
       ansClicked: false,
@@ -75,7 +76,7 @@ class MobileAppPicture extends React.Component {
   // handles error recieved by Webcam component
   cameraErrorHandler(error){
     console.log(error);
-    this.setState({ picture: require('./pictures/error.jpg'), output: 'img' });
+    this.setState({ picture: require('pictures/error.jpg'), output: 'img' });
   }
 
   // changes whether picture or video is displayed
@@ -436,7 +437,7 @@ class MobileAppPicture extends React.Component {
                     color={"#FFF"}
                     loading={true}
                   />) :
-                  <img className="searchImg" src={require('./pictures/search.png')} alt="search icon" />
+                  <img className="searchImg" src={require('pictures/search.png')} alt="search icon" />
                 ): null
               }
             </button>
@@ -477,7 +478,7 @@ class MobileAppPicture extends React.Component {
                         }}>
                           {this.state.isTextBox ?
                             <div style={{ height: '50%', width: '50%', backgroundColor: 'var(--midGray)', borderRadius: '50%', right: 0, position: "relative"}}>&#215;</div> : null
-                            // <img className="invert" src={require('./pictures/edit.png')} alt="edit" style={{ height: '50%' }} />
+                            // <img className="invert" src={require('pictures/edit.png')} alt="edit" style={{ height: '50%' }} />
                           }
                         </div>
                       </div>) 
@@ -495,10 +496,10 @@ class MobileAppPicture extends React.Component {
 };
 
 
-export default withRouter(MobileAppPicture);
+export default withRouter(MainPage);
 
 
 
-MobileAppPicture.propTypes = {
+MainPage.propTypes = {
   changeState: PropTypes.func.isRequired
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Chrome, Firefox, Safari } from './tutorialElements';
-import { Back } from './elements';
-import browser from '../browserDetection';
 import PropTypes from 'prop-types';
+
+import { Back } from 'shared/elements';
+import { Chrome, Firefox, Safari } from 'shared/tutorialElements';
+import browser from 'functions/browserDetection';
 
 let Tutorial;
 let minHeight;

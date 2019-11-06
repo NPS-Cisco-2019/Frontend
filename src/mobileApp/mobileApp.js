@@ -1,15 +1,21 @@
 import React from 'react';
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
-import MobileAppPicture from './mobileWebsiteCamera';
-import MobileAppAnswer from './mobileWebsiteAnswer';
-import testDetails from '../test';
-import Unknown from './404';
+
+import { init } from 'functions/localStorageHandleing';
+
+import MobileAppPicture from './mainPage';
+import MobileAppAnswer from './answer';
+import testDetails from 'shared/test';
+import Unknown from 'shared/404';
 import SettingsPage from './settings';
 import GradeChoice from './gradeChoice';
-import Tutorial from './mobileTutorial';
-import { init } from '../localStorageHandleing';
-import "./hamburger.css"
-import SavedAnswerPage from './savedAnswers';
+import Tutorial from './tutorial';
+import SavedAnswerPage from './savedAnswersPage';
+
+import "style/animations.css";
+import "style/mobileApp.css";
+import "style/hamburger.css";
+
 
 // ANCHOR Main Mobile App that renders various mobile pages
 // NOTE gets called by <App />, does not render by itself
@@ -35,14 +41,9 @@ class MobileApp extends React.Component {
     const query = new URLSearchParams(this.props.location.search);
 
     if (query.get("type") === "unknown"){
-      console.log("YEET");
       this.props.history.push("/Unknown");
     } else {
       this.props.history.push(newPerson ? '/GradeChoice' : '/Picture')
-      // TODO delete below history.pushes, the one above is correct
-      // this.props.history.push(false ? '/Answer' : '/Picture' );
-      // this.props.history.push('/Settings');
-      // this.props.history.push('/Saved Answers')
     }
   }
 

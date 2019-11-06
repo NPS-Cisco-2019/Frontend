@@ -1,9 +1,10 @@
 import React from 'react';
-import { Setting, Slider, Null, ColorPicker, Choice } from './settingsElements';
-import { Back } from './elements';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { changeMode, reset } from '../localStorageHandleing';
+
+import { Back } from 'shared/elements';
+import { changeMode, reset } from 'functions/localStorageHandleing';
+import { Setting, Slider, Null, ColorPicker, Choice } from './components';
 
 let isInstalled = false;
 

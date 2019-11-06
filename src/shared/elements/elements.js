@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import styles from './style';
+import styles from 'style/style';
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 let { infoStyle, navObj, imgStyle, answerStyle } = styles;
@@ -44,7 +44,7 @@ export function BookmarkNav({ showSavedAns }) {
             <img
                 className={`nav-img ${imgClass}`}
                 style={{maxHeight: 3*maxLength/5}}
-                src={require("./pictures/bookmark.png")}
+                src={require("pictures/bookmark.png")}
                 alt="bookmark"
             />
         </div>
@@ -93,7 +93,7 @@ export class SettingsButton extends React.Component {
         return (
             <div style={{...navObj, ...this.state.style}} id="settings-container" className="settings-transitions">
                 <img
-                    src={require("./pictures/settings.png")} 
+                    src={require("pictures/settings.png")} 
                     alt="settings" 
                     className={`nav-img ${this.state.imgClass}`}
                     style={{maxHeight: 3*maxLength/5}}
@@ -121,7 +121,7 @@ export class Gallery extends React.Component {
     render(){
         return (
             <div style={navObj}>
-                <img src={require("./pictures/gallery.png")} alt="Gallery" className="nav-img" onClick={this.handleClick} />
+                <img src={require("pictures/gallery.png")} alt="Gallery" className="nav-img" onClick={this.handleClick} />
                 <input type="file" accept="image/*" ref="gallery" onChange={this.props.selectFileHandle} style={{display: "none"}} />
             </div>
         );
@@ -131,7 +131,7 @@ export class Gallery extends React.Component {
 export function Back(props){
     return (
         <div style={{...navObj, textAlign: 'center'}} onClick={props.handleClick}>
-            <img src={require("./pictures/back.png")} alt="back" className="nav-img" />
+            <img src={require("pictures/back.png")} alt="back" className="nav-img" />
         </div>
     )
 };
