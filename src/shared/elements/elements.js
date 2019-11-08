@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from 'style/style';
+import { Provider, Node } from 'react-mathjax';
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 let { infoStyle, navObj, imgStyle, answerStyle } = styles;
@@ -188,11 +189,14 @@ export function Answer({ id, answer, width = 9*window.innerWidth/10 }){
 
     return (
         <div className="info" style={{...infoStyle, ...answerStyle, height, width}}>
-            <div id={id}>{
-                answer.slice(0, ansLength - 1).map((item, i) => (
-                    <p style={{marginBottom: 15}} key={id + '-' + i}>{item}</p>
+            <div id={id}>
+                <Provider>{
+                    answer.slice(0, ansLength - 1).map((item, i) => (
+                        item.slice(0, 3) === "ymj" ?
+                            <p style={{marginBottom: 15}} key={id + '-' + i}>{item.slice(3, item.length)}</p> :
+                            <Node formula={item.slice(3, item.length)} />
                 ))}
-
+                </Provider>
                 {answer[ansLength - 1] ?
                     <React.Fragment>
                         <img
