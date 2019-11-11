@@ -543,6 +543,12 @@ footer {
   transform: translateX(-8%);
 }
 
+div {
+  font-family: Raleway;
+  font-weight: 300;
+  text-align: center;
+}
+
 button {
   border: none;
   background-color: transparent;

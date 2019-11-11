@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from 'style/style';
-import { Provider, Node } from 'react-mathjax';
+import MathJax from "react-mathjax2";
+
+// const MathJax = require("react-mathjax")
+
+console.log({ mj: MathJax })
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 let { infoStyle, navObj, imgStyle, answerStyle } = styles;
@@ -168,6 +172,7 @@ export function Answer({ id, answer, width = 9*window.innerWidth/10 }){
     let ansLength = answer.length
     let [height, setHeight] = useState(0);
     let [imgLoaded, setImgLoaded] = useState(false);
+    let [mathLoaded, setMathLoaded] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
@@ -175,7 +180,7 @@ export function Answer({ id, answer, width = 9*window.innerWidth/10 }){
             let container = document.getElementById('ansContainer').getBoundingClientRect();
 
 
-            setHeight(Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding))));
+            setHeight(Math.min((container.height), (pRect.height + (2 * infoStyle.padding))));
 
             if (imgLoaded) {
                 let div = document.getElementById(id).getBoundingClientRect();
@@ -185,18 +190,39 @@ export function Answer({ id, answer, width = 9*window.innerWidth/10 }){
         }, 100);
         
         // eslint-disable-next-line
-    }, [imgLoaded]);
+    }, [imgLoaded, mathLoaded]);
 
     return (
         <div className="info" style={{...infoStyle, ...answerStyle, height, width}}>
             <div id={id}>
-                <Provider>{
+                <div>{
                     answer.slice(0, ansLength - 1).map((item, i) => (
-                        item.slice(0, 3) === "ymj" ?
-                            <p style={{marginBottom: 15}} key={id + '-' + i}>{item.slice(3, item.length)}</p> :
-                            <Node formula={item.slice(3, item.length)} />
-                ))}
-                </Provider>
+                        <div key={id + '-' + i}>
+                            <MathJax.Context
+                                input='ascii'
+                                onLoad={ () => setMathLoaded(true) }
+                                onError={ (MathJax, error) => {
+                                    console.warn(error);
+                                    console.log("Encountered a MathJax error, re-attempting a typeset!");
+                                    MathJax.Hub.Queue(
+                                    MathJax.Hub.Typeset()
+                                    );
+                                } }
+                                script="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=AM_HTMLorMML"
+                                options={ {
+                                    asciimath2jax: {
+                                        useMathMLspacing: true,
+                                        delimiters: [["$$","$$"]],
+                                        preview: "none",
+                                    }
+                                } }
+                            >
+                                <MathJax.Text text={ item }/>
+                            </MathJax.Context>
+                            <p/>
+                        </div>
+                    ))}
+                </div>
                 {answer[ansLength - 1] ?
                     <React.Fragment>
                         <img
@@ -266,7 +292,7 @@ export function Subject(){
 export class ErrorBoundary extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { hasError: true };
+      this.state = { hasError: false };
     }
   
     static getDerivedStateFromError() {
@@ -305,6 +331,9 @@ function createSubjectArray(subject){
             return ['General', 'Physics', 'Chemistry', 'Maths']
     }
 }
+
+
+
 
 SettingsButton.propTypes = {
     showSettings: PropTypes.func.isRequired

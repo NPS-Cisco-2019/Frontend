@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 
 import styles from 'style/style';
 import { Back, Answer } from 'shared/elements';
+
+console.log({ Answer });
 // !SECTION
 
 let { botNavStyle, webStyle, container, infoStyle, navObj } = styles;
@@ -24,6 +26,8 @@ class AnswerPage extends React.Component{
         }
         
         this.props.history.push('/Answer/answer0');
+
+        console.log({ obj: this.props })
 
         this.maxHeight = 0;
 

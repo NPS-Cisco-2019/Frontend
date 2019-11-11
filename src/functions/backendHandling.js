@@ -5,6 +5,8 @@ let deploy = false;
 
 // NOTE functions which will handle all backend calls
 
+console.log("YEEEEEEEEEEEEET")
+
 export function OCR(imgPath, cropJSON){
 
     let img = base64(imgPath, cropJSON);
@@ -23,7 +25,7 @@ export function OCR(imgPath, cropJSON){
                 json: () => new Promise((resolve, reject) => {
                     setTimeout(() => {
                         resolve({ question: testDetails.question, img: img });
-                    }, 1000);
+                    }, 0);
                 })
             })
         })
@@ -51,7 +53,7 @@ export function scrape(question){
                             answers: testDetails.answers,
                             websites: testDetails.websites
                         });
-                    }, 1000)
+                    }, 0)
                 })
             })
         })
