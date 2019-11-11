@@ -1,3 +1,3 @@
-import { Answer, Back, BookmarkNav, Gallery, Img, SettingsButton, Subject } from "./elements";
+import { Answer, Back, BookmarkNav, ErrorBoundary, Gallery, Img, SettingsButton, Subject } from "./elements";
 
-export { Answer, Back, BookmarkNav, Gallery, Img, SettingsButton, Subject };
+export { Answer, Back, BookmarkNav, ErrorBoundary, Gallery, Img, SettingsButton, Subject };

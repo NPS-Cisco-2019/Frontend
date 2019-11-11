@@ -266,7 +266,7 @@ export function Subject(){
 export class ErrorBoundary extends React.Component {
     constructor(props) {
       super(props);
-      this.state = { hasError: false };
+      this.state = { hasError: true };
     }
   
     static getDerivedStateFromError() {
@@ -281,7 +281,11 @@ export class ErrorBoundary extends React.Component {
   
     render() {
       if (this.state.hasError) {
-        return <h1>Something went wrong.</h1>;
+        return (
+            <div style={{ height: window.innerHeight, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <h1>Something went wrong.</h1>
+            </div>
+        );
       }
   
       return this.props.children; 

@@ -2,6 +2,7 @@ import React from 'react';
 import CompApp from 'compWebsite';
 import MobileApp from 'mobileApp';
 import { BrowserRouter } from 'react-router-dom';
+import { ErrorBoundary } from 'shared/elements';
 
 
 /* ANCHOR  Main app, renders all components and is attached to the DOM
@@ -18,9 +19,19 @@ let dev = true;
 function App(){
   //checks whether user is on mobile
   if (typeof window.orientation !== "undefined" || dev){
-    return <BrowserRouter basename="/Frontend"><MobileApp /></BrowserRouter>;
+    return (
+      <ErrorBoundary>
+        <BrowserRouter basename="/Frontend">
+          <MobileApp />
+        </BrowserRouter>
+      </ErrorBoundary>
+    );
   } else {
-    return <CompApp />;
+    return (
+      <ErrorBoundary>
+        <CompApp />
+      </ErrorBoundary>
+    );
   }
 }
 
