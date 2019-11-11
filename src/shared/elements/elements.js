@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import styles from 'style/style';
 import MathJax from "react-mathjax2";
 
-// const MathJax = require("react-mathjax")
-
-console.log({ mj: MathJax })
 
 const maxLength = (10/100) * (69/100) * window.innerHeight;
 let { infoStyle, navObj, imgStyle, answerStyle } = styles;
@@ -285,37 +282,6 @@ export function Subject(){
             </section>
         </div>
     )
-}
-
-// NOTE Currently unused
-// TODO Add Error boundries and make Error page
-export class ErrorBoundary extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = { hasError: false };
-    }
-  
-    static getDerivedStateFromError() {
-      // Update state so the next render will show the fallback UI.
-      return { hasError: true };
-    }
-  
-    componentDidCatch(error, errorInfo) {
-      // You can also log the error to an error reporting service
-      console.log(error, errorInfo);
-    }
-  
-    render() {
-      if (this.state.hasError) {
-        return (
-            <div style={{ height: window.innerHeight, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <h1>Something went wrong.</h1>
-            </div>
-        );
-      }
-  
-      return this.props.children; 
-    }
 }
 
 

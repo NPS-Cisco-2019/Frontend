@@ -49,7 +49,6 @@ class MobileApp extends React.Component {
 
   // Passed to child <MobileAppPicture /> to allow it to change the Parent state to show answer
   changeState(question, answers, websites){
-    // console.log({ question, answers, websites });
     this.setState({question: question, answers: answers, websites: websites});
   }
 

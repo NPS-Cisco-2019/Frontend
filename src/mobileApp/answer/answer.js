@@ -27,8 +27,6 @@ class AnswerPage extends React.Component{
         
         this.props.history.push('/Answer/answer0');
 
-        console.log({ obj: this.props })
-
         this.maxHeight = 0;
 
         document.body.style.overflowX = 'hidden';

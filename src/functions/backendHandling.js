@@ -5,8 +5,6 @@ let deploy = false;
 
 // NOTE functions which will handle all backend calls
 
-console.log("YEEEEEEEEEEEEET")
-
 export function OCR(imgPath, cropJSON){
 
     let img = base64(imgPath, cropJSON);
