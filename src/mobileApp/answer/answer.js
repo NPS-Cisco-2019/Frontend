@@ -7,8 +7,6 @@ import PropTypes from 'prop-types';
 
 import styles from 'style/style';
 import { Back, Answer } from 'shared/elements';
-
-console.log({ Answer });
 // !SECTION
 
 let { botNavStyle, webStyle, container, infoStyle, navObj } = styles;

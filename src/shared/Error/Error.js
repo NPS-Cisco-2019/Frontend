@@ -24,6 +24,8 @@ class ErrorBoundary extends React.Component {
 
         let width = isMobile ? window.innerWidth/2 : window.innerWidth/6;
 
+        console.log({isMobile})
+
         let home = '/' + (isMobile ? 'Picture' : browser[0].toUpperCase() + browser.slice(1));
         
         if (this.state.hasError) {

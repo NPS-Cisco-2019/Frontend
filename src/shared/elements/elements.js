@@ -177,7 +177,7 @@ export function Answer({ id, answer, width = 9*window.innerWidth/10 }){
             let container = document.getElementById('ansContainer').getBoundingClientRect();
 
 
-            setHeight(Math.min((container.height), (pRect.height + (2 * infoStyle.padding))));
+            setHeight(Math.min((container.height - 20), (pRect.height + (2 * infoStyle.padding))));
 
             if (imgLoaded) {
                 let div = document.getElementById(id).getBoundingClientRect();
@@ -209,7 +209,7 @@ export function Answer({ id, answer, width = 9*window.innerWidth/10 }){
                                 options={ {
                                     asciimath2jax: {
                                         useMathMLspacing: true,
-                                        delimiters: [["$$","$$"]],
+                                        delimiters: [["$$","$$"], ["`", "`"]],
                                         preview: "none",
                                     }
                                 } }
