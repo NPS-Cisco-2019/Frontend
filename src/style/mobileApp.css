@@ -595,9 +595,9 @@ footer {
 
 .link {
     max-width: 80vw;
-    color: var(--highlightCol);
-    text-decoration: underline;
+    text-decoration-line: underline;
     text-decoration-color: var(--highlightCol);
+    color: var(--highlightCol);
 }
 
 @media (max-width: 500px) {
@@ -608,8 +608,7 @@ footer {
 
 div {
     font-family: Raleway;
-    font-weight: 300;
-    text-align: center;
+    font-weight: 400;
 }
 
 button {
