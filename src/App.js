@@ -15,9 +15,11 @@ import ErrorBoundary from "shared/Error";
 // TODO remove this
 let dev = true;
 
+console.log("YEEE");
+
 function App() {
     return (
-        <BrowserRouter basename="/Frontend">
+        <BrowserRouter basename="Frontend">
             <ErrorBoundary>
                 {typeof window.orientation !== "undefined" || dev ? (
                     <MobileApp />

@@ -83,7 +83,7 @@ class MainPage extends React.Component {
   // handles error recieved by Webcam component
   cameraErrorHandler(error) {
     console.log(error);
-    this.setState({ picture: require("pictures/error.jpg"), output: "img" });
+    this.setState({ picture: require("pictures/error.png"), output: "img" });
   }
 
   // changes whether picture or video is displayed
@@ -128,7 +128,7 @@ class MainPage extends React.Component {
       this.forceUpdate();
     });
     setTimeout(() => {
-      sessionStorage.setItem("fromGradeChoice", false);
+      sessionStorage.setItem("fadePicture", false);
     }, 500);
 
     let canvas = document.getElementById("canvas");
@@ -289,13 +289,6 @@ class MainPage extends React.Component {
     endX += window.scrollX;
     endY += window.scrollY;
 
-    // window.devicePixelRatio = 2;
-
-    // startX *= window.devicePixelRatio;
-    // startY *= window.devicePixelRatio;
-    // endX *= window.devicePixelRatio;
-    // endY *= window.devicePixelRatio;
-
     let ocrJSON = {
       x: Math.min(endX, startX),
       y: Math.min(endY, startY),
@@ -304,7 +297,7 @@ class MainPage extends React.Component {
     };
 
     let responseOCR = await OCR(this.state.picture, ocrJSON);
-    if (responseOCR.status !== "200") {
+    if (responseOCR.status != "200") {
       this.backendError(responseOCR);
       return;
     }
@@ -324,7 +317,7 @@ class MainPage extends React.Component {
     console.log("question gotten");
 
     let responseScrapy = await scrape(this.state.question);
-    if (responseScrapy.status !== "200") {
+    if (responseScrapy.status != "200") {
       this.backendError(responseScrapy);
       return;
     }
@@ -349,7 +342,7 @@ class MainPage extends React.Component {
     if (e.key === "Enter") {
       this.setState({ isTextBox: false, isLoading: true, gotAnswer: false });
       let response = await scrape(this.state.question);
-      if (response.status !== "200") {
+      if (response.status != "200") {
         this.backendError(response);
         return;
       }
@@ -451,13 +444,13 @@ class MainPage extends React.Component {
       ? 3
       : window.innerHeight / 25);
     let bot = this.calculateBottom();
-    let fromGradeChoice = sessionStorage.getItem("fromGradeChoice") === "true";
+    let fadePicture = sessionStorage.getItem("fadePicture") === "true";
     return (
       <div
         className={`App ${
           this.props.backToCam
             ? "slidein"
-            : fromGradeChoice
+            : fadePicture
             ? "fadein-short"
             : null
         }`}
