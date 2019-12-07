@@ -19,7 +19,7 @@
 }
 
 .lateFade400 {
-    animation: fadeout 400ms 1s;
+    animation: fadein 200ms, fadeout 400ms 1s;
 }
 
 .slidein {

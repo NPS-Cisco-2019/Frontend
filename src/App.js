@@ -7,7 +7,7 @@ import ErrorBoundary from "shared/Error";
 
 /* ANCHOR  Main app, renders all components and is attached to the DOM
  *
- * Suggestion: Add the Name: Comment Anchors Extension (for VS Code atleast)
+ * Suggestion: Add the Comment Anchors Extension (for VS Code at least)
  * VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=ExodiusStudios.comment-anchors
  */
 
@@ -15,17 +15,11 @@ import ErrorBoundary from "shared/Error";
 // TODO remove this
 let dev = true;
 
-console.log("YEEE");
-
 function App() {
     return (
         <BrowserRouter basename="Frontend">
             <ErrorBoundary>
-                {typeof window.orientation !== "undefined" || dev ? (
-                    <MobileApp />
-                ) : (
-                    <CompApp />
-                )}
+                {typeof window.orientation !== "undefined" || dev ? <MobileApp /> : <CompApp />}
             </ErrorBoundary>
         </BrowserRouter>
     );

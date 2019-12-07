@@ -20,10 +20,5 @@ export default {
         ["42", "linkhttps://i.imgur.com/ha60UYo.jpg"]
     ],
 
-    websites: [
-        "wikipedia",
-        "Lorem",
-        "theschooloflife",
-        "Hitchhikers Guide to the Galaxy"
-    ]
+    websites: ["wikipedia", "Lorem", "theschooloflife", "Hitchhikers Guide to the Galaxy"]
 };
