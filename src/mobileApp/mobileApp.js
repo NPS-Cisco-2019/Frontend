@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route, withRouter, Redirect } from "react-router-dom";
+import DeviceOrientation, { Orientation } from "react-screen-orientation";
 
 import { init } from "functions/localStorageHandleing";
 
@@ -20,6 +21,16 @@ import "style/hamburger.css";
 
 init();
 
+// const screen = new Screen();
+
+// let lockOrientation =
+//     screen.lockOrientation || screen.mozLockOrientation || screen.orientation.lock;
+
+// console.log({ lockOrientation });
+// if (lockOrientation) {
+//     alert("locked");
+//     lockOrientation("potrait");
+// }
 let newPerson = sessionStorage.getItem("new") === "true";
 
 class MobileApp extends React.Component {
@@ -34,6 +45,17 @@ class MobileApp extends React.Component {
             websites: details.websites,
             backToCam: false
         };
+
+        this.screenWd =
+            window.screen.orientation.type === "portrait-primary" ||
+            window.screen.orientation.type === "portrait-secondary"
+                ? window.innerWidth
+                : window.innerHeight;
+        this.screenHt =
+            window.screen.orientation.type === "portrait-primary" ||
+            window.screen.orientation.type === "portrait-secondary"
+                ? window.innerHeight
+                : window.innerWidth;
 
         setTimeout(() => {
             this.started = true;
@@ -63,56 +85,75 @@ class MobileApp extends React.Component {
 
     render() {
         return (
-            <div>
-                <Switch>
-                    <Route
-                        path="/Answer"
-                        render={() => (
-                            <AnswerPage
-                                question={this.state.question}
-                                answers={this.state.answers}
-                                websites={this.state.websites}
-                                backClick={this.backToCamera}
-                            />
-                        )}
-                    />
+            <DeviceOrientation lockOrientation="portrait">
+                <Orientation orientation="portrait" alwaysRender={false}>
+                    <Switch>
+                        <Route
+                            path="/Answer"
+                            render={() => (
+                                <AnswerPage
+                                    question={this.state.question}
+                                    answers={this.state.answers}
+                                    websites={this.state.websites}
+                                    backClick={this.backToCamera}
+                                />
+                            )}
+                        />
 
-                    <Route
-                        path="/Picture"
-                        render={() => <MainPage changeState={this.changeState} />}
-                    />
+                        <Route
+                            path="/Picture"
+                            render={() => <MainPage changeState={this.changeState} />}
+                        />
 
-                    <Route
-                        path="/Settings"
-                        render={() => <SettingsPage backClick={this.backToCamera} />}
-                    />
+                        <Route
+                            path="/Settings"
+                            render={() => <SettingsPage backClick={this.backToCamera} />}
+                        />
 
-                    <Route
-                        path="/Saved Answers"
-                        render={() => <SavedAnswerPage backClick={this.backToCamera} />}
-                    />
+                        <Route
+                            path="/Saved Answers"
+                            render={() => (
+                                <SavedAnswerPage backClick={this.backToCamera} />
+                            )}
+                        />
 
-                    <Route path="/GradeChoice" component={GradeChoice} />
+                        <Route path="/GradeChoice" component={GradeChoice} />
 
-                    <Route
-                        path={["/Tutorial", "/Chrome", "/Firefox", "/Safari"]}
-                        render={() => <MobileTutorial backClick={this.backToCamera} />}
-                    />
+                        <Route
+                            path={["/Tutorial", "/Chrome", "/Firefox", "/Safari"]}
+                            render={() => (
+                                <MobileTutorial backClick={this.backToCamera} />
+                            )}
+                        />
 
-                    <Route path="/BlackScreen" render={() => <div></div>} />
+                        <Route path="/BlackScreen" render={() => <div></div>} />
 
-                    <Route path="/Unknown" component={Unknown} />
+                        <Route path="/Unknown" component={Unknown} />
 
-                    <Route exact path="/" component={StartScreen} />
+                        <Route exact path="/" component={StartScreen} />
 
-                    {this.started ? (
-                        <Route path="*" render={() => <Redirect to="/Unknown" />} />
-                    ) : null}
-                </Switch>
-                {!this.state.backToCam ? null : (
-                    <MainPage changeState={this.changeState} backToCam={true} />
-                )}
-            </div>
+                        {this.started ? (
+                            <Route path="*" render={() => <Redirect to="/Unknown" />} />
+                        ) : null}
+                    </Switch>
+                    {!this.state.backToCam ? null : (
+                        <MainPage changeState={this.changeState} backToCam={true} />
+                    )}
+                </Orientation>
+                <Orientation orientation="landscape" alwaysRender={false}>
+                    <div
+                        style={{
+                            width: this.screenHt,
+                            height: this.screenWd,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}
+                    >
+                        Please turn your device to potrait mode.
+                    </div>
+                </Orientation>
+            </DeviceOrientation>
         );
     }
 }

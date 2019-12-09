@@ -16,7 +16,9 @@ import Camera from "./camera";
 import style from "style/style";
 // !SECTION
 
-const maxLength = (10 / 100) * (69 / 100) * window.innerHeight;
+const width = window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight;
+
+const maxLength = (10 / 100) * (69 / 100) * width;
 let { imgContainerStyle, captureButtonStyle } = style;
 
 let pressDelay = localStorage.getItem("pressDelay");
@@ -46,6 +48,15 @@ class MainPage extends React.Component {
             startCoords: [-1, -1],
             endCoords: [-1, -1]
         };
+
+        this.screenWd =
+            window.innerHeight > window.innerWidth
+                ? window.innerWidth
+                : window.innerHeight;
+        this.screenHt =
+            window.innerHeight > window.innerWidth
+                ? window.innerHeight
+                : window.innerWidth;
 
         document.body.style.overflowX = "auto";
 
@@ -118,9 +129,6 @@ class MainPage extends React.Component {
 
     // SECTION Handles orientation change
     componentDidMount() {
-        window.addEventListener("orientationchange", () => {
-            this.forceUpdate();
-        });
         setTimeout(() => {
             sessionStorage.setItem("fadePicture", false);
         }, 500);
@@ -128,15 +136,9 @@ class MainPage extends React.Component {
         let canvas = document.getElementById("canvas");
         let c = canvas.getContext("2d");
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = this.screenWd;
+        canvas.height = this.screenHt;
         this.setState({ mounted: true, context: c });
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener("orientationchange", () => {
-            this.forceUpdate();
-        });
     }
 
     // !SECTION
@@ -193,14 +195,19 @@ class MainPage extends React.Component {
             this.submit({ key: "Enter" });
             return;
         }
-        this.props.changeState(this.state.question, this.state.answers, this.state.websites);
+        this.props.changeState(
+            this.state.question,
+            this.state.answers,
+            this.state.websites
+        );
 
-        let questionHeight = document.getElementById("question").getBoundingClientRect().height;
-        let top = window.innerHeight / 11 + (1.4 * questionHeight) / 100 + 4;
+        let questionHeight = document.getElementById("question").getBoundingClientRect()
+            .height;
+        let top = this.screenHt / 11 + (1.4 * questionHeight) / 100 + 4;
 
         this.setState({
             footStyle: {
-                width: window.innerWidth,
+                width: this.screenWd,
                 backgroundColor: "var(--backCol)",
                 margin: 0,
                 borderRadius: 0
@@ -208,7 +215,7 @@ class MainPage extends React.Component {
             quesStyle: {
                 top: top,
                 margin: 0,
-                borderRadius: window.innerWidth / 50,
+                borderRadius: this.screenWd / 50,
                 padding: 10,
                 position: "absolute"
             },
@@ -221,19 +228,19 @@ class MainPage extends React.Component {
 
     calculateBottom() {
         if (!this.state.gotQuestion || !this.state.mounted) {
-            return (3 * window.innerHeight) / 20;
+            return (3 * this.screenHt) / 20;
         }
 
         let foot = document.getElementById("foot").getBoundingClientRect();
 
         let bottomHeight = this.state.ansClicked ? foot.height : this.calculateHeight();
 
-        return Math.max(bottomHeight + 60, (3 * window.innerHeight) / 20);
+        return Math.max(bottomHeight + 60, (3 * this.screenHt) / 20);
     }
 
     calculateHeight() {
         if (this.state.ansClicked) {
-            return window.innerHeight + 3;
+            return this.screenHt + 3;
         }
 
         if (!(this.state.gotQuestion && this.mounted)) {
@@ -271,7 +278,7 @@ class MainPage extends React.Component {
         let [endX, endY] = this.state.endCoords;
 
         startX += window.scrollX;
-        startY += window.scrollY - window.innerHeight / 10;
+        startY += window.scrollY - this.screenHt / 10;
         endX += window.scrollX;
         endY += window.scrollY;
 
@@ -411,7 +418,7 @@ class MainPage extends React.Component {
         let [startX, startY] = this.state.startCoords;
         let ctx = this.state.context;
 
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.clearRect(0, 0, this.screenWd, this.screenHt);
         ctx.beginPath();
         ctx.strokeStyle = "rgb(100, 100, 100)";
         ctx.rect(startX, startY, endCoords[0] - startX, endCoords[1] - startY);
@@ -425,8 +432,9 @@ class MainPage extends React.Component {
     /* !SECTION */
 
     render() {
-        const func = this.state.output === "vid" ? this.capture : this.OCR;
-        const footerBottom = -(this.state.gotQuestion ? 3 : window.innerHeight / 25);
+        let func = this.state.output === "vid" ? this.capture : this.OCR;
+        func = this.state.isTextBox ? () => this.submit({key: "Enter"})  : func;
+        const footerBottom = -(this.state.gotQuestion ? 3 : this.screenHt / 25);
         let bot = this.calculateBottom();
         let fadePicture = sessionStorage.getItem("fadePicture") === "true";
         return (
@@ -435,16 +443,21 @@ class MainPage extends React.Component {
                     this.props.backToCam ? "slidein" : fadePicture ? "fadein-short" : null
                 }`}
                 style={{
-                    minHeight: window.innerHeight,
+                    minHeight: this.screenHt,
                     position: "absolute",
-                    width: window.innerWidth
+                    width: this.screenWd
                 }}
             >
                 {/* SECTION  NAV */}
-                <header className="nav" style={{ height: Math.round(window.innerHeight / 10) }}>
+                <header
+                    className="nav"
+                    style={{ height: Math.round(this.screenHt / 10) }}
+                >
                     <div
                         id="bookmark-holder"
-                        className={this.state.navButtonAnimation ? "nav-button-animation" : null}
+                        className={
+                            this.state.navButtonAnimation ? "nav-button-animation" : null
+                        }
                     >
                         <this.state.navButton
                             handleClick={this.backClick}
@@ -471,8 +484,8 @@ class MainPage extends React.Component {
                         <div
                             style={{
                                 ...imgContainerStyle,
-                                height: Math.round((9 * window.innerHeight) / 10),
-                                top: Math.round(window.innerHeight / 10)
+                                height: Math.round((9 * this.screenHt) / 10),
+                                top: Math.round(this.screenHt / 10)
                             }}
                         >
                             {this.state.output === "img" ? (
@@ -483,7 +496,10 @@ class MainPage extends React.Component {
                         </div>
                         {/* !SECTION */}
                         {/* SECTION Capture/Process buttom\n */}
-                        <div className="buttonHolder" style={{ top: window.innerHeight / 10 + 10 }}>
+                        <div
+                            className="buttonHolder"
+                            style={{ top: this.screenHt / 10 + 10 }}
+                        >
                             <div className="cropDiv">
                                 <button
                                     className="imageSelector"
@@ -493,7 +509,9 @@ class MainPage extends React.Component {
                                             : "var(--backCol2)"
                                     }}
                                     onClick={() =>
-                                        this.setState({ imageSelector: !this.state.imageSelector })
+                                        this.setState({
+                                            imageSelector: !this.state.imageSelector
+                                        })
                                     }
                                 >
                                     crop
@@ -504,22 +522,23 @@ class MainPage extends React.Component {
                                         this.state.context.clearRect(
                                             0,
                                             0,
-                                            window.innerWidth,
-                                            window.innerHeight
+                                            this.screenWd,
+                                            this.screenHt
                                         )
                                     }
                                 >
                                     clear
                                 </button>
                             </div>
-                            {localStorage.getItem("subjectSelector") === "Drop down on screen" ? (
+                            {localStorage.getItem("subjectSelector") ===
+                            "Drop down on screen" ? (
                                 <Subject />
                             ) : null}
                         </div>
                         <button
                             style={{
                                 ...captureButtonStyle,
-                                left: (window.innerWidth - maxLength) / 2,
+                                left: (this.screenWd - maxLength) / 2,
                                 bottom: bot
                             }}
                             onClick={func}
@@ -546,7 +565,7 @@ class MainPage extends React.Component {
                         {/* SECTION Bottom bar */}
                         <footer
                             style={{
-                                minHeight: Math.round(window.innerHeight / 10),
+                                minHeight: Math.round(this.screenHt / 10),
                                 bottom: footerBottom,
                                 boxSizing: "border-box",
                                 ...this.state.footStyle,
@@ -561,8 +580,8 @@ class MainPage extends React.Component {
                                     className="info"
                                     id="quesCont"
                                     style={{
-                                        borderRadius: window.innerWidth / 50,
-                                        width: (9 * window.innerWidth) / 10,
+                                        borderRadius: this.screenWd / 50,
+                                        width: (9 * this.screenWd) / 10,
                                         boxSizing: "border-box",
                                         ...this.state.quesStyle
                                     }}
@@ -575,10 +594,15 @@ class MainPage extends React.Component {
                                             type="text"
                                             onChange={this.inputText}
                                             onKeyDown={this.submit}
-                                            style={{ marginRight: window.innerHeight / 40 }}
+                                            style={{
+                                                marginRight: this.screenHt / 40
+                                            }}
                                         />
                                     ) : (
-                                        <p id="question" style={{ margin: 0, fontSize: 16 }}>
+                                        <p
+                                            id="question"
+                                            style={{ margin: 0, fontSize: 16 }}
+                                        >
                                             {this.state.question}
                                         </p>
                                     )}
@@ -587,21 +611,21 @@ class MainPage extends React.Component {
                                         <div
                                             style={{
                                                 position: "absolute",
-                                                right: window.innerWidth / 19
+                                                right: this.screenWd / 19
                                             }}
                                         >
                                             <div
                                                 onClick={this.changeTextBox}
                                                 style={{
-                                                    height: window.innerHeight / 20,
-                                                    width: window.innerHeight / 20,
+                                                    height: this.screenHt / 20,
+                                                    width: this.screenHt / 20,
                                                     cursor: "pointer",
                                                     display: "flex",
                                                     justifyContent: "center",
                                                     alignItems: "center",
                                                     position: "relative",
-                                                    top: -window.innerWidth / 36,
-                                                    left: window.innerWidth / 36
+                                                    top: -this.screenWd / 36,
+                                                    left: this.screenWd / 36
                                                 }}
                                             >
                                                 {this.state.isTextBox ? (
@@ -609,7 +633,8 @@ class MainPage extends React.Component {
                                                         style={{
                                                             height: "50%",
                                                             width: "50%",
-                                                            backgroundColor: "var(--midGray)",
+                                                            backgroundColor:
+                                                                "var(--midGray)",
                                                             borderRadius: "50%",
                                                             right: 0,
                                                             position: "relative"
