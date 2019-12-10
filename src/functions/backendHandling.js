@@ -5,13 +5,13 @@ let deploy = false;
 
 // NOTE functions which will handle all backend calls
 
-export function OCR(imgPath, cropJSON) {
+export function OCR(imgPath, cropJSON, rotation) {
     let img = base64(imgPath, cropJSON);
 
     if (deploy) {
         return fetch("/OCR", {
             method: "POST",
-            body: JSON.stringify({ img }),
+            body: JSON.stringify({ img, rotation }),
             headers: { "Content-Type": "application/json" }
         });
     } else {

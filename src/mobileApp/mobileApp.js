@@ -21,16 +21,6 @@ import "style/hamburger.css";
 
 init();
 
-// const screen = new Screen();
-
-// let lockOrientation =
-//     screen.lockOrientation || screen.mozLockOrientation || screen.orientation.lock;
-
-// console.log({ lockOrientation });
-// if (lockOrientation) {
-//     alert("locked");
-//     lockOrientation("potrait");
-// }
 let newPerson = sessionStorage.getItem("new") === "true";
 
 class MobileApp extends React.Component {

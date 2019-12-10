@@ -16,7 +16,8 @@ import Camera from "./camera";
 import style from "style/style";
 // !SECTION
 
-const width = window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight;
+const width =
+    window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight;
 
 const maxLength = (10 / 100) * (69 / 100) * width;
 let { imgContainerStyle, captureButtonStyle } = style;
@@ -46,7 +47,8 @@ class MainPage extends React.Component {
             isLoading: false,
             imageSelector: false,
             startCoords: [-1, -1],
-            endCoords: [-1, -1]
+            endCoords: [-1, -1],
+            rotation: 0
         };
 
         this.screenWd =
@@ -69,6 +71,7 @@ class MainPage extends React.Component {
         this.swipeDown = this.swipeDown.bind(this);
         this.backClick = this.backClick.bind(this);
         this.inputText = this.inputText.bind(this);
+        this.rotateImg = this.rotateImg.bind(this);
         this.touchStart = this.touchStart.bind(this);
         this.showAnswer = this.showAnswer.bind(this);
         this.flipOutMode = this.flipOutMode.bind(this);
@@ -107,7 +110,6 @@ class MainPage extends React.Component {
         let canvas = document.createElement("CANVAS");
         let ctx = canvas.getContext("2d");
         let video = document.getElementById("camera");
-        console.log({ video });
         canvas.height = video.videoHeight;
         canvas.width = video.videoWidth;
         ctx.drawImage(video, 0, 0);
@@ -142,6 +144,10 @@ class MainPage extends React.Component {
     }
 
     // !SECTION
+
+    rotateImg() {
+        this.setState({ rotation: this.state.rotation + 1 });
+    }
 
     // handles change from image mode back to video
     backClick() {
@@ -277,6 +283,8 @@ class MainPage extends React.Component {
         let [startX, startY] = this.state.startCoords;
         let [endX, endY] = this.state.endCoords;
 
+        // let imgRect = document.getElementById("image").getBoundingClientRect();
+
         startX += window.scrollX;
         startY += window.scrollY - this.screenHt / 10;
         endX += window.scrollX;
@@ -289,7 +297,7 @@ class MainPage extends React.Component {
             height: Math.abs(endY - startY)
         };
 
-        let responseOCR = await OCR(this.state.picture, ocrJSON);
+        let responseOCR = await OCR(this.state.picture, ocrJSON, this.state.rotation % 4);
         if (responseOCR.status != "200") {
             this.backendError(responseOCR);
             return;
@@ -433,7 +441,7 @@ class MainPage extends React.Component {
 
     render() {
         let func = this.state.output === "vid" ? this.capture : this.OCR;
-        func = this.state.isTextBox ? () => this.submit({key: "Enter"})  : func;
+        func = this.state.isTextBox ? () => this.submit({ key: "Enter" }) : func;
         const footerBottom = -(this.state.gotQuestion ? 3 : this.screenHt / 25);
         let bot = this.calculateBottom();
         let fadePicture = sessionStorage.getItem("fadePicture") === "true";
@@ -489,7 +497,10 @@ class MainPage extends React.Component {
                             }}
                         >
                             {this.state.output === "img" ? (
-                                <Img src={this.state.picture} />
+                                <Img
+                                    src={this.state.picture}
+                                    rotation={this.state.rotation}
+                                />
                             ) : (
                                 <Camera error={this.cameraErrorHandler} />
                             )}
@@ -530,6 +541,9 @@ class MainPage extends React.Component {
                                     clear
                                 </button>
                             </div>
+                            <div className="rotateImgButton">
+                                <button onClick={this.rotateImg}>↻</button>
+                            </div>
                             {localStorage.getItem("subjectSelector") ===
                             "Drop down on screen" ? (
                                 <Subject />
@@ -538,7 +552,6 @@ class MainPage extends React.Component {
                         <button
                             style={{
                                 ...captureButtonStyle,
-                                left: (this.screenWd - maxLength) / 2,
                                 bottom: bot
                             }}
                             onClick={func}
