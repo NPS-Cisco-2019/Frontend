@@ -83,7 +83,7 @@ function HelpOverlay({ show, handleExitClick }) {
         </div>
       </div>
       <button className="exit-button" onClick={handleExitClick}>
-        Exit
+        x
       </button>
       <button className="next-button" onClick={() => setPos((pos + 1) % 2)}>
         Next

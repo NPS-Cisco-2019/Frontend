@@ -51,7 +51,8 @@ class MainPage extends React.Component {
       endCoords: [-1, -1],
       rotation: 0,
       showHelp:
-        localStorage.getItem("helpMode") === "true" || sessionStorage.getItem("new")
+        localStorage.getItem("helpMode") === "true" ||
+        sessionStorage.getItem("new") === "true"
     };
 
     this.screenWd =
@@ -289,10 +290,13 @@ class MainPage extends React.Component {
       x: Math.min(endX, startX),
       y: Math.min(endY, startY),
       width: Math.abs(endX - startX),
-      height: Math.abs(endY - startY)
+      height: Math.abs(endY - startY),
+      rotation: this.state.rotation % 4
     };
 
-    let responseOCR = await OCR(this.state.picture, ocrJSON, this.state.rotation % 4);
+    let [responseOCR, img] = OCR(this.state.picture, ocrJSON);
+    this.setState({ picture: img, rotation: 0 });
+    responseOCR = await responseOCR;
     // eslint-disable-next-line eqeqeq
     if (responseOCR.status != 200) {
       this.backendError(responseOCR);
