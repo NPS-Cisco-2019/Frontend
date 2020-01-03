@@ -24,7 +24,7 @@ export function OCR(imgPath, cropJSON) {
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 resolve({ question: testDetails.question, img: img });
-              }, 0);
+              }, 6178);
             })
         });
       }),

@@ -24,7 +24,8 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     left: "50%",
-    transform: "translateX(-50%)"
+    transform: "translateX(-50%)",
+    display: "flex"
   },
   videoConstraints: {
     // facingMode: 'user',
