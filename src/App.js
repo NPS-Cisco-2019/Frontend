@@ -13,16 +13,20 @@ import ErrorBoundary from "shared/Error";
 
 // TEMPORARY, If its true the website shows mobile app on desktop also, just for developement
 // TODO remove this
-let dev = true;
+let dev = false;
 
 function App() {
-  return (
-    <BrowserRouter basename="Frontend">
-      <ErrorBoundary>
-        {typeof window.orientation !== "undefined" || dev ? <MobileApp /> : <CompApp />}
-      </ErrorBoundary>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter basename="Frontend">
+            <ErrorBoundary>
+                {typeof window.orientation !== "undefined" || dev ? (
+                    <MobileApp />
+                ) : (
+                    <CompApp />
+                )}
+            </ErrorBoundary>
+        </BrowserRouter>
+    );
 }
 
 export default App;
