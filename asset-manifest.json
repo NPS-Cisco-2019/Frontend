@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/Frontend/static/css/main.ab7ac05a.chunk.css",
-    "main.js": "/Frontend/static/js/main.315ab03c.chunk.js",
-    "main.js.map": "/Frontend/static/js/main.315ab03c.chunk.js.map",
-    "runtime-main.js": "/Frontend/static/js/runtime-main.23e4cb3b.js",
-    "runtime-main.js.map": "/Frontend/static/js/runtime-main.23e4cb3b.js.map",
-    "static/js/2.d6a27b35.chunk.js": "/Frontend/static/js/2.d6a27b35.chunk.js",
-    "static/js/2.d6a27b35.chunk.js.map": "/Frontend/static/js/2.d6a27b35.chunk.js.map",
+    "main.css": "/Frontend/static/css/main.342d5fd2.chunk.css",
+    "main.js": "/Frontend/static/js/main.26f90f77.chunk.js",
+    "main.js.map": "/Frontend/static/js/main.26f90f77.chunk.js.map",
+    "runtime-main.js": "/Frontend/static/js/runtime-main.7c7df8ad.js",
+    "runtime-main.js.map": "/Frontend/static/js/runtime-main.7c7df8ad.js.map",
+    "static/js/2.96d39616.chunk.js": "/Frontend/static/js/2.96d39616.chunk.js",
+    "static/js/2.96d39616.chunk.js.map": "/Frontend/static/js/2.96d39616.chunk.js.map",
     "index.html": "/Frontend/index.html",
-    "precache-manifest.eeb530d30bfbd6ae5ff1fe410b7af739.js": "/Frontend/precache-manifest.eeb530d30bfbd6ae5ff1fe410b7af739.js",
+    "precache-manifest.1021f848cadd25a104e06b2a7b9aea37.js": "/Frontend/precache-manifest.1021f848cadd25a104e06b2a7b9aea37.js",
     "service-worker.js": "/Frontend/service-worker.js",
-    "static/css/main.ab7ac05a.chunk.css.map": "/Frontend/static/css/main.ab7ac05a.chunk.css.map",
+    "static/css/main.342d5fd2.chunk.css.map": "/Frontend/static/css/main.342d5fd2.chunk.css.map",
+    "static/js/2.96d39616.chunk.js.LICENSE": "/Frontend/static/js/2.96d39616.chunk.js.LICENSE",
     "static/media/404.png": "/Frontend/static/media/404.1eae7a3b.png",
     "static/media/back.png": "/Frontend/static/media/back.7865f30b.png",
     "static/media/calvin-error.png": "/Frontend/static/media/calvin-error.62690901.png",
@@ -28,5 +29,11 @@
     "static/media/safari2.jpg": "/Frontend/static/media/safari2.2d039f67.jpg",
     "static/media/safari3.jpg": "/Frontend/static/media/safari3.88a2743b.jpg",
     "static/media/settings.png": "/Frontend/static/media/settings.371bf301.png"
-  }
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7c7df8ad.js",
+    "static/js/2.96d39616.chunk.js",
+    "static/css/main.342d5fd2.chunk.css",
+    "static/js/main.26f90f77.chunk.js"
+  ]
 }
