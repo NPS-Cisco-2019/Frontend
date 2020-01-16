@@ -20,7 +20,7 @@ function Subject() {
     <div
       className="subject-button"
       style={{
-        height: open ? 125 : 30,
+        height: open ? 150 : 30,
         transition: "all 400ms cubic-bezier(0.215, 0.610, 0.355, 1)"
       }}
       onClick={() => setOpen(!open)}
