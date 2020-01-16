@@ -12,7 +12,7 @@ import Subject from "./Subject";
 import notification from "shared/notification";
 import { OCR, scrape } from "functions/backendHandling";
 // import Camera from "./camera";
-import Camera from "react-webcam";
+import Webcam from "react-webcam";
 
 import style from "style/style";
 import HelpOverlay from "./HelpOverlay";
