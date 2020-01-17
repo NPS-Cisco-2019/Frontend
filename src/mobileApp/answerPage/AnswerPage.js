@@ -7,6 +7,8 @@ import Answer from "./Answer";
 import HelpOverlay from "./HelpOverlay";
 import { Back } from "shared/elements";
 
+import toShowHelp from "functions/showHelp";
+
 import styles from "style/style";
 // !SECTION
 
@@ -21,9 +23,7 @@ class AnswerPage extends React.Component {
       showMenu: false,
       backToAns: false,
       selectedArr: createArr(this.props.answers.length),
-      showHelp:
-        localStorage.getItem("helpMode") === "true" ||
-        sessionStorage.getItem("new") === "true"
+      showHelp: toShowHelp(2)
     };
 
     this.maxHeight = 0;
@@ -159,7 +159,10 @@ class AnswerPage extends React.Component {
       >
         <HelpOverlay
           show={this.state.showHelp}
-          handleExitClick={() => this.setState({ showHelp: false })}
+          handleExitClick={() => {
+            sessionStorage.setItem("helpSeen", 2);
+            this.setState({ showHelp: false })
+          }}
         />
         {/* SECTION Back Button */}
         <header

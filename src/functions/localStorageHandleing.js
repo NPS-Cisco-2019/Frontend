@@ -52,6 +52,7 @@ export function init() {
   let grade = localStorage.getItem("grade");
 
   sessionStorage.setItem("new", grade === null);
+  sessionStorage.setItem("helpSeen", 0);
 }
 
 export function reset() {

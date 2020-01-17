@@ -5,17 +5,17 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loader from "react-spinners/CircleLoader";
 import { css } from "@emotion/core";
+import Webcam from "react-webcam";
 
 import { BookmarkNav, SettingsNav, GalleryNav } from "./Nav";
 import { Back, Img } from "shared/elements";
 import Subject from "./Subject";
 import notification from "shared/notification";
 import { OCR, scrape } from "functions/backendHandling";
-// import Camera from "./camera";
-import Webcam from "react-webcam";
+import toShowHelp from "functions/showHelp";
+import HelpOverlay from "./HelpOverlay";
 
 import style from "style/style";
-import HelpOverlay from "./HelpOverlay";
 // !SECTION
 
 const width =
@@ -58,9 +58,7 @@ class MainPage extends React.Component {
       startCoords: [-1, -1],
       endCoords: [-1, -1],
       rotation: 0,
-      showHelp:
-        localStorage.getItem("helpMode") === "true" ||
-        sessionStorage.getItem("new") === "true"
+      showHelp: toShowHelp(1)
     };
 
     this.screenWd =
@@ -293,7 +291,7 @@ class MainPage extends React.Component {
     // let imgRect = document.getElementById("image").getBoundingClientRect();
 
     startX += window.scrollX;
-    startY += window.scrollY - this.screenHt / 10;
+    startY += window.scrollY;
     endX += window.scrollX;
     endY += window.scrollY;
 
@@ -349,6 +347,7 @@ class MainPage extends React.Component {
       gotAnswer: true
     });
     console.log("answers gotten");
+    this.showAnswer();
   }
 
   /* Scraping function */
@@ -502,7 +501,10 @@ class MainPage extends React.Component {
         />
         <HelpOverlay
           show={this.state.showHelp}
-          handleExitClick={() => this.setState({ showHelp: false })}
+          handleExitClick={() => {
+            sessionStorage.setItem("helpSeen", 1);
+            this.setState({ showHelp: false });
+          }}
         />
         <Swipe
           onSwipeUp={this.state.imageSelector ? null : this.swipeUp}

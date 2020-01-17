@@ -22,12 +22,12 @@ export function OCR(imgPath, cropJSON) {
     return [
       new Promise((resolve, reject) => {
         resolve({
-          status: "200",
+          status: 200,
           json: () =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
                 resolve({ question: testDetails.question, img: img });
-              }, 6178);
+              }, 0);
             })
         });
       }),
@@ -50,7 +50,7 @@ export function scrape(question) {
     // TODO Remove Temporary non linked server promises which serve test details
     return new Promise((resolve, reject) => {
       resolve({
-        status: "200",
+        status: 200,
         json: () =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
