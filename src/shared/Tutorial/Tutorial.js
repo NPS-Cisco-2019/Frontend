@@ -43,7 +43,6 @@ function Tutorial({ headHeight = 0 }) {
   });
 
   useEffect(() => {
-    setMounted(false);
     calcBrowserPos();
 
     setTimeout(() => setMounted(true), 100);
@@ -116,12 +115,7 @@ function Tutorial({ headHeight = 0 }) {
       <div className="logos">
         <Link to="/Firefox">
           <button className="firefox" onClick={handleClick}>
-            <img
-              className="desk img"
-              id="Firefox"
-              src={require("pictures/firefox.png")}
-              alt="firefox"
-            />
+            <img className="desk img" id="Firefox" src={require("pictures/firefox.png")} alt="firefox" />
             <label htmlFor="Firefox" id="firefox">
               Firefox
             </label>
@@ -129,12 +123,7 @@ function Tutorial({ headHeight = 0 }) {
         </Link>
         <Link to="/Chrome">
           <button className="chrome" onClick={handleClick}>
-            <img
-              className="desk img"
-              id="Chrome"
-              src={require("pictures/chrome.png")}
-              alt="chrome"
-            />
+            <img className="desk img" id="Chrome" src={require("pictures/chrome.png")} alt="chrome" />
             <label htmlFor="Chrome" id="chrome">
               Chrome
             </label>
@@ -142,12 +131,7 @@ function Tutorial({ headHeight = 0 }) {
         </Link>
         <Link to="/Safari">
           <button className="safari" onClick={handleClick}>
-            <img
-              className="desk img"
-              id="Safari"
-              src={require("pictures/safari.png")}
-              alt="safari"
-            />
+            <img className="desk img" id="Safari" src={require("pictures/safari.png")} alt="safari" />
             <label htmlFor="Safari" id="safari">
               Safari
             </label>

@@ -5,31 +5,24 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import Loader from "react-spinners/CircleLoader";
 import { css } from "@emotion/core";
-import Webcam from "react-webcam";
 
 import { BookmarkNav, SettingsNav, GalleryNav } from "./Nav";
 import { Back, Img } from "shared/elements";
 import Subject from "./Subject";
 import notification from "shared/notification";
 import { OCR, scrape } from "functions/backendHandling";
-import toShowHelp from "functions/showHelp";
-import HelpOverlay from "./HelpOverlay";
+// import Camera from "./camera";
+import Webcam from "react-webcam";
 
 import style from "style/style";
+import HelpOverlay from "./HelpOverlay";
+import toShowHelp from "functions/showHelp";
 // !SECTION
 
-const width =
-  window.innerHeight > window.innerWidth
-    ? window.innerWidth
-    : window.innerHeight;
+const width = window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight;
 
 const maxLength = (10 / 100) * (69 / 100) * width;
-let {
-  imgContainerStyle,
-  captureButtonStyle,
-  imgStyle,
-  videoConstraints
-} = style;
+let { imgContainerStyle, captureButtonStyle, imgStyle, videoConstraints } = style;
 
 let pressDelay = localStorage.getItem("pressDelay");
 const vibratable = "vibrate" in navigator;
@@ -61,14 +54,8 @@ class MainPage extends React.Component {
       showHelp: toShowHelp(1)
     };
 
-    this.screenWd =
-      window.innerHeight > window.innerWidth
-        ? window.innerWidth
-        : window.innerHeight;
-    this.screenHt =
-      window.innerHeight > window.innerWidth
-        ? window.innerHeight
-        : window.innerWidth;
+    this.screenWd = window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight;
+    this.screenHt = window.innerHeight > window.innerWidth ? window.innerHeight : window.innerWidth;
 
     document.body.style.overflowX = "auto";
 
@@ -136,6 +123,7 @@ class MainPage extends React.Component {
     setTimeout(() => {
       sessionStorage.setItem("fadePicture", false);
     }, 500);
+    sessionStorage.setItem("helpSeen", 1);
 
     let canvas = document.getElementById("canvas");
     let c = canvas.getContext("2d");
@@ -203,15 +191,9 @@ class MainPage extends React.Component {
       this.submit({ key: "Enter" });
       return;
     }
-    this.props.changeState(
-      this.state.question,
-      this.state.answers,
-      this.state.websites
-    );
+    this.props.changeState(this.state.question, this.state.answers, this.state.websites);
 
-    let questionHeight = document
-      .getElementById("question")
-      .getBoundingClientRect().height;
+    let questionHeight = document.getElementById("question").getBoundingClientRect().height;
     let top = this.screenHt / 11 + (1.4 * questionHeight) / 100 + 4;
 
     this.setState({
@@ -242,9 +224,7 @@ class MainPage extends React.Component {
 
     let foot = document.getElementById("foot").getBoundingClientRect();
 
-    let bottomHeight = this.state.ansClicked
-      ? foot.height
-      : this.calculateHeight();
+    let bottomHeight = this.state.ansClicked ? foot.height : this.calculateHeight();
 
     return Math.max(bottomHeight + 60, (3 * this.screenHt) / 20);
   }
@@ -265,13 +245,7 @@ class MainPage extends React.Component {
   // SECTION  handles backend calling
 
   backendError(response) {
-    notification(
-      [
-        "An internal error occured",
-        "Please try again. If this error comes multiple times, then try again later."
-      ],
-      true
-    );
+    notification(["An internal error occured", "Please try again. If this error comes multiple times, then try again later."], true);
     console.log({ response });
     this.setState({ isLoading: false, gotQuestion: false });
   }
@@ -291,7 +265,7 @@ class MainPage extends React.Component {
     // let imgRect = document.getElementById("image").getBoundingClientRect();
 
     startX += window.scrollX;
-    startY += window.scrollY;
+    startY += window.scrollY - this.screenHt / 10;
     endX += window.scrollX;
     endY += window.scrollY;
 
@@ -303,9 +277,7 @@ class MainPage extends React.Component {
       rotation: this.state.rotation % 4
     };
 
-    let [responseOCR, img] = OCR(this.state.picture, ocrJSON);
-    this.setState({ picture: img, rotation: 0 });
-    responseOCR = await responseOCR;
+    let responseOCR = await OCR(this.state.picture, ocrJSON);
     // eslint-disable-next-line eqeqeq
     if (responseOCR.status != 200) {
       this.backendError(responseOCR);
@@ -347,6 +319,7 @@ class MainPage extends React.Component {
       gotAnswer: true
     });
     console.log("answers gotten");
+
     this.showAnswer();
   }
 
@@ -429,7 +402,7 @@ class MainPage extends React.Component {
 
   canvasTouchStart(e) {
     this.setState({
-      startCoords: [e.touches[0].clientX, e.touches[0].clientY]
+      startCoords: [e.touches[0].pageX, e.touches[0].pageY]
     });
   }
 
@@ -462,9 +435,7 @@ class MainPage extends React.Component {
 
     return (
       <div
-        className={`App ${
-          this.props.backToCam ? "slidein" : fadePicture ? "fadein-short" : null
-        }`}
+        className={`App ${this.props.backToCam ? "slidein" : fadePicture ? "fadein-short" : null}`}
         style={{
           minHeight: this.screenHt,
           position: "absolute",
@@ -472,20 +443,9 @@ class MainPage extends React.Component {
         }}
       >
         {/* SECTION  NAV */}
-        <header
-          className="nav"
-          style={{ height: Math.round(this.screenHt / 10) }}
-        >
-          <div
-            id="bookmark-holder"
-            className={
-              this.state.navButtonAnimation ? "nav-button-animation" : null
-            }
-          >
-            <this.state.navButton
-              handleClick={this.backClick}
-              showSavedAns={this.showSavedAns}
-            />
+        <header className="nav" style={{ height: Math.round(this.screenHt / 10) }}>
+          <div id="bookmark-holder" className={this.state.navButtonAnimation ? "nav-button-animation" : null}>
+            <this.state.navButton handleClick={this.backClick} showSavedAns={this.showSavedAns} />
           </div>
           <div id="settingsDiv">
             <SettingsNav showSettings={this.showSettings} />
@@ -499,17 +459,8 @@ class MainPage extends React.Component {
           onTouchMove={this.state.imageSelector ? this.canvasTouchMove : null}
           style={this.state.imageSelector ? {} : { pointerEvents: "none" }}
         />
-        <HelpOverlay
-          show={this.state.showHelp}
-          handleExitClick={() => {
-            sessionStorage.setItem("helpSeen", 1);
-            this.setState({ showHelp: false });
-          }}
-        />
-        <Swipe
-          onSwipeUp={this.state.imageSelector ? null : this.swipeUp}
-          onSwipeDown={this.state.imageSelector ? null : this.swipeDown}
-        >
+        <HelpOverlay show={this.state.showHelp} handleExitClick={() => this.setState({ showHelp: false })} />
+        <Swipe onSwipeUp={this.state.imageSelector ? null : this.swipeUp} onSwipeDown={this.state.imageSelector ? null : this.swipeDown}>
           <div>
             {/* SECTION Image/Video displayer */}
             <div
@@ -535,17 +486,12 @@ class MainPage extends React.Component {
             </div>
             {/* !SECTION */}
             {/* SECTION Capture/Process buttom\n */}
-            <div
-              className="buttonHolder"
-              style={{ top: this.screenHt / 10 + 10 }}
-            >
+            <div className="buttonHolder" style={{ top: this.screenHt / 10 + 10 }}>
               <div className="cropDiv">
                 <button
                   className="imageSelector"
                   style={{
-                    backgroundColor: this.state.imageSelector
-                      ? "var(--highlightCol)"
-                      : "var(--backCol2)"
+                    backgroundColor: this.state.imageSelector ? "var(--highlightCol)" : "var(--backCol2)"
                   }}
                   onClick={() =>
                     this.setState({
@@ -555,27 +501,14 @@ class MainPage extends React.Component {
                 >
                   crop
                 </button>
-                <button
-                  className="clearButton"
-                  onClick={() =>
-                    this.state.context.clearRect(
-                      0,
-                      0,
-                      this.screenWd,
-                      this.screenHt
-                    )
-                  }
-                >
+                <button className="clearButton" onClick={() => this.state.context.clearRect(0, 0, this.screenWd, this.screenHt)}>
                   clear
                 </button>
               </div>
               <div className="rotateImgButton">
                 <button onClick={this.rotateImg}>↻</button>
               </div>
-              {localStorage.getItem("subjectSelector") ===
-              "Drop down on screen" ? (
-                <Subject />
-              ) : null}
+              {localStorage.getItem("subjectSelector") === "Drop down on screen" ? <Subject /> : null}
             </div>
             <button
               style={{
@@ -586,19 +519,9 @@ class MainPage extends React.Component {
             >
               {this.state.output === "img" ? (
                 this.state.isLoading ? (
-                  <Loader
-                    css={overide}
-                    sizeUnit={"px"}
-                    size={maxLength}
-                    color={"#FFF"}
-                    loading={true}
-                  />
+                  <Loader css={overide} sizeUnit={"px"} size={maxLength} color={"#FFF"} loading={true} />
                 ) : (
-                  <img
-                    className="searchImg"
-                    src={require("pictures/search.png")}
-                    alt="search icon"
-                  />
+                  <img className="searchImg" src={require("pictures/search.png")} alt="search icon" />
                 )
               ) : null}
             </button>
