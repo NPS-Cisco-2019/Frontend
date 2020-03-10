@@ -58,9 +58,8 @@ function Tutorial({ headHeight = 0 }) {
   /* SECTION FUNCTIONS */
 
   const calcHighlightTop = () => {
-    const obj = document.getElementById("firefox").getBoundingClientRect();
-    console.log(obj.top, window.scrollY);
-    return Math.round(obj.top - headHeight);
+    const obj = document.getElementById("firefox");
+    return obj.offsetTop;
   };
 
   // calculates position of selected highlighter
